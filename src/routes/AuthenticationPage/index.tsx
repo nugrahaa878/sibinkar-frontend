@@ -1,7 +1,9 @@
+import CardLogin from "./components/CardLogin";
+
 const AuthenticationPage = () => {
   return (
-    <div>
-      <h1>Authentication page</h1>
+    <div className="bg-blue-400">
+      <CardLogin />
     </div>
   );
 };
