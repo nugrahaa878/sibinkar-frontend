@@ -1,8 +1,10 @@
 import CardLogin from "./components/CardLogin";
+import Navbar from "./components/Navbar";
 
 const AuthenticationPage = () => {
   return (
-    <div className="bg-blue-400">
+    <div className="flex flex-col items-center bg-lightBlue">
+      <Navbar />
       <CardLogin />
     </div>
   );
