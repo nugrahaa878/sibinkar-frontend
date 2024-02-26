@@ -11,14 +11,14 @@ import { Label } from "@/components/ui/label";
 
 const CardLogin = () => {
   return (
-    <Card className="w-[350px]">
-      <CardHeader className="flex items-center">
+    <Card className="w-[400px] py-5">
+      <CardHeader className="flex items-center text-darkBlue">
         <CardTitle>Sign In</CardTitle>
       </CardHeader>
 
       <CardContent>
         <div>
-          <Label>Username</Label>
+          <Label className="text-darkBlue">Username</Label>
           <Input
             type="text"
             placeholder="Enter your username"
@@ -26,7 +26,7 @@ const CardLogin = () => {
           />
         </div>
         <div className="mt-4">
-          <Label>Password</Label>
+          <Label className="text-darkBlue">Password</Label>
           <Input
             type="password"
             placeholder="Enter your password"
@@ -36,7 +36,7 @@ const CardLogin = () => {
       </CardContent>
 
       <CardFooter>
-        <Button className="w-full">Sign In</Button>
+        <Button className="w-full bg-darkBlue">Sign In</Button>
       </CardFooter>
     </Card>
   );
