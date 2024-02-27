@@ -9,8 +9,16 @@ import {
 
 import InputUserName from "../InputUserName";
 import InputPassword from "../InputPassword";
+import { useState } from "react";
 
 const CardLogin = () => {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleLogin = () => {
+    console.log({ username, password });
+  };
+
   return (
     <Card className="w-[400px] py-5">
       <CardHeader className="flex items-center text-darkBlue">
@@ -18,12 +26,14 @@ const CardLogin = () => {
       </CardHeader>
 
       <CardContent>
-        <InputUserName />
-        <InputPassword />
+        <InputUserName handleChange={setUsername} />
+        <InputPassword handleChange={setPassword} />
       </CardContent>
 
       <CardFooter>
-        <Button className="w-full bg-darkBlue">Sign In</Button>
+        <Button className="w-full bg-darkBlue" onClick={handleLogin}>
+          Sign In
+        </Button>
       </CardFooter>
     </Card>
   );
