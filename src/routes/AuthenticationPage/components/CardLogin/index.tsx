@@ -6,8 +6,9 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+
+import InputUserName from "../InputUserName";
+import InputPassword from "../InputPassword";
 
 const CardLogin = () => {
   return (
@@ -17,22 +18,8 @@ const CardLogin = () => {
       </CardHeader>
 
       <CardContent>
-        <div>
-          <Label className="text-darkBlue">Username</Label>
-          <Input
-            type="text"
-            placeholder="Enter your username"
-            className="focus-visible:ring-0"
-          />
-        </div>
-        <div className="mt-4">
-          <Label className="text-darkBlue">Password</Label>
-          <Input
-            type="password"
-            placeholder="Enter your password"
-            className="focus-visible:ring-0"
-          />
-        </div>
+        <InputUserName />
+        <InputPassword />
       </CardContent>
 
       <CardFooter>
