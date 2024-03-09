@@ -9,7 +9,7 @@ const NavbarItem = ({type, page} : Props) => {
     const isSelected = type === page;
 
     return (
-        <button className={`text-white font-semibold text-xl py-1 mx-4 ${isSelected && 'border-b-4'}`}>{Object.values(type)}</button>
+        <button className={`text-white font-semibold text-xl py-1 mx-4 ${isSelected && 'border-b-4'}`}>{type}</button>
     )
 }
 

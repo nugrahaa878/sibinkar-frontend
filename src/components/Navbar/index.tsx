@@ -21,7 +21,7 @@ const Navbar = ({ page }: Props) => {
         <img src={policeYellow} alt="police-1" className="w-14" />
         <img src={policeWhite} alt="police-2" className="w-14" />
         <div className="flex mx-auto">
-            {pages.map((item) => <NavbarItem page={page} type={item}/>)}
+            {pages.map((item) => <NavbarItem key={item} page={page} type={item}/>)}
         </div>
         <Button className="bg-white text-black font-bold">Log Out</Button>
       </div>
