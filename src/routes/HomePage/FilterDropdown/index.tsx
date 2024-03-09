@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 
-const FilterCombobox = () => {
+const FilterDropdown = () => {
     return (
     <div className="flex flex-col">
         <text className="text-xl text-darkBlue font-bold pb-2">Filter By</text>
@@ -9,4 +9,4 @@ const FilterCombobox = () => {
   )
 }
 
-export default FilterCombobox
+export default FilterDropdown
