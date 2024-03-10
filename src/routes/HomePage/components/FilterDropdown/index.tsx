@@ -72,7 +72,6 @@ const FilterDropdown = () => {
   };
 
   const onSubFilterChange = (value: string) => {
-    console.log(value);
     setSubFilter(value);
   };
 
@@ -118,7 +117,7 @@ const FilterDropdown = () => {
             </SelectContent>
           </Select>
         )}
-        {subFilter !== "" && (
+        {subFilter !== "" && subFilter != undefined && (
           <Button className="ml-2" variant="outline" onClick={onDeleteFilter}>
             Hapus Filter
           </Button>
