@@ -6,7 +6,7 @@ interface Props {
 
 const DefaultContainer = ({ children }: Props) => {
   return (
-    <div className="pt-16 px-24 w-full flex flex-col items-center">
+    <div className="py-16 px-24 w-full flex flex-col items-center">
       {children}
     </div>
   );
