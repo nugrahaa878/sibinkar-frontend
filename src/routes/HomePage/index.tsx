@@ -4,6 +4,7 @@ import DefaultContainer from "@/components/DefaultContainer";
 import Header from "./components/Header";
 import { DataTable } from "./components/DataTable";
 import { Personil, columns } from "./components/DataTable/columns";
+import Navigation from "./components/Navigation";
 
 const HomePage = () => {
   const data: Personil[] = [
@@ -65,6 +66,7 @@ const HomePage = () => {
         <Header />
         <Toolbar />
         <DataTable data={data} columns={columns} />
+        <Navigation />
       </DefaultContainer>
     </div>
   );

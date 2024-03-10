@@ -30,7 +30,7 @@ export function DataTable<TData, TValue>({
   });
 
   return (
-    <div className="mt-4 w-full">
+    <div className="mt-4 mb-8 w-full">
       <Table>
         <TableHeader className="bg-[#7E93C9]">
           {table.getHeaderGroups().map((headerGroup) => (
