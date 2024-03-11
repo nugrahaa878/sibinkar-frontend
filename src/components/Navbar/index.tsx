@@ -17,7 +17,7 @@ const Navbar = ({ page }: Props) => {
   const pages = Object.values(NavbarPageEnum);
 
   return (
-    <div className="flex w-full bg-darkBlue items-center px-24 py-4 gap-8">
+    <div className="flex w-full bg-darkBlue items-center px-16 py-4 gap-8">
       <img src={policeYellow} alt="police-1" className="w-14" />
       <img src={policeWhite} alt="police-2" className="w-14" />
       <div className="flex mx-auto">
