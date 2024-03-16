@@ -3,11 +3,12 @@ import Toolbar from "./components/Toolbar";
 import DefaultContainer from "@/components/DefaultContainer";
 import Header from "./components/Header";
 import { DataTable } from "./components/DataTable";
-import { Personil, columns } from "./components/DataTable/columns";
+import { columns } from "./components/DataTable/columns";
 import Navigation from "./components/Navigation";
+import { Personnel } from "./entity/personnel";
 
 const HomePage = () => {
-  const data: Personil[] = [
+  const data: Personnel[] = [
     {
       number: 1,
       name: "BAKHARUDDIN MUHAMMAD SYAH, S.H., S.I.K., M.Si.",

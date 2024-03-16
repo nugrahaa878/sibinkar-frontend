@@ -7,18 +7,18 @@ import {
 } from "@/components/ui/dialog";
 import PersonnelDialog from "../PersonnelDialog";
 
-const EditDialog = () => {
+const AddDialog = () => {
   return (
     <DialogContent className="sm:max-w-2xl">
       <DialogHeader>
-        <DialogTitle>Ubah Data Personil</DialogTitle>
+        <DialogTitle>Tambah Personil</DialogTitle>
       </DialogHeader>
       <PersonnelDialog />
       <DialogFooter>
-        <Button type="submit">Save changes</Button>
+        <Button type="submit">Simpan Data</Button>
       </DialogFooter>
     </DialogContent>
   );
 };
 
-export default EditDialog;
+export default AddDialog;

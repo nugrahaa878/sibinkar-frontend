@@ -1,20 +1,8 @@
 import { ColumnDef } from "@tanstack/react-table";
 import Action from "./action";
+import { Personnel } from "../../entity/personnel";
 
-export type Personil = {
-  number: number;
-  name: string;
-  gender: "L" | "P";
-  NRP: number;
-  rank: string;
-  position: string;
-  subSatKer: string;
-  subDit: string;
-  BKO: string;
-  status: "Aktif" | "Non Aktif" | "Cuti" | "Pensiun";
-};
-
-export const columns: ColumnDef<Personil>[] = [
+export const columns: ColumnDef<Personnel>[] = [
   {
     accessorKey: "number",
     header: "No",
