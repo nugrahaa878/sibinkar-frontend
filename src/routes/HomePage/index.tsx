@@ -23,10 +23,15 @@ const HomePage = () => {
     setListPersonnel(dummy_personnels);
   };
 
-  const onAddPersonnel = async (personnel: Personnel): Promise<boolean> => {
+  const onAddPersonnel = async (
+    personnel: Personnel
+  ): Promise<DefaultResponse> => {
     await onGetPersonnel();
     console.log(personnel);
-    return true;
+    return {
+      isSuccess: true,
+      message: "Data Berhasil Disimpan",
+    };
   };
 
   useState(async () => {
@@ -42,7 +47,7 @@ const HomePage = () => {
         <Header />
         {isLoading && <Loader2 className="h-16 w-16 m-4 animate-spin" />}
         {!isLoading && <Toolbar addPersonnel={onAddPersonnel} />}
-        {!isLoading && <DataTable data={dummy_personnels} columns={columns} />}
+        {!isLoading && <DataTable data={listPersonnel} columns={columns} />}
         {!isLoading && <Navigation />}
       </DefaultContainer>
     </div>

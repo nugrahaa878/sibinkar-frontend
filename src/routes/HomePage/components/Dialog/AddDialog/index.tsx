@@ -1,9 +1,7 @@
 import { Button } from "@/components/ui/button";
 import {
   DialogContent,
-  DialogDescription,
   DialogFooter,
-  DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
 import { useState } from "react";
@@ -23,10 +21,12 @@ import data_pangkat from "@/routes/HomePage/data/data-pangkat";
 import data_status from "@/routes/HomePage/data/data-status";
 import data_subdit from "@/routes/HomePage/data/data-subdit";
 import data_subsatker from "@/routes/HomePage/data/data-subsatker";
-import { CheckCircle2Icon, Loader2Icon } from "lucide-react";
+import ConfirmationDialog from "@/components/Dialog/ConfirmationDialog";
+import SuccessDialog from "@/components/Dialog/SuccessDialog";
+import ErrorDialog from "@/components/Dialog/ErrorDialog";
 
 interface Props {
-  onSave: (personnel: Personnel) => Promise<boolean>;
+  onSave: (personnel: Personnel) => Promise<DefaultResponse>;
 }
 
 const AddDialog = ({ onSave }: Props) => {
@@ -80,8 +80,13 @@ const AddDialog = ({ onSave }: Props) => {
   };
 
   const handleClose = () => {
+    if (resultState === "hide") {
+      return;
+    }
+
     setIsConfirmState(false);
     setResultState("hide");
+    return;
   };
 
   const handleCancelSave = () => {
@@ -91,122 +96,118 @@ const AddDialog = ({ onSave }: Props) => {
     setIsConfirmState(false);
   };
 
-  return (
-    <DialogContent onCloseAutoFocus={handleClose} className="sm:max-w-2xl">
-      {resultState === "hide" && (
-        <DialogHeader>
-          {isConfirmState && <DialogTitle>Simpan Data</DialogTitle>}
-          {!isConfirmState && <DialogTitle>Tambah Personil</DialogTitle>}
-        </DialogHeader>
-      )}
-      {resultState === "success" && (
-        <div className="flex flex-col items-center">
-          <CheckCircle2Icon className="h-40 w-40 mb-4 text-darkBlue" />
-          <h1 className="font-bold text-xl text-blue-950">
-            Data Berhasil Disimpan
-          </h1>
-        </div>
-      )}
-      {isConfirmState && resultState === "hide" && (
-        <DialogDescription>Anda yakin ingin menyimpan data?</DialogDescription>
-      )}
-      {!isConfirmState && resultState === "hide" && (
-        <div className="grid gap-4 py-4">
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="nama" className="">
-              Nama
-            </Label>
-            <Input
-              placeholder="Masukkan nama"
-              id="nama"
-              value={name}
-              onChange={handleNameChange}
-              className="col-span-3"
-            />
-          </div>
-          <div className="grid grid-cols-4 items-center gap-4 w-full">
-            <Label htmlFor="jenisKelamin">Jenis Kelamin</Label>
-            <Select value={gender} onValueChange={setGender}>
-              <SelectTrigger className="md:w-[464px] sm:w-96">
-                <SelectValue placeholder="Pilih Jenis Kelamin" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="L">Laki-laki</SelectItem>
-                <SelectItem value="P">Perempuan</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="NRP" className="">
-              NRP
-            </Label>
-            <Input
-              placeholder="Masukkan NRP"
-              id="NRP"
-              type="number"
-              value={NRP}
-              onChange={handleNRPChange}
-              className="col-span-3"
-            />
-          </div>
-          <Dropdown
-            placeholder="Pilih Pangkat"
-            title="Pangkat"
-            value={rank}
-            onValueChange={setRank}
-            data={data_pangkat}
-          />
-          <Dropdown
-            placeholder="Pilih Jabatan"
-            title="Jabatan"
-            value={position}
-            onValueChange={setPosition}
-            data={["Jabatan 1", "Jabatan 2"]}
-          />
-          <Dropdown
-            placeholder="Pilih SubSatKer"
-            title="SubSatKer"
-            value={subSatKer}
-            onValueChange={setSubSatKer}
-            data={data_subsatker}
-          />
-          <Dropdown
-            placeholder="Pilih SubDit"
-            title="SubDit"
-            value={subDit}
-            onValueChange={setSubDit}
-            data={data_subdit}
-          />
-          <Dropdown
-            placeholder="Pilih BKO"
-            title="BKO"
-            value={BKO}
-            onValueChange={setBKO}
-            data={data_bko}
-          />
-          <Dropdown
-            placeholder="Pilih Status"
-            title="Status"
-            value={status}
-            onValueChange={setStatus}
-            data={data_status}
-          />
-        </div>
-      )}
+  if (resultState === "success") {
+    return (
+      <SuccessDialog onClose={handleClose} message="Data berhasil disimpan" />
+    );
+  }
 
-      {resultState === "hide" && (
-        <DialogFooter>
-          {isConfirmState && (
-            <Button className="bg-slate-500" onClick={handleCancelSave}>
-              Batal
-            </Button>
-          )}
-          <Button onClick={onButtonSave}>
-            {isLoadingState && <Loader2Icon className="mr-2 animate-spin" />}{" "}
-            Simpan
-          </Button>
-        </DialogFooter>
-      )}
+  if (resultState === "failed") {
+    return <ErrorDialog onClose={handleClose} message="Gagal menyimpan data" />;
+  }
+
+  if (isConfirmState) {
+    return (
+      <ConfirmationDialog
+        title="Simpan Data"
+        description="Anda yakin ingin menyimpan data?"
+        isLoading={isLoadingState}
+        onAccept={onButtonSave}
+        onDecline={handleCancelSave}
+        onClose={handleClose}
+      />
+    );
+  }
+
+  return (
+    <DialogContent className="sm:max-w-2xl">
+      <DialogTitle>Tambah Personil</DialogTitle>
+
+      <div className="grid gap-4 py-4">
+        <div className="grid grid-cols-4 items-center gap-4">
+          <Label htmlFor="nama" className="">
+            Nama
+          </Label>
+          <Input
+            placeholder="Masukkan nama"
+            id="nama"
+            value={name}
+            onChange={handleNameChange}
+            className="col-span-3"
+          />
+        </div>
+        <div className="grid grid-cols-4 items-center gap-4 w-full">
+          <Label htmlFor="jenisKelamin">Jenis Kelamin</Label>
+          <Select value={gender} onValueChange={setGender}>
+            <SelectTrigger className="md:w-[464px] sm:w-96">
+              <SelectValue placeholder="Pilih Jenis Kelamin" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="L">Laki-laki</SelectItem>
+              <SelectItem value="P">Perempuan</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+        <div className="grid grid-cols-4 items-center gap-4">
+          <Label htmlFor="NRP" className="">
+            NRP
+          </Label>
+          <Input
+            placeholder="Masukkan NRP"
+            id="NRP"
+            type="number"
+            value={NRP}
+            onChange={handleNRPChange}
+            className="col-span-3"
+          />
+        </div>
+        <Dropdown
+          placeholder="Pilih Pangkat"
+          title="Pangkat"
+          value={rank}
+          onValueChange={setRank}
+          data={data_pangkat}
+        />
+        <Dropdown
+          placeholder="Pilih Jabatan"
+          title="Jabatan"
+          value={position}
+          onValueChange={setPosition}
+          data={["Jabatan 1", "Jabatan 2"]}
+        />
+        <Dropdown
+          placeholder="Pilih SubSatKer"
+          title="SubSatKer"
+          value={subSatKer}
+          onValueChange={setSubSatKer}
+          data={data_subsatker}
+        />
+        <Dropdown
+          placeholder="Pilih SubDit"
+          title="SubDit"
+          value={subDit}
+          onValueChange={setSubDit}
+          data={data_subdit}
+        />
+        <Dropdown
+          placeholder="Pilih BKO"
+          title="BKO"
+          value={BKO}
+          onValueChange={setBKO}
+          data={data_bko}
+        />
+        <Dropdown
+          placeholder="Pilih Status"
+          title="Status"
+          value={status}
+          onValueChange={setStatus}
+          data={data_status}
+        />
+      </div>
+
+      <DialogFooter>
+        <Button onClick={onButtonSave}>Simpan</Button>
+      </DialogFooter>
     </DialogContent>
   );
 };

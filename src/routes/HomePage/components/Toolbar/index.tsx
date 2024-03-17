@@ -6,7 +6,7 @@ import AddDialog from "../Dialog/AddDialog";
 import { Personnel } from "../../entity/personnel";
 
 interface Props {
-  addPersonnel: (personnel: Personnel) => Promise<boolean>;
+  addPersonnel: (personnel: Personnel) => Promise<DefaultResponse>;
 }
 
 const Toolbar = ({ addPersonnel }: Props) => {

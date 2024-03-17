@@ -10,11 +10,11 @@ import { DialogTrigger } from "@radix-ui/react-dialog";
 import { MoreHorizontal } from "lucide-react";
 import DeleteDialog from "../Dialog/DeleteDialog";
 import EditDialog from "../Dialog/EditDialog";
-import { Personil } from "./columns";
 import { useState } from "react";
+import { Personnel } from "../../entity/personnel";
 
 interface Props {
-  personil: Personil;
+  personil: Personnel;
 }
 
 const Action = ({ personil }: Props) => {
