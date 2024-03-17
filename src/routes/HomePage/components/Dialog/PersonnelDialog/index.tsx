@@ -58,8 +58,8 @@ const PersonnelDialog = () => {
       />
       <Dropdown
         placeholder="Pilih Jabatan"
-        title="SubSatKer"
-        data={data_subsatker}
+        title="Jabatan"
+        data={["Jabatan 1", "Jabatan 2"]}
       />
       <Dropdown
         placeholder="Pilih SubSatKer"

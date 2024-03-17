@@ -3,8 +3,13 @@ import FilterDropdown from "../FilterDropdown";
 import { DownloadIcon, Plus } from "lucide-react";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import AddDialog from "../Dialog/AddDialog";
+import { Personnel } from "../../entity/personnel";
 
-const Toolbar = () => {
+interface Props {
+  addPersonnel: (personnel: Personnel) => Promise<boolean>;
+}
+
+const Toolbar = ({ addPersonnel }: Props) => {
   return (
     <div className="flex w-full justify-between">
       <FilterDropdown />
@@ -19,7 +24,7 @@ const Toolbar = () => {
             <DownloadIcon className="mr-2" /> Unduh
           </Button>
         </div>
-        <AddDialog />
+        <AddDialog onSave={addPersonnel} />
       </Dialog>
     </div>
   );
