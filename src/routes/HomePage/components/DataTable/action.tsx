@@ -14,10 +14,10 @@ import { useState } from "react";
 import { Personnel } from "../../entity/personnel";
 
 interface Props {
-  personil: Personnel;
+  personnel: Personnel;
 }
 
-const Action = ({ personil }: Props) => {
+const Action = ({ personnel }: Props) => {
   const [actionType, setActionType] = useState("edit");
 
   return (
@@ -29,12 +29,14 @@ const Action = ({ personil }: Props) => {
             <MoreHorizontal className="h-4 w-4" />
           </Button>
         </DropdownMenuTrigger>
+
         <DropdownMenuContent align="end">
           <DialogTrigger asChild>
             <DropdownMenuItem onClick={() => setActionType("edit")}>
               Ubah Data
             </DropdownMenuItem>
           </DialogTrigger>
+
           <DialogTrigger asChild>
             <DropdownMenuItem onClick={() => setActionType("delete")}>
               Hapus Data
@@ -43,7 +45,7 @@ const Action = ({ personil }: Props) => {
         </DropdownMenuContent>
       </DropdownMenu>
       {actionType === "delete" && <DeleteDialog />}
-      {actionType === "edit" && <EditDialog />}
+      {actionType === "edit" && <EditDialog personnel={personnel} />}
     </Dialog>
   );
 };

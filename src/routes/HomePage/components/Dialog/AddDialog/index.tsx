@@ -80,7 +80,7 @@ const AddDialog = ({ onSave }: Props) => {
   };
 
   const handleClose = () => {
-    if (resultState === "hide") {
+    if (resultState === "hide" && !isConfirmState) {
       return;
     }
 
@@ -128,6 +128,7 @@ const AddDialog = ({ onSave }: Props) => {
           <Label htmlFor="nama" className="">
             Nama
           </Label>
+
           <Input
             placeholder="Masukkan nama"
             id="nama"
@@ -138,10 +139,12 @@ const AddDialog = ({ onSave }: Props) => {
         </div>
         <div className="grid grid-cols-4 items-center gap-4 w-full">
           <Label htmlFor="jenisKelamin">Jenis Kelamin</Label>
+
           <Select value={gender} onValueChange={setGender}>
             <SelectTrigger className="md:w-[464px] sm:w-96">
               <SelectValue placeholder="Pilih Jenis Kelamin" />
             </SelectTrigger>
+
             <SelectContent>
               <SelectItem value="L">Laki-laki</SelectItem>
               <SelectItem value="P">Perempuan</SelectItem>
@@ -152,6 +155,7 @@ const AddDialog = ({ onSave }: Props) => {
           <Label htmlFor="NRP" className="">
             NRP
           </Label>
+
           <Input
             placeholder="Masukkan NRP"
             id="NRP"
@@ -161,6 +165,7 @@ const AddDialog = ({ onSave }: Props) => {
             className="col-span-3"
           />
         </div>
+
         <Dropdown
           placeholder="Pilih Pangkat"
           title="Pangkat"
@@ -168,6 +173,7 @@ const AddDialog = ({ onSave }: Props) => {
           onValueChange={setRank}
           data={data_pangkat}
         />
+
         <Dropdown
           placeholder="Pilih Jabatan"
           title="Jabatan"
@@ -175,6 +181,7 @@ const AddDialog = ({ onSave }: Props) => {
           onValueChange={setPosition}
           data={["Jabatan 1", "Jabatan 2"]}
         />
+
         <Dropdown
           placeholder="Pilih SubSatKer"
           title="SubSatKer"
@@ -182,6 +189,7 @@ const AddDialog = ({ onSave }: Props) => {
           onValueChange={setSubSatKer}
           data={data_subsatker}
         />
+
         <Dropdown
           placeholder="Pilih SubDit"
           title="SubDit"
@@ -189,6 +197,7 @@ const AddDialog = ({ onSave }: Props) => {
           onValueChange={setSubDit}
           data={data_subdit}
         />
+
         <Dropdown
           placeholder="Pilih BKO"
           title="BKO"
@@ -196,6 +205,7 @@ const AddDialog = ({ onSave }: Props) => {
           onValueChange={setBKO}
           data={data_bko}
         />
+
         <Dropdown
           placeholder="Pilih Status"
           title="Status"

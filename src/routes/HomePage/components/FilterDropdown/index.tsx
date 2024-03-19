@@ -86,11 +86,13 @@ const FilterDropdown = () => {
       <h1 className="text-xl text-indigo-900 font-bold pb-2">
         Filter Personil
       </h1>
+
       <div className="flex">
         <Select value={filter} onValueChange={onFilterChange}>
           <SelectTrigger className="w-[250px] mr-4">
             <SelectValue placeholder="Filter Berdasarkan" />
           </SelectTrigger>
+
           <SelectContent>
             {filters.map((item) => {
               return (
@@ -101,11 +103,13 @@ const FilterDropdown = () => {
             })}
           </SelectContent>
         </Select>
-        {subFilters !== undefined && (
+
+        {subFilters && (
           <Select value={subFilter} onValueChange={onSubFilterChange}>
             <SelectTrigger className="w-[250px]">
               <SelectValue placeholder={subFilterPlaceholder} />
             </SelectTrigger>
+
             <SelectContent>
               {subFilters.map((item) => {
                 return (
@@ -117,7 +121,8 @@ const FilterDropdown = () => {
             </SelectContent>
           </Select>
         )}
-        {subFilter !== "" && subFilter != undefined && (
+
+        {subFilter && (
           <Button className="ml-2" variant="outline" onClick={onDeleteFilter}>
             Hapus Filter
           </Button>

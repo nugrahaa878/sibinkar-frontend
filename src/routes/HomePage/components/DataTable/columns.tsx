@@ -112,7 +112,7 @@ export const columns: ColumnDef<Personnel>[] = [
     cell: ({ row }) => {
       const personil = row.original;
 
-      return <Action personil={personil} />;
+      return <Action personnel={personil} />;
     },
   },
 ];
