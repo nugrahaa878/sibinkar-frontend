@@ -2,7 +2,7 @@ import { Navigate, Outlet } from "react-router-dom";
 
 const PrivateRoutes = () => {
   // TO DO: Setup logic authentication
-  const isLoggedIn = false;
+  const isLoggedIn = true;
 
   return isLoggedIn ? <Outlet /> : <Navigate to="/auth" replace />;
 };
