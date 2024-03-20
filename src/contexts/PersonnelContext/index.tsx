@@ -32,6 +32,8 @@ export const usePersonnelDbState = () => {
       "usePersonnelDbState must be used within a PersonnelProvider"
     );
   }
+
+  return context;
 };
 
 export const usePersonnelDbDispatch = () => {
@@ -42,4 +44,6 @@ export const usePersonnelDbDispatch = () => {
       "usePersonnelDbDispatch must be used within a PersonnelProvider"
     );
   }
+
+  return context;
 };
