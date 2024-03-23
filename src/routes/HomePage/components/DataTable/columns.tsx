@@ -1,6 +1,6 @@
 import { ColumnDef } from "@tanstack/react-table";
 import Action from "./action";
-import { Personnel } from "../../entity/personnel";
+import { Personnel } from "../../entities/personnel";
 
 export const columns: ColumnDef<Personnel>[] = [
   {

@@ -1,18 +1,20 @@
 import { Button } from "@/components/ui/button";
 import FilterDropdown from "../FilterDropdown";
-import { DownloadIcon, Plus } from "lucide-react";
+import { DownloadIcon, FileSpreadsheet, FileText, Plus } from "lucide-react";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import AddDialog from "../Dialog/AddDialog";
-import { Personnel } from "../../entity/personnel";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
-interface Props {
-  addPersonnel: (personnel: Personnel) => Promise<DefaultResponse>;
-}
-
-const Toolbar = ({ addPersonnel }: Props) => {
+const Toolbar = () => {
   return (
     <div className="flex w-full justify-between">
       <FilterDropdown />
+
       <Dialog>
         <div>
           <DialogTrigger asChild>
@@ -20,11 +22,28 @@ const Toolbar = ({ addPersonnel }: Props) => {
               <Plus className="mr-2" /> Tambah Personil
             </Button>
           </DialogTrigger>
-          <Button className="px-8">
-            <DownloadIcon className="mr-2" /> Unduh
-          </Button>
+
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button className="px-8">
+                <DownloadIcon className="mr-2" /> Unduh
+              </Button>
+            </DropdownMenuTrigger>
+
+            <DropdownMenuContent className="bg-primary">
+              <DropdownMenuItem className="bg-primary text-white">
+                <FileText className="mr-2" />
+                PDF
+              </DropdownMenuItem>
+
+              <DropdownMenuItem className="bg-primary text-white">
+                <FileSpreadsheet className="mr-2" />
+                Microsoft Excel
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
-        <AddDialog onSave={addPersonnel} />
+        <AddDialog />
       </Dialog>
     </div>
   );

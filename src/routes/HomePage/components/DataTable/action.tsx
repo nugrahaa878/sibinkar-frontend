@@ -11,7 +11,7 @@ import { MoreHorizontal } from "lucide-react";
 import DeleteDialog from "../Dialog/DeleteDialog";
 import EditDialog from "../Dialog/EditDialog";
 import { useState } from "react";
-import { Personnel } from "../../entity/personnel";
+import { Personnel } from "../../entities/personnel";
 
 interface Props {
   personnel: Personnel;

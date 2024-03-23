@@ -5,7 +5,6 @@ const data_subsatker = [
   "DIT REGIDENT",
   "BAG OPS",
   "BAG RENMIN",
-  "BAG OPS",
   "BAG TIK",
   "SIKEU",
   "TAUD",

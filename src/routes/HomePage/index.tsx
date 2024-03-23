@@ -5,9 +5,9 @@ import Header from "./components/Header";
 import { DataTable } from "./components/DataTable";
 import { columns } from "./components/DataTable/columns";
 import Navigation from "./components/Navigation";
-import { Personnel } from "./entity/personnel";
+import { Personnel } from "./entities/personnel";
 import dummy_personnels from "./data/dummy-personnels";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Loader2 } from "lucide-react";
 
 const HomePage = () => {
@@ -23,30 +23,21 @@ const HomePage = () => {
     setListPersonnel(dummy_personnels);
   };
 
-  const onAddPersonnel = async (
-    personnel: Personnel
-  ): Promise<DefaultResponse> => {
-    await onGetPersonnel();
-    console.log(personnel);
-    return {
-      isSuccess: true,
-      message: "Data Berhasil Disimpan",
-    };
-  };
-
-  useState(async () => {
+  useEffect(() => {
     setIsLoading(true);
-    await onGetPersonnel();
-    setIsLoading(false);
-  });
+    onGetPersonnel().then(() => {
+      setIsLoading(false);
+    });
+  }, []);
 
   return (
     <div className="flex flex-col items-center h-screen">
       <Navbar page={NavbarPageEnum.personnelDatabase} />
+
       <DefaultContainer>
         <Header />
-        {isLoading && <Loader2 className="h-16 w-16 m-4 animate-spin" />}
-        {!isLoading && <Toolbar addPersonnel={onAddPersonnel} />}
+        {isLoading && <Loader2 className="h-12 w-12 m-4 animate-spin" />}
+        {!isLoading && <Toolbar />}
         {!isLoading && <DataTable data={listPersonnel} columns={columns} />}
         {!isLoading && <Navigation />}
       </DefaultContainer>
