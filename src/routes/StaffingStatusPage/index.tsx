@@ -4,6 +4,7 @@ import Header from "./components/Header";
 import Toolbar from "./components/Toolbar";
 import { useState, useEffect } from "react";
 import { Loader2 } from "lucide-react";
+import Table from "./components/Table";
 
 const StaffingStatusPage = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -26,6 +27,7 @@ const StaffingStatusPage = () => {
         <Header />
         {isLoading && <Loader2 className="h-12 w-12 m-4 animate-spin" />}
         {!isLoading && <Toolbar />}
+        {!isLoading && <Table />}
       </DefaultContainer>
     </div>
   );
