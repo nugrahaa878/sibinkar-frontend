@@ -4,14 +4,12 @@ import SuccessDialog from "@/components/Dialog/SuccessDialog";
 import { Button } from "@/components/ui/button";
 import {
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { useState } from "react";
+import DialogInput from "../DialogInput";
 
 interface Props {
   title: string;
@@ -27,11 +25,11 @@ const EditDialog = ({ title, count }: Props) => {
   const [AKP, setAKP] = useState<number>(count[10]);
   const [IP, setIP] = useState<number>(count[12]);
   const [BRIGTA, setBRIGTA] = useState<number>(count[14]);
-  const [jumlah, setJumlah] = useState<number>(16);
+  const [jumlah] = useState<number>(16);
   const [IV, setIV] = useState<number>(count[18]);
   const [III, setIII] = useState<number>(count[20]);
   const [II, setII] = useState<number>(count[22]);
-  const [jumlahPns, setJumlahPns] = useState<number>(count[24]);
+  const [jumlahPns] = useState<number>(count[24]);
   const ketDSP = count[26];
   const ketRIIL = count[27];
   const IRJENRIIL = count[1];
@@ -53,7 +51,78 @@ const EditDialog = ({ title, count }: Props) => {
     "form" | "confirm" | "failed" | "success"
   >("form");
 
-  const onButtonSave = () => {};
+  const handleIRJENChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const number = parseInt(event.target.value);
+    setIRJEN(number);
+  };
+
+  const handleBRIGJENChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const number = parseInt(event.target.value);
+    setBRIGJEN(number);
+  };
+
+  const handleKOMBESChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const number = parseInt(event.target.value);
+    setKOMBES(number);
+  };
+
+  const handleAKBPChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const number = parseInt(event.target.value);
+    setAKBP(number);
+  };
+
+  const handleKOMPOLChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const number = parseInt(event.target.value);
+    setKOMPOL(number);
+  };
+
+  const handleAKPChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const number = parseInt(event.target.value);
+    setAKP(number);
+  };
+
+  const handleIPChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const number = parseInt(event.target.value);
+    setIP(number);
+  };
+
+  const handleBRIGTAChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const number = parseInt(event.target.value);
+    setBRIGTA(number);
+  };
+
+  const handleIVChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const number = parseInt(event.target.value);
+    setIV(number);
+  };
+
+  const handleIIIChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const number = parseInt(event.target.value);
+    setIII(number);
+  };
+
+  const handleIIChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const number = parseInt(event.target.value);
+    setII(number);
+  };
+
+  const onSave = async (): Promise<boolean> => {
+    await new Promise((resolve) => setTimeout(resolve, 500));
+    return true;
+  };
+
+  const onButtonSave = async () => {
+    setIsLoadingState(false);
+    if (dialogState === "form") {
+      setDialogState("confirm");
+      return;
+    }
+    setIsLoadingState(true);
+    const result = await onSave();
+    setIsLoadingState(false);
+    setDialogState(result ? "success" : "failed");
+    return;
+  };
 
   const handleCancelSave = () => {
     if (isLoadingState) {
@@ -94,30 +163,95 @@ const EditDialog = ({ title, count }: Props) => {
           <DialogHeader>
             <DialogTitle>Edit {title}</DialogTitle>
           </DialogHeader>
-          <div className="grid gap-4 py-4">
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="name" className="text-right">
-                Name
-              </Label>
-              <Input
-                id="name"
-                defaultValue="Pedro Duarte"
-                className="col-span-3"
+          <div className="flex pt-4">
+            <div className="w-full">
+              <h1 className="font-bold text-md pb-3">POLRI</h1>
+              <DialogInput
+                title="IRJEN"
+                riil={IRJENRIIL}
+                dsp={IRJEN}
+                onChange={handleIRJENChange}
+              />
+              <DialogInput
+                title="BRIGJEN"
+                riil={BRIGJENRIIL}
+                dsp={BRIGJEN}
+                onChange={handleBRIGJENChange}
+              />
+              <DialogInput
+                title="KOMBES"
+                riil={KOMBESRIIL}
+                dsp={KOMBES}
+                onChange={handleKOMBESChange}
+              />
+              <DialogInput
+                title="AKBP"
+                riil={AKBPRIIL}
+                dsp={AKBP}
+                onChange={handleAKBPChange}
+              />
+              <DialogInput
+                title="KOMPOL"
+                riil={KOMPOLRIIL}
+                dsp={KOMPOL}
+                onChange={handleKOMPOLChange}
+              />
+              <DialogInput
+                title="AKP"
+                riil={AKPRIIL}
+                dsp={AKP}
+                onChange={handleAKPChange}
+              />
+              <DialogInput
+                title="IP"
+                riil={IPRIIL}
+                dsp={IP}
+                onChange={handleIPChange}
+              />
+              <DialogInput
+                title="BRIG/TA"
+                riil={BRIGTARIIL}
+                dsp={BRIGTA}
+                onChange={handleBRIGTAChange}
+              />
+              <DialogInput
+                title="Jumlah"
+                riil={jumlahRIIL}
+                dsp={jumlah}
+                disabled
               />
             </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="username" className="text-right">
-                Username
-              </Label>
-              <Input
-                id="username"
-                defaultValue="@peduarte"
-                className="col-span-3"
+            <div className="pl-4 w-full">
+              <h1 className="font-bold text-md pb-3">PNS POLRI</h1>
+              <DialogInput
+                title="IV"
+                riil={IVRIIL}
+                dsp={IV}
+                onChange={handleIVChange}
               />
+              <DialogInput
+                title="III"
+                riil={IIIRIIL}
+                dsp={III}
+                onChange={handleIIIChange}
+              />
+              <DialogInput
+                title="II/I"
+                riil={IIRIIL}
+                dsp={II}
+                onChange={handleIIChange}
+              />
+              <DialogInput
+                title="Jumlah"
+                riil={jumlahPnsRIIL}
+                dsp={jumlahPns}
+                disabled
+              />
+              <DialogInput title="Ket" riil={ketRIIL} dsp={ketDSP} disabled />
             </div>
           </div>
           <DialogFooter>
-            <Button type="submit">Save changes</Button>
+            <Button onClick={onButtonSave}>Simpan</Button>
           </DialogFooter>
         </>
       )}

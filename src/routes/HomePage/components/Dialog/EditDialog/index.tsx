@@ -54,6 +54,7 @@ const EditDialog = ({ personnel }: Props) => {
   };
 
   const onButtonSave = async () => {
+    setIsLoadingState(false);
     if (dialogState === "form") {
       setDialogState("confirm");
       return;
