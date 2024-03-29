@@ -35,9 +35,9 @@ const TableBody = () => {
                   </td>
                 );
               })}
-              <td className="px-2">
+              <td className="px-2 bg-neutral-50">
                 <DialogTrigger asChild>
-                  <MoreHorizontal />
+                  <MoreHorizontal className="pl-2" />
                 </DialogTrigger>
               </td>
               <EditDialog title={item.title} count={item.count} />
