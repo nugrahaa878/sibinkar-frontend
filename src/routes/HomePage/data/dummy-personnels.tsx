@@ -1,4 +1,4 @@
-import { Personnel } from "../entity/personnel";
+import { Personnel } from "../entities/personnel";
 
 const dummy_personnels: Personnel[] = [
   {
