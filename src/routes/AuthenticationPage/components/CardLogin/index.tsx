@@ -9,15 +9,32 @@ import {
 
 import InputUserName from "../InputUserName";
 import InputPassword from "../InputPassword";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import useAuth from "@/hooks/useAuth";
+import { useNavigate } from "react-router-dom";
 
 const CardLogin = () => {
+  const { loginAccount, loginResponse } = useAuth();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleLogin = () => {
-    console.log({ username, password });
+  const navigate = useNavigate();
+
+  const handleLogin = async () => {
+    await loginAccount({
+      username: username,
+      password: password,
+    });
   };
+
+  useEffect(() => {
+    if (loginResponse) {
+      if (loginResponse.success) {
+        navigate("/");
+        return;
+      }
+    }
+  }, [loginResponse, navigate]);
 
   return (
     <Card className="w-[400px] py-5">
