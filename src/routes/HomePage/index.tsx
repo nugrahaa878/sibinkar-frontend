@@ -9,8 +9,10 @@ import { Personnel } from "./entities/personnel";
 import dummy_personnels from "./data/dummy-personnels";
 import { useEffect, useState } from "react";
 import { Loader2 } from "lucide-react";
+import useGetPersonnel from "./hooks/useGetPersonnel";
 
 const HomePage = () => {
+  const { listPersonnel: listPersonnelApi, loading } = useGetPersonnel();
   const [listPersonnel, setListPersonnel] = useState<Personnel[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -22,6 +24,8 @@ const HomePage = () => {
     await delay(3000);
     setListPersonnel(dummy_personnels);
   };
+
+  console.log({ listPersonnelApi, loading });
 
   useEffect(() => {
     setIsLoading(true);
