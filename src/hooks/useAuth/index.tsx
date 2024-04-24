@@ -2,8 +2,10 @@ import axiosClient from "@/networks/apiClient";
 import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
 import { useCallback, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const useAuth = () => {
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [loginResponse, setLoginResponse] = useState<LoginResponseInterface>();
 
@@ -45,11 +47,20 @@ const useAuth = () => {
     []
   );
 
+  const logoutAccount = useCallback(() => {
+    Cookies.remove("jwt_token");
+
+    setAuthState({ isAuthenticated: false });
+
+    navigate("/auth");
+  }, [navigate]);
+
   return {
     isAuthenticated: authState.isAuthenticated,
     loading,
     authState,
     loginAccount,
+    logoutAccount,
     loginResponse,
   };
 };
