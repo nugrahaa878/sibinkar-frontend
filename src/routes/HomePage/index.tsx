@@ -9,10 +9,19 @@ import { Personnel } from "./entities/personnel";
 import dummy_personnels from "./data/dummy-personnels";
 import { useEffect, useState } from "react";
 import { Loader2 } from "lucide-react";
+import useGetPersonnel from "./hooks/useGetPersonnel";
+import { useToast } from "@/components/ui/use-toast";
+import { useLocation } from "react-router-dom";
+import { Toaster } from "@/components/ui/toaster";
 
 const HomePage = () => {
+  const { listPersonnel: listPersonnelApi, loading } = useGetPersonnel();
   const [listPersonnel, setListPersonnel] = useState<Personnel[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { toast } = useToast();
+
+  const location = useLocation();
+  const afterLogin = location.state?.afterLogin;
 
   const delay = async (ms: number) => {
     return new Promise((resolve) => setTimeout(resolve, ms));
@@ -24,6 +33,15 @@ const HomePage = () => {
   };
 
   useEffect(() => {
+    if (afterLogin) {
+      toast({
+        title: "Logged In!",
+        description: "Success login to your account",
+      });
+    }
+
+    console.log({ listPersonnelApi, loading });
+
     setIsLoading(true);
     onGetPersonnel().then(() => {
       setIsLoading(false);
@@ -41,6 +59,8 @@ const HomePage = () => {
         {!isLoading && <DataTable data={listPersonnel} columns={columns} />}
         {!isLoading && <Navigation />}
       </DefaultContainer>
+
+      <Toaster />
     </div>
   );
 };

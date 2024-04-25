@@ -1,10 +1,10 @@
+import useAuth from "@/hooks/useAuth";
 import { Navigate, Outlet } from "react-router-dom";
 
 const PrivateRoutes = () => {
-  // TO DO: Setup logic authentication
-  const isLoggedIn = true;
+  const { isAuthenticated } = useAuth();
 
-  return isLoggedIn ? <Outlet /> : <Navigate to="/auth" replace />;
+  return isAuthenticated ? <Outlet /> : <Navigate to="/auth" replace />;
 };
 
 export default PrivateRoutes;
