@@ -10,7 +10,7 @@ interface AuthStateInterface {
 interface LoginResponseInterface {
   success: boolean;
   message: string;
-  data: {
+  data?: {
     token: string;
     refresh_token: string;
   };

@@ -25,7 +25,6 @@ const useAuth = () => {
 
         const responseLogin = await axiosClient.post("/auth/login/", loginData);
 
-        console.log({ responseLogin });
         if (responseLogin.data.success) {
           const token = responseLogin.data.data.token;
           Cookies.set("jwt_token", token);
@@ -40,7 +39,12 @@ const useAuth = () => {
         setLoginResponse(responseLogin.data);
         setLoading(false);
       } catch (err) {
-        console.log("[Login Account]", err);
+        setLoginResponse({
+          success: false,
+          message: "Failed Login",
+          data: undefined,
+        });
+
         setLoading(false);
       }
     },

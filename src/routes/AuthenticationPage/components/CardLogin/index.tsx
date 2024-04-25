@@ -1,3 +1,4 @@
+"use client";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -12,13 +13,17 @@ import InputPassword from "../InputPassword";
 import { useEffect, useState } from "react";
 import useAuth from "@/hooks/useAuth";
 import { useNavigate } from "react-router-dom";
+import { useToast } from "@/components/ui/use-toast";
+import { ButtonLoading } from "../ButtonLoading";
+import { Toaster } from "@/components/ui/toaster";
 
 const CardLogin = () => {
-  const { loginAccount, loginResponse } = useAuth();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
   const navigate = useNavigate();
+  const { toast } = useToast();
+  const { loginAccount, loginResponse, loading } = useAuth();
 
   const handleLogin = async () => {
     await loginAccount({
@@ -30,9 +35,17 @@ const CardLogin = () => {
   useEffect(() => {
     if (loginResponse) {
       if (loginResponse.success) {
-        navigate("/");
+        navigate("/", {
+          state: { afterLogin: true },
+        });
         return;
       }
+
+      toast({
+        variant: "destructive",
+        title: "Something went wrong.",
+        description: "Please check your username and password again",
+      });
     }
   }, [loginResponse, navigate]);
 
@@ -48,10 +61,16 @@ const CardLogin = () => {
       </CardContent>
 
       <CardFooter>
-        <Button className="w-full bg-darkBlue" onClick={handleLogin}>
-          Sign In
-        </Button>
+        {loading ? (
+          <ButtonLoading />
+        ) : (
+          <Button className="w-full bg-darkBlue" onClick={handleLogin}>
+            Sign In
+          </Button>
+        )}
       </CardFooter>
+
+      <Toaster />
     </Card>
   );
 };
