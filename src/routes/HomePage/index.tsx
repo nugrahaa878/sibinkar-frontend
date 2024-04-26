@@ -5,32 +5,28 @@ import Header from "./components/Header";
 import { DataTable } from "./components/DataTable";
 import { columns } from "./components/DataTable/columns";
 import Navigation from "./components/Navigation";
-import { Personnel } from "./entities/personnel";
-import dummy_personnels from "./data/dummy-personnels";
 import { useEffect, useState } from "react";
 import { Loader2 } from "lucide-react";
 import useGetPersonnel from "./hooks/useGetPersonnel";
 import { useToast } from "@/components/ui/use-toast";
 import { useLocation } from "react-router-dom";
 import { Toaster } from "@/components/ui/toaster";
+import { Personnel } from "./hooks/useGetPersonnel/types";
 
 const HomePage = () => {
-  const { listPersonnel: listPersonnelApi, loading } = useGetPersonnel();
+  const [page, setPage] = useState<number>(1);
+  const [totalPages, setTotalPages] = useState<number>(1);
   const [listPersonnel, setListPersonnel] = useState<Personnel[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const { listPersonnel: listPersonnelApi, loading } = useGetPersonnel({
+    page,
+    limit: 10,
+  });
+
   const { toast } = useToast();
 
   const location = useLocation();
   const afterLogin = location.state?.afterLogin;
-
-  const delay = async (ms: number) => {
-    return new Promise((resolve) => setTimeout(resolve, ms));
-  };
-
-  const onGetPersonnel = async () => {
-    await delay(3000);
-    setListPersonnel(dummy_personnels);
-  };
 
   useEffect(() => {
     if (afterLogin) {
@@ -40,13 +36,15 @@ const HomePage = () => {
       });
     }
 
-    console.log({ listPersonnelApi, loading });
+    if (listPersonnelApi) {
+      setListPersonnel(listPersonnelApi.data?.result!!);
+      setTotalPages(parseInt(listPersonnelApi.data?.meta.total_pages!!));
+    }
+  }, [listPersonnelApi]);
 
-    setIsLoading(true);
-    onGetPersonnel().then(() => {
-      setIsLoading(false);
-    });
-  }, []);
+  const onChangePage = (newPage: number) => {
+    setPage(newPage);
+  };
 
   return (
     <div className="flex flex-col items-center h-screen">
@@ -54,10 +52,16 @@ const HomePage = () => {
 
       <DefaultContainer>
         <Header />
-        {isLoading && <Loader2 className="h-12 w-12 m-4 animate-spin" />}
-        {!isLoading && <Toolbar />}
-        {!isLoading && <DataTable data={listPersonnel} columns={columns} />}
-        {!isLoading && <Navigation />}
+        {loading && <Loader2 className="h-12 w-12 m-4 animate-spin" />}
+        {!loading && <Toolbar />}
+        {!loading && <DataTable data={listPersonnel} columns={columns} />}
+        {!loading && (
+          <Navigation
+            currentPage={page}
+            totalPages={totalPages}
+            onChangePage={onChangePage}
+          />
+        )}
       </DefaultContainer>
 
       <Toaster />

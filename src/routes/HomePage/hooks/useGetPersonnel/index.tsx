@@ -1,16 +1,29 @@
 import axiosClient from "@/networks/apiClient";
 import useSWR from "swr";
-import { Personnel } from "./types";
+import { ListPersonnelResponseInterface } from "./types";
 
-const useGetPersonnel = () => {
+interface Props {
+  page: number;
+  limit: number;
+}
+
+const useGetPersonnel = ({ page, limit }: Props) => {
   const {
     data: listPersonnel,
     isLoading: loading,
     mutate,
-  } = useSWR("/personil", async (): Promise<Personnel[]> => {
-    const response = await axiosClient.get("/personil");
-    return response.data.data;
-  });
+  } = useSWR(
+    `/personil?page=${page}`,
+    async (): Promise<ListPersonnelResponseInterface> => {
+      const response = await axiosClient.get("/personil", {
+        params: {
+          page,
+          limit,
+        },
+      });
+      return response.data;
+    }
+  );
 
   return { loading, listPersonnel, mutate };
 };
