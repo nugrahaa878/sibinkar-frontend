@@ -18,7 +18,11 @@ const HomePage = () => {
   const [totalPages, setTotalPages] = useState<number>(1);
   const [listPersonnel, setListPersonnel] = useState<Personnel[]>([]);
 
-  const { listPersonnel: listPersonnelApi, loading } = useGetPersonnel({
+  const {
+    listPersonnel: listPersonnelApi,
+    loading,
+    mutate,
+  } = useGetPersonnel({
     page,
     limit: 10,
   });

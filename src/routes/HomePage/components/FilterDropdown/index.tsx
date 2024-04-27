@@ -7,6 +7,12 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useState } from "react";
+import useGetPangkat from "../../hooks/useGetPangkat";
+import { GeneralPersonnelItem } from "../../hooks/types";
+import useGetJabatan from "../../hooks/useGetJabatan";
+import useGetSubdit from "../../hooks/useGetSubdit";
+import useGetSubsatker from "../../hooks/useGetSubsatker";
+import { Loader2 } from "lucide-react";
 
 enum FilterPersonilEnum {
   pangkat = "Pangkat",
@@ -15,34 +21,20 @@ enum FilterPersonilEnum {
   subDit = "SubDit",
 }
 
-enum PangkatEnum {
-  irjenPol = "IRJEN POL",
-  brigjenPol = "BRIGJEN POL",
-}
-
-enum JabatanEnum {
-  dirkamselKorlantasPolri = "DIRKAMSEL KORLANTAS POLRI",
-}
-
-enum SubSatKerEnum {
-  kamsel = "KAMSEL",
-}
-
-enum SubDitEnum {
-  urtuKamsel = "URTU KAMSEL",
-}
-
 const FilterDropdown = () => {
   const filters = Object.values(FilterPersonilEnum);
+  const [isGetFilterLoading, setIsGetFilterLoading] = useState<boolean>(false);
 
   const [filter, setFilter] = useState<
     FilterPersonilEnum | string | undefined
   >();
-  const [subFilters, setSubFilters] = useState<string[] | undefined>();
+  const [subFilters, setSubFilters] = useState<
+    GeneralPersonnelItem[] | undefined
+  >();
   const [subFilter, setSubFilter] = useState<string | undefined>();
   const [subFilterPlaceholder, setSubFilterPlaceholder] = useState<string>();
 
-  const onFilterChange = (value: string) => {
+  const onFilterChange = async (value: string) => {
     setSubFilter("");
     const selectedFilter =
       FilterPersonilEnum[value as keyof typeof FilterPersonilEnum];
@@ -50,22 +42,34 @@ const FilterDropdown = () => {
     switch (value) {
       case FilterPersonilEnum.jabatan: {
         setSubFilterPlaceholder("Pilih Jabatan");
-        setSubFilters(Object.values(JabatanEnum));
+        setIsGetFilterLoading(true);
+        const data = await useGetJabatan();
+        setSubFilters(data);
+        setIsGetFilterLoading(false);
         break;
       }
       case FilterPersonilEnum.pangkat: {
         setSubFilterPlaceholder("Pilih Pangkat");
-        setSubFilters(Object.values(PangkatEnum));
+        setIsGetFilterLoading(true);
+        const data = await useGetPangkat();
+        setSubFilters(data);
+        setIsGetFilterLoading(false);
         break;
       }
       case FilterPersonilEnum.subDit: {
         setSubFilterPlaceholder("Pilih SubDit");
-        setSubFilters(Object.values(SubDitEnum));
+        setIsGetFilterLoading(true);
+        const data = await useGetSubdit();
+        setSubFilters(data);
+        setIsGetFilterLoading(false);
         break;
       }
       case FilterPersonilEnum.subSatKer: {
         setSubFilterPlaceholder("Pilih SubSatKer");
-        setSubFilters(Object.values(SubSatKerEnum));
+        setIsGetFilterLoading(true);
+        const data = await useGetSubsatker();
+        setSubFilters(data);
+        setIsGetFilterLoading(false);
         break;
       }
     }
@@ -104,7 +108,9 @@ const FilterDropdown = () => {
           </SelectContent>
         </Select>
 
-        {subFilters && (
+        {isGetFilterLoading && <Loader2 className="animate-spin mt-2" />}
+
+        {subFilters && !isGetFilterLoading && (
           <Select value={subFilter} onValueChange={onSubFilterChange}>
             <SelectTrigger className="w-[250px]">
               <SelectValue placeholder={subFilterPlaceholder} />
@@ -113,8 +119,8 @@ const FilterDropdown = () => {
             <SelectContent>
               {subFilters.map((item) => {
                 return (
-                  <SelectItem key={item} value={item}>
-                    {item}
+                  <SelectItem key={item.id} value={item.nama}>
+                    {item.nama}
                   </SelectItem>
                 );
               })}

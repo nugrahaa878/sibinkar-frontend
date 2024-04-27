@@ -5,9 +5,11 @@ import { ListPersonnelResponseInterface } from "./types";
 interface Props {
   page: number;
   limit: number;
+  pangkat?: number;
+  jabatan?: number;
 }
 
-const useGetPersonnel = ({ page, limit }: Props) => {
+const useGetPersonnel = ({ page, limit, pangkat, jabatan }: Props) => {
   const {
     data: listPersonnel,
     isLoading: loading,
@@ -19,6 +21,8 @@ const useGetPersonnel = ({ page, limit }: Props) => {
         params: {
           page,
           limit,
+          pangkat,
+          jabatan,
         },
       });
       return response.data;
