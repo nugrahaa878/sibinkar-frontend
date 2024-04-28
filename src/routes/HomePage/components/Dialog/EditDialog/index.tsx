@@ -4,7 +4,6 @@ import {
   DialogFooter,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Personnel } from "@/routes/HomePage/entities/personnel";
 import { useState } from "react";
 import ConfirmationDialog from "@/components/Dialog/ConfirmationDialog";
 import ErrorDialog from "@/components/Dialog/ErrorDialog";
@@ -26,20 +25,21 @@ import {
 } from "@/components/ui/select";
 import data_jabatan from "@/routes/HomePage/data/data-jabatan";
 import Combobox from "../DialogCombobox";
+import { Personnel } from "@/routes/HomePage/hooks/useGetPersonnel/types";
 
 interface Props {
   personnel: Personnel;
 }
 
 const EditDialog = ({ personnel }: Props) => {
-  const [name, setName] = useState(personnel.name);
-  const [gender, setGender] = useState<string>(personnel.gender);
-  const [NRP, setNRP] = useState<number>(personnel.NRP);
-  const [rank, setRank] = useState(personnel.rank);
-  const [position, setPosition] = useState(personnel.position);
-  const [subSatKer, setSubSatKer] = useState(personnel.subSatKer);
-  const [subDit, setSubDit] = useState(personnel.subDit);
-  const [BKO, setBKO] = useState(personnel.BKO);
+  const [name, setName] = useState(personnel.nama);
+  const [gender, setGender] = useState<string>(personnel.jenis_kelamin);
+  const [NRP, setNRP] = useState<number>(personnel.nrp);
+  const [rank, setRank] = useState<string>(personnel.pangkat);
+  const [position, setPosition] = useState<string>(personnel.jabatan);
+  const [subSatKer, setSubSatKer] = useState<string>(personnel.subsatker);
+  const [subDit, setSubDit] = useState<string>(personnel.subdit);
+  const [BKO, setBKO] = useState<string>(personnel.bko);
   const [status, setStatus] = useState<string>(personnel.status);
 
   const [isLoadingState, setIsLoadingState] = useState(false);
@@ -61,15 +61,15 @@ const EditDialog = ({ personnel }: Props) => {
     }
     setIsLoadingState(true);
     const personnel: Personnel = {
-      number: 0,
-      name,
-      gender,
-      NRP: NRP ? NRP : 0,
-      rank,
-      position,
-      subSatKer,
-      subDit,
-      BKO,
+      id: "",
+      nama: name,
+      jenis_kelamin: gender,
+      nrp: NRP ? NRP : 0,
+      pangkat: rank,
+      jabatan: position,
+      subsatker: subSatKer,
+      subdit: subDit,
+      bko: BKO,
       status,
     };
     const result = await onSave(personnel);
