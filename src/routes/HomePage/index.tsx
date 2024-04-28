@@ -11,25 +11,18 @@ import useGetPersonnel from "./hooks/useGetPersonnel";
 import { useToast } from "@/components/ui/use-toast";
 import { useLocation } from "react-router-dom";
 import { Toaster } from "@/components/ui/toaster";
-import { Personnel } from "./hooks/useGetPersonnel/types";
 
 const HomePage = () => {
   const [page, setPage] = useState<number>(1);
-  const [totalPages, setTotalPages] = useState<number>(1);
-  const [listPersonnel, setListPersonnel] = useState<Personnel[]>([]);
 
-  const {
-    listPersonnel: listPersonnelApi,
-    loading,
-    mutate,
-  } = useGetPersonnel({
+  const { listPersonnel, loading, totalPages, mutate } = useGetPersonnel({
     page,
     limit: 10,
   });
 
   const { toast } = useToast();
-
   const location = useLocation();
+
   const afterLogin = location.state?.afterLogin;
 
   useEffect(() => {
@@ -39,15 +32,12 @@ const HomePage = () => {
         description: "Success login to your account",
       });
     }
-
-    if (listPersonnelApi) {
-      setListPersonnel(listPersonnelApi.data?.result!!);
-      setTotalPages(parseInt(listPersonnelApi.data?.meta.total_pages!!));
-    }
-  }, [listPersonnelApi]);
+  }, []);
 
   const onChangePage = (newPage: number) => {
+    console.log("999 change page");
     setPage(newPage);
+    mutate();
   };
 
   return (
@@ -56,15 +46,19 @@ const HomePage = () => {
 
       <DefaultContainer>
         <Header />
-        {loading && <Loader2 className="h-12 w-12 m-4 animate-spin" />}
-        {!loading && <Toolbar />}
-        {!loading && <DataTable data={listPersonnel} columns={columns} />}
-        {!loading && (
-          <Navigation
-            currentPage={page}
-            totalPages={totalPages}
-            onChangePage={onChangePage}
-          />
+
+        {!loading ? (
+          <>
+            <Toolbar />
+            <DataTable data={listPersonnel || []} columns={columns} />
+            <Navigation
+              currentPage={page}
+              totalPages={Number(totalPages)}
+              onChangePage={onChangePage}
+            />
+          </>
+        ) : (
+          <Loader2 className="h-12 w-12 m-4 animate-spin" />
         )}
       </DefaultContainer>
 

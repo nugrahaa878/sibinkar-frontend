@@ -11,7 +11,7 @@ interface Props {
 
 const useGetPersonnel = ({ page, limit, pangkat, jabatan }: Props) => {
   const {
-    data: listPersonnel,
+    data,
     isLoading: loading,
     mutate,
   } = useSWR(
@@ -25,11 +25,16 @@ const useGetPersonnel = ({ page, limit, pangkat, jabatan }: Props) => {
           jabatan,
         },
       });
+
+      console.log("999 ini response data", response.data);
       return response.data;
     }
   );
 
-  return { loading, listPersonnel, mutate };
+  const listPersonnel = data?.data?.result;
+  const totalPages = data?.data?.meta.total_pages;
+
+  return { loading, listPersonnel, mutate, totalPages };
 };
 
 export default useGetPersonnel;
