@@ -22,6 +22,11 @@ enum FilterPersonilEnum {
 }
 
 const FilterDropdown = () => {
+  const [shouldFetchJabatan, setShouldFetchJabatan] = useState(false);
+
+  const { data, isLoading, mutate } = useGetJabatan({
+    shouldFetch: shouldFetchJabatan,
+  });
   const filters = Object.values(FilterPersonilEnum);
   const [isGetFilterLoading, setIsGetFilterLoading] = useState<boolean>(false);
 
@@ -43,7 +48,7 @@ const FilterDropdown = () => {
       case FilterPersonilEnum.jabatan: {
         setSubFilterPlaceholder("Pilih Jabatan");
         setIsGetFilterLoading(true);
-        const data = await useGetJabatan();
+        setShouldFetchJabatan(true);
         setSubFilters(data);
         setIsGetFilterLoading(false);
         break;
