@@ -17,7 +17,7 @@ const useGetPersonnel = ({ page, limit, pangkat, jabatan }: Props) => {
   } = useSWR(
     `/personil?page=${page}`,
     async (): Promise<ListPersonnelResponseInterface> => {
-      const response = await axiosClient.get("/personil", {
+      const response = await axiosClient.get(`/personil?page=${page}`, {
         params: {
           page,
           limit,
@@ -26,7 +26,6 @@ const useGetPersonnel = ({ page, limit, pangkat, jabatan }: Props) => {
         },
       });
 
-      console.log("999 ini response data", response.data);
       return response.data;
     }
   );
