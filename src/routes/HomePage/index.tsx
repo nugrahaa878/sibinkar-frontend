@@ -7,10 +7,10 @@ import { columns } from "./components/DataTable/columns";
 import Navigation from "./components/Navigation";
 import { useEffect, useState } from "react";
 import { Loader2 } from "lucide-react";
-import useGetPersonnel from "./hooks/useGetPersonnel";
 import { useToast } from "@/components/ui/use-toast";
 import { useLocation } from "react-router-dom";
 import { Toaster } from "@/components/ui/toaster";
+import useGetPersonnel from "./hooks/useGetPersonnel";
 
 const HomePage = () => {
   const [page, setPage] = useState<number>(1);
