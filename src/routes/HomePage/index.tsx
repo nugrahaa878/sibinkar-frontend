@@ -35,7 +35,6 @@ const HomePage = () => {
   }, []);
 
   const onChangePage = (newPage: number) => {
-    console.log("999 change page");
     setPage(newPage);
     mutate();
   };

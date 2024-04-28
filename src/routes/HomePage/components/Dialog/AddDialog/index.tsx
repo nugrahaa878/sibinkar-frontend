@@ -51,8 +51,7 @@ const AddDialog = () => {
   );
 
   // const onSave = async (personnel: Personnel): Promise<boolean> => {
-  //   await new Promise((resolve) => setTimeout(resolve, 500));
-  //   console.log(personnel);
+  //   await new Promise((resolve) => setTimeout(resolve, 500));;
   //   return true;
   // };
 

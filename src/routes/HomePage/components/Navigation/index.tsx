@@ -61,6 +61,7 @@ const Navigation = ({ currentPage, totalPages, onChangePage }: Props) => {
                 onClick={() => {
                   onChangePage(value);
                 }}
+                key={value.toString()}
               />
             );
           })}

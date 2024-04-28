@@ -7,12 +7,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useState } from "react";
-import useGetPangkat from "../../hooks/useGetPangkat";
-import { GeneralPersonnelItem } from "../../hooks/types";
-import useGetJabatan from "../../hooks/useGetJabatan";
-import useGetSubdit from "../../hooks/useGetSubdit";
-import useGetSubsatker from "../../hooks/useGetSubsatker";
 import { Loader2 } from "lucide-react";
+import useGetFilter from "../../hooks/useGetSubFilter";
 
 enum FilterPersonilEnum {
   pangkat = "Pangkat",
@@ -22,69 +18,36 @@ enum FilterPersonilEnum {
 }
 
 const FilterDropdown = () => {
-  const [shouldFetchJabatan, setShouldFetchJabatan] = useState(false);
-
-  const { data } = useGetJabatan({
-    shouldFetch: shouldFetchJabatan,
-  });
   const filters = Object.values(FilterPersonilEnum);
-  const [isGetFilterLoading, setIsGetFilterLoading] = useState<boolean>(false);
-
-  const [filter, setFilter] = useState<
-    FilterPersonilEnum | string | undefined
-  >();
-  const [subFilters, setSubFilters] = useState<
-    GeneralPersonnelItem[] | undefined
-  >();
-  const [subFilter, setSubFilter] = useState<string | undefined>();
+  const { subFilterData, fetchData, loading } = useGetFilter();
   const [subFilterPlaceholder, setSubFilterPlaceholder] = useState<string>();
 
   const onFilterChange = async (value: string) => {
-    const selectedFilter =
-      FilterPersonilEnum[value as keyof typeof FilterPersonilEnum];
-
-    setSubFilter("");
-    setFilter(selectedFilter);
-    setShouldFetchJabatan(true);
-
     switch (value) {
       case FilterPersonilEnum.jabatan: {
         setSubFilterPlaceholder("Pilih Jabatan");
-        setSubFilters(data);
+        fetchData("jabatan");
         break;
       }
       case FilterPersonilEnum.pangkat: {
         setSubFilterPlaceholder("Pilih Pangkat");
-        const data = await useGetPangkat();
-        setSubFilters(data);
+        fetchData("pangkat");
         break;
       }
       case FilterPersonilEnum.subDit: {
         setSubFilterPlaceholder("Pilih SubDit");
-        const data = await useGetSubdit();
-        setSubFilters(data);
+        fetchData("subdit");
         break;
       }
       case FilterPersonilEnum.subSatKer: {
         setSubFilterPlaceholder("Pilih SubSatKer");
-        const data = await useGetSubsatker();
-        setSubFilters(data);
+        fetchData("subsatker");
         break;
       }
     }
-
-    setIsGetFilterLoading(false);
   };
 
-  const onSubFilterChange = (value: string) => {
-    setSubFilter(value);
-  };
-
-  const onDeleteFilter = () => {
-    setFilter("");
-    setSubFilters(undefined);
-    setSubFilter("");
-  };
+  const onDeleteFilter = () => {};
 
   return (
     <div className="flex flex-col">
@@ -93,7 +56,7 @@ const FilterDropdown = () => {
       </h1>
 
       <div className="flex">
-        <Select value={filter} onValueChange={onFilterChange}>
+        <Select onValueChange={onFilterChange}>
           <SelectTrigger className="w-[250px] mr-4">
             <SelectValue placeholder="Filter Berdasarkan" />
           </SelectTrigger>
@@ -109,15 +72,15 @@ const FilterDropdown = () => {
           </SelectContent>
         </Select>
 
-        {subFilters && !isGetFilterLoading && (
+        {subFilterData.length > 0 && !loading && (
           <>
-            <Select value={subFilter} onValueChange={onSubFilterChange}>
+            <Select>
               <SelectTrigger className="w-[250px]">
                 <SelectValue placeholder={subFilterPlaceholder} />
               </SelectTrigger>
 
               <SelectContent>
-                {subFilters.map((item) => {
+                {subFilterData.map((item) => {
                   return (
                     <SelectItem key={item.id} value={item.nama}>
                       {item.nama}
@@ -133,7 +96,7 @@ const FilterDropdown = () => {
           </>
         )}
 
-        {isGetFilterLoading && <Loader2 className="animate-spin mt-2" />}
+        {loading && <Loader2 className="animate-spin mt-2" />}
       </div>
     </div>
   );

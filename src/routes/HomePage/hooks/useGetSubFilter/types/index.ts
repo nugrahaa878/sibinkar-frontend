@@ -1,4 +1,4 @@
-export interface Jabatan {
+export interface SubFilter {
   id: number;
   nama: string;
 }
