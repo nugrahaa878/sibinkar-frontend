@@ -5,7 +5,6 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { useState } from "react";
-import { Personnel } from "@/routes/HomePage/entities/personnel";
 import Dropdown from "../DialogDropdown";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -26,6 +25,14 @@ import SuccessDialog from "@/components/Dialog/SuccessDialog";
 import ErrorDialog from "@/components/Dialog/ErrorDialog";
 import data_jabatan from "@/routes/HomePage/data/data-jabatan";
 import Combobox from "../DialogCombobox";
+import { Personnel } from "@/routes/HomePage/hooks/useGetPersonnel/types";
+
+enum DialogStateEnum {
+  form,
+  confirm,
+  failed,
+  success,
+}
 
 const AddDialog = () => {
   const [name, setName] = useState("");
@@ -39,37 +46,36 @@ const AddDialog = () => {
   const [status, setStatus] = useState<string>("");
 
   const [isLoadingState, setIsLoadingState] = useState(false);
-  const [dialogState, setDialogState] = useState<
-    "form" | "confirm" | "failed" | "success"
-  >("form");
+  const [dialogState, setDialogState] = useState<DialogStateEnum>(
+    DialogStateEnum.form
+  );
 
-  const onSave = async (personnel: Personnel): Promise<boolean> => {
-    await new Promise((resolve) => setTimeout(resolve, 500));
-    console.log(personnel);
-    return true;
-  };
+  // const onSave = async (personnel: Personnel): Promise<boolean> => {
+  //   await new Promise((resolve) => setTimeout(resolve, 500));
+  //   console.log(personnel);
+  //   return true;
+  // };
 
   const onButtonSave = async () => {
-    if (dialogState === "form") {
-      setDialogState("confirm");
+    if (dialogState === DialogStateEnum.form) {
+      setDialogState(DialogStateEnum.confirm);
       return;
     }
     setIsLoadingState(true);
-    const personnel: Personnel = {
-      number: 0,
-      name,
-      gender,
-      NRP: NRP ? NRP : 0,
-      rank,
-      position,
-      subSatKer,
-      subDit,
-      BKO,
-      status,
-    };
-    const result = await onSave(personnel);
+    // const personnel: Personnel = {
+    //   name,
+    //   gender,
+    //   NRP: NRP ? NRP : 0,
+    //   rank,
+    //   position,
+    //   subSatKer,
+    //   subDit,
+    //   BKO,
+    //   status,
+    // };
+    // const result = await onSave(personnel);
     setIsLoadingState(false);
-    setDialogState(result ? "success" : "failed");
+    setDialogState(DialogStateEnum.success);
     return;
   };
 
@@ -83,7 +89,7 @@ const AddDialog = () => {
   };
 
   const handleClose = () => {
-    setDialogState("form");
+    setDialogState(DialogStateEnum.form);
     setName("");
     setGender("");
     setNRP(undefined);
@@ -99,23 +105,23 @@ const AddDialog = () => {
     if (isLoadingState) {
       return;
     }
-    setDialogState("form");
+    setDialogState(DialogStateEnum.form);
   };
 
   return (
     <DialogContent
       onCloseAutoFocus={handleClose}
-      className={`${dialogState === "form" && "sm:max-w-2xl"}`}
+      className={`${dialogState === DialogStateEnum.form && "sm:max-w-2xl"}`}
     >
-      {dialogState === "success" && (
+      {dialogState === DialogStateEnum.success && (
         <SuccessDialog message="Data berhasil disimpan" />
       )}
 
-      {dialogState === "failed" && (
+      {dialogState === DialogStateEnum.failed && (
         <ErrorDialog message="Gagal menyimpan data" />
       )}
 
-      {dialogState === "confirm" && (
+      {dialogState === DialogStateEnum.confirm && (
         <ConfirmationDialog
           title="Simpan Data"
           description="Anda yakin ingin menyimpan data?"
@@ -125,7 +131,7 @@ const AddDialog = () => {
         />
       )}
 
-      {dialogState === "form" && (
+      {dialogState === DialogStateEnum.form && (
         <div>
           <DialogTitle>Tambah Personil</DialogTitle>
 
