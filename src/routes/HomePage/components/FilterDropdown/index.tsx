@@ -24,7 +24,7 @@ enum FilterPersonilEnum {
 const FilterDropdown = () => {
   const [shouldFetchJabatan, setShouldFetchJabatan] = useState(false);
 
-  const { data, isLoading, mutate } = useGetJabatan({
+  const { data } = useGetJabatan({
     shouldFetch: shouldFetchJabatan,
   });
   const filters = Object.values(FilterPersonilEnum);
@@ -40,44 +40,40 @@ const FilterDropdown = () => {
   const [subFilterPlaceholder, setSubFilterPlaceholder] = useState<string>();
 
   const onFilterChange = async (value: string) => {
-    setSubFilter("");
     const selectedFilter =
       FilterPersonilEnum[value as keyof typeof FilterPersonilEnum];
+
+    setSubFilter("");
     setFilter(selectedFilter);
+    setShouldFetchJabatan(true);
+
     switch (value) {
       case FilterPersonilEnum.jabatan: {
         setSubFilterPlaceholder("Pilih Jabatan");
-        setIsGetFilterLoading(true);
-        setShouldFetchJabatan(true);
         setSubFilters(data);
-        setIsGetFilterLoading(false);
         break;
       }
       case FilterPersonilEnum.pangkat: {
         setSubFilterPlaceholder("Pilih Pangkat");
-        setIsGetFilterLoading(true);
         const data = await useGetPangkat();
         setSubFilters(data);
-        setIsGetFilterLoading(false);
         break;
       }
       case FilterPersonilEnum.subDit: {
         setSubFilterPlaceholder("Pilih SubDit");
-        setIsGetFilterLoading(true);
         const data = await useGetSubdit();
         setSubFilters(data);
-        setIsGetFilterLoading(false);
         break;
       }
       case FilterPersonilEnum.subSatKer: {
         setSubFilterPlaceholder("Pilih SubSatKer");
-        setIsGetFilterLoading(true);
         const data = await useGetSubsatker();
         setSubFilters(data);
-        setIsGetFilterLoading(false);
         break;
       }
     }
+
+    setIsGetFilterLoading(false);
   };
 
   const onSubFilterChange = (value: string) => {
@@ -113,31 +109,31 @@ const FilterDropdown = () => {
           </SelectContent>
         </Select>
 
-        {isGetFilterLoading && <Loader2 className="animate-spin mt-2" />}
-
         {subFilters && !isGetFilterLoading && (
-          <Select value={subFilter} onValueChange={onSubFilterChange}>
-            <SelectTrigger className="w-[250px]">
-              <SelectValue placeholder={subFilterPlaceholder} />
-            </SelectTrigger>
+          <>
+            <Select value={subFilter} onValueChange={onSubFilterChange}>
+              <SelectTrigger className="w-[250px]">
+                <SelectValue placeholder={subFilterPlaceholder} />
+              </SelectTrigger>
 
-            <SelectContent>
-              {subFilters.map((item) => {
-                return (
-                  <SelectItem key={item.id} value={item.nama}>
-                    {item.nama}
-                  </SelectItem>
-                );
-              })}
-            </SelectContent>
-          </Select>
+              <SelectContent>
+                {subFilters.map((item) => {
+                  return (
+                    <SelectItem key={item.id} value={item.nama}>
+                      {item.nama}
+                    </SelectItem>
+                  );
+                })}
+              </SelectContent>
+            </Select>
+
+            <Button className="ml-2" variant="outline" onClick={onDeleteFilter}>
+              Hapus Filter
+            </Button>
+          </>
         )}
 
-        {subFilter && (
-          <Button className="ml-2" variant="outline" onClick={onDeleteFilter}>
-            Hapus Filter
-          </Button>
-        )}
+        {isGetFilterLoading && <Loader2 className="animate-spin mt-2" />}
       </div>
     </div>
   );
