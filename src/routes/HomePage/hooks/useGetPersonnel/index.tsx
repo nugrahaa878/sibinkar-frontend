@@ -5,25 +5,27 @@ import { ListPersonnelResponseInterface } from "./types";
 interface Props {
   page: number;
   limit: number;
-  pangkat?: number;
-  jabatan?: number;
+  filterType?: string;
+  filterValue?: string;
 }
 
-const useGetPersonnel = ({ page, limit, pangkat, jabatan }: Props) => {
+const useGetPersonnel = ({ page, limit, filterType, filterValue }: Props) => {
   const {
     data,
     isLoading: loading,
     mutate,
   } = useSWR(
-    `/personil?page=${page}`,
+    `/personil?page=${page}&limit=10&${filterType}=${filterValue}`,
     async (): Promise<ListPersonnelResponseInterface> => {
-      const response = await axiosClient.get(`/personil?page=${page}`, {
-        params: {
-          page,
-          limit,
-          pangkat,
-          jabatan,
-        },
+      const params = {
+        page,
+        limit,
+      };
+      if (filterValue) {
+        params[`${filterType}`] = filterValue;
+      }
+      const response = await axiosClient.get(`/personil`, {
+        params,
       });
 
       return response.data;

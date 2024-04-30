@@ -10,10 +10,14 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-const Toolbar = () => {
+interface Props {
+  onApplyFilter: (type: string, value: string) => void;
+}
+
+const Toolbar = ({ onApplyFilter }: Props) => {
   return (
     <div className="flex w-full justify-between">
-      <FilterDropdown />
+      <FilterDropdown onApplyFilter={onApplyFilter} />
 
       <Dialog>
         <div>

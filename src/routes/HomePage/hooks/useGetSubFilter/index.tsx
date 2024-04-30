@@ -23,6 +23,10 @@ const useGetSubFilter = () => {
       case "subdit":
         finalPath = "/personil/subdit";
         break;
+      case "delete":
+        setSubFilterData([]);
+        setLoading(false);
+        return;
       default:
         finalPath = "/personil/pangkat";
     }

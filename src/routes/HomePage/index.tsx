@@ -14,10 +14,14 @@ import useGetPersonnel from "./hooks/useGetPersonnel";
 
 const HomePage = () => {
   const [page, setPage] = useState<number>(1);
+  const [filterType, setFilterType] = useState<string>();
+  const [filterValue, setFilterValue] = useState<string>();
 
   const { listPersonnel, loading, totalPages, mutate } = useGetPersonnel({
     page,
     limit: 10,
+    filterType,
+    filterValue,
   });
 
   const { toast } = useToast();
@@ -39,16 +43,23 @@ const HomePage = () => {
     mutate();
   };
 
+  const onApplyFilter = (type: string, value: string) => {
+    setFilterType(type.toLowerCase());
+    setFilterValue(value);
+    mutate();
+  };
+
   return (
     <div className="flex flex-col items-center h-screen">
       <Navbar page={NavbarPageEnum.personnelDatabase} />
 
       <DefaultContainer>
         <Header />
-
-        {!loading ? (
+        <Toolbar onApplyFilter={onApplyFilter} />
+        {loading ? (
+          <Loader2 className="h-12 w-12 m-4 animate-spin" />
+        ) : (
           <>
-            <Toolbar />
             <DataTable data={listPersonnel || []} columns={columns} />
             <Navigation
               currentPage={page}
@@ -56,8 +67,6 @@ const HomePage = () => {
               onChangePage={onChangePage}
             />
           </>
-        ) : (
-          <Loader2 className="h-12 w-12 m-4 animate-spin" />
         )}
       </DefaultContainer>
 

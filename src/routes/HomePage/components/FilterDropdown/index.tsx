@@ -17,12 +17,19 @@ enum FilterPersonilEnum {
   subDit = "SubDit",
 }
 
-const FilterDropdown = () => {
+interface Props {
+  onApplyFilter: (type: string, value: string) => void;
+}
+
+const FilterDropdown = ({ onApplyFilter }: Props) => {
   const filters = Object.values(FilterPersonilEnum);
   const { subFilterData, fetchData, loading } = useGetFilter();
   const [subFilterPlaceholder, setSubFilterPlaceholder] = useState<string>();
+  const [filter, setFilter] = useState<string>();
 
   const onFilterChange = async (value: string) => {
+    setFilter(value);
+    onApplyFilter("", "");
     switch (value) {
       case FilterPersonilEnum.jabatan: {
         setSubFilterPlaceholder("Pilih Jabatan");
@@ -47,7 +54,16 @@ const FilterDropdown = () => {
     }
   };
 
-  const onDeleteFilter = () => {};
+  const onDeleteFilter = () => {
+    setFilter("");
+    setSubFilterPlaceholder("");
+    fetchData("delete");
+    onApplyFilter("", "");
+  };
+
+  const onFilter = (value: string) => {
+    onApplyFilter(filter || "", value);
+  };
 
   return (
     <div className="flex flex-col">
@@ -56,7 +72,7 @@ const FilterDropdown = () => {
       </h1>
 
       <div className="flex">
-        <Select onValueChange={onFilterChange}>
+        <Select onValueChange={onFilterChange} value={filter}>
           <SelectTrigger className="w-[250px] mr-4">
             <SelectValue placeholder="Filter Berdasarkan" />
           </SelectTrigger>
@@ -74,7 +90,7 @@ const FilterDropdown = () => {
 
         {subFilterData.length > 0 && !loading && (
           <>
-            <Select>
+            <Select onValueChange={onFilter}>
               <SelectTrigger className="w-[250px]">
                 <SelectValue placeholder={subFilterPlaceholder} />
               </SelectTrigger>
