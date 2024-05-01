@@ -1,17 +1,19 @@
 import { Button } from "@/components/ui/button";
-import { Dialog } from "@/components/ui/dialog";
+import { DialogContent, DialogTrigger, Dialog } from "@/components/ui/dialog";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { DialogTrigger } from "@radix-ui/react-dialog";
 import { MoreHorizontal } from "lucide-react";
 import DeleteDialog from "../Dialog/DeleteDialog";
 import EditDialog from "../Dialog/EditDialog";
 import { useState } from "react";
 import { Personnel } from "../../hooks/useGetPersonnel/types";
+import ErrorDialog from "@/components/Dialog/ErrorDialog";
+import SuccessDialog from "@/components/Dialog/SuccessDialog";
+import useDeletePersonnel from "../../hooks/useDeletePersonnel";
 
 interface Props {
   personnel: Personnel;
@@ -19,6 +21,25 @@ interface Props {
 
 const Action = ({ personnel }: Props) => {
   const [actionType, setActionType] = useState("edit");
+  const [isLoading, setIsLoading] = useState(false);
+  const [message, setMessage] = useState("");
+
+  const handleOnConfirmDelete = () => {
+    if (isLoading) return;
+    setIsLoading(true);
+    useDeletePersonnel({ id: personnel.id })
+      .then((_) => {
+        setActionType("success");
+        setMessage("Data berhasil dihapus");
+      })
+      .catch((_) => {
+        setActionType("error");
+        setMessage("Data gagal dihapus. Periksa jaringan Anda");
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
 
   return (
     <Dialog>
@@ -44,8 +65,25 @@ const Action = ({ personnel }: Props) => {
           </DialogTrigger>
         </DropdownMenuContent>
       </DropdownMenu>
-      {actionType === "delete" && <DeleteDialog />}
+      {actionType === "delete" && (
+        <DialogContent className="sm:max-w-[425px]">
+          <DeleteDialog
+            onConfirmDelete={handleOnConfirmDelete}
+            isLoading={isLoading}
+          />
+        </DialogContent>
+      )}
       {actionType === "edit" && <EditDialog personnel={personnel} />}
+      {actionType === "error" && (
+        <DialogContent>
+          <ErrorDialog message={message} />
+        </DialogContent>
+      )}
+      {actionType === "success" && (
+        <DialogContent>
+          <SuccessDialog message={message} />
+        </DialogContent>
+      )}
     </Dialog>
   );
 };

@@ -6,18 +6,26 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { Loader2 } from "lucide-react";
 
-const DeleteDialog = () => {
+interface Props {
+  isLoading: boolean;
+  onConfirmDelete: () => void;
+}
+
+const DeleteDialog = ({ onConfirmDelete, isLoading }: Props) => {
   return (
-    <DialogContent className="sm:max-w-[425px]">
+    <>
       <DialogHeader>
         <DialogTitle>Hapus Data</DialogTitle>
         <DialogDescription>Yakin ingin menghapus data?</DialogDescription>
       </DialogHeader>
       <DialogFooter>
-        <Button type="submit">Save changes</Button>
+        <Button onClick={onConfirmDelete}>
+          {isLoading ? <Loader2 className="animate-spin" /> : "Konfirmasi"}
+        </Button>
       </DialogFooter>
-    </DialogContent>
+    </>
   );
 };
 
