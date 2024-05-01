@@ -6,15 +6,6 @@ import {
 } from "@/components/ui/dialog";
 import { useState } from "react";
 import Dropdown from "../DialogDropdown";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import data_bko from "@/routes/HomePage/data/data-bko";
 import data_pangkat from "@/routes/HomePage/data/data-pangkat";
 import data_status from "@/routes/HomePage/data/data-status";
@@ -25,35 +16,28 @@ import SuccessDialog from "@/components/Dialog/SuccessDialog";
 import ErrorDialog from "@/components/Dialog/ErrorDialog";
 import data_jabatan from "@/routes/HomePage/data/data-jabatan";
 import Combobox from "../DialogCombobox";
-import { Personnel } from "@/routes/HomePage/hooks/useGetPersonnel/types";
-
-enum DialogStateEnum {
-  form,
-  confirm,
-  failed,
-  success,
-}
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { Form } from "@/components/ui/form";
+import DialogInput from "../DialogInput";
+import addPersonnelFormSchema from "./formSchema";
+import DialogStateEnum from "./stateEnum";
 
 const AddDialog = () => {
-  const [name, setName] = useState("");
-  const [gender, setGender] = useState<string>("");
-  const [NRP, setNRP] = useState<number | undefined>();
-  const [rank, setRank] = useState("");
-  const [position, setPosition] = useState("");
-  const [subSatKer, setSubSatKer] = useState("");
-  const [subDit, setSubDit] = useState("");
-  const [BKO, setBKO] = useState("");
-  const [status, setStatus] = useState<string>("");
+  const form = useForm<z.infer<typeof addPersonnelFormSchema>>({
+    resolver: zodResolver(addPersonnelFormSchema),
+    defaultValues: {},
+  });
+
+  const onSubmit = (values: z.infer<typeof addPersonnelFormSchema>) => {
+    console.log(values);
+  };
 
   const [isLoadingState, setIsLoadingState] = useState(false);
   const [dialogState, setDialogState] = useState<DialogStateEnum>(
     DialogStateEnum.form
   );
-
-  // const onSave = async (personnel: Personnel): Promise<boolean> => {
-  //   await new Promise((resolve) => setTimeout(resolve, 500));;
-  //   return true;
-  // };
 
   const onButtonSave = async () => {
     if (dialogState === DialogStateEnum.form) {
@@ -61,43 +45,14 @@ const AddDialog = () => {
       return;
     }
     setIsLoadingState(true);
-    // const personnel: Personnel = {
-    //   name,
-    //   gender,
-    //   NRP: NRP ? NRP : 0,
-    //   rank,
-    //   position,
-    //   subSatKer,
-    //   subDit,
-    //   BKO,
-    //   status,
-    // };
-    // const result = await onSave(personnel);
     setIsLoadingState(false);
     setDialogState(DialogStateEnum.success);
     return;
   };
 
-  const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setName(event.target.value);
-  };
-
-  const handleNRPChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const number = parseInt(event.target.value);
-    setNRP(number);
-  };
-
   const handleClose = () => {
     setDialogState(DialogStateEnum.form);
-    setName("");
-    setGender("");
-    setNRP(undefined);
-    setRank("");
-    setPosition("");
-    setSubSatKer("");
-    setSubDit("");
-    setBKO("");
-    setStatus("");
+    form.reset();
   };
 
   const handleCancelSave = () => {
@@ -110,7 +65,10 @@ const AddDialog = () => {
   return (
     <DialogContent
       onCloseAutoFocus={handleClose}
-      className={`${dialogState === DialogStateEnum.form && "sm:max-w-2xl"}`}
+      className={`${
+        dialogState === DialogStateEnum.form &&
+        "sm:max-w-2xl max-h-[90dvh] overflow-y-scroll"
+      }`}
     >
       {dialogState === DialogStateEnum.success && (
         <SuccessDialog message="Data berhasil disimpan" />
@@ -134,100 +92,85 @@ const AddDialog = () => {
         <div>
           <DialogTitle>Tambah Personil</DialogTitle>
 
-          <div className="grid gap-4 py-4">
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="nama" className="">
-                Nama
-              </Label>
-
-              <Input
+          <Form {...form}>
+            <form
+              onSubmit={form.handleSubmit(onSubmit)}
+              className="grid gap-4 py-4"
+            >
+              <DialogInput
+                control={form.control}
+                name="name"
                 placeholder="Masukkan nama"
-                id="nama"
-                value={name}
-                onChange={handleNameChange}
-                className="col-span-3"
+                label="Nama"
               />
-            </div>
-            <div className="grid grid-cols-4 items-center gap-4 w-full">
-              <Label htmlFor="jenisKelamin">Jenis Kelamin</Label>
 
-              <Select value={gender} onValueChange={setGender}>
-                <SelectTrigger className="md:w-[464px] sm:w-96">
-                  <SelectValue placeholder="Pilih Jenis Kelamin" />
-                </SelectTrigger>
+              <Dropdown
+                control={form.control}
+                name="gender"
+                data={["Laki-laki", "Perempuan"]}
+                label="Jenis Kelamin"
+                placeholder="Pilih jenis kelamin"
+              />
 
-                <SelectContent>
-                  <SelectItem value="L">Laki-laki</SelectItem>
-                  <SelectItem value="P">Perempuan</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="NRP" className="">
-                NRP
-              </Label>
-
-              <Input
+              <DialogInput
+                control={form.control}
+                name="NRP"
                 placeholder="Masukkan NRP"
-                id="NRP"
+                label="NRP"
                 type="number"
-                value={NRP}
-                onChange={handleNRPChange}
-                className="col-span-3"
               />
-            </div>
 
-            <Dropdown
-              placeholder="Pilih Pangkat"
-              title="Pangkat"
-              value={rank}
-              onValueChange={setRank}
-              data={data_pangkat}
-            />
+              <Dropdown
+                control={form.control}
+                name="rank"
+                placeholder="Pilih Pangkat"
+                label="Pangkat"
+                data={data_pangkat}
+              />
 
-            <Combobox
-              value={position}
-              onValueChange={setPosition}
-              title="Jabatan"
-              data={data_jabatan}
-            />
+              <Combobox
+                form={form}
+                name="position"
+                label="Jabatan"
+                data={data_jabatan}
+              />
 
-            <Dropdown
-              placeholder="Pilih SubSatKer"
-              title="SubSatKer"
-              value={subSatKer}
-              onValueChange={setSubSatKer}
-              data={data_subsatker}
-            />
+              <Dropdown
+                control={form.control}
+                name="subSatKer"
+                placeholder="Pilih SubSatKer"
+                label="SubSatKer"
+                data={data_subsatker}
+              />
 
-            <Dropdown
-              placeholder="Pilih SubDit"
-              title="SubDit"
-              value={subDit}
-              onValueChange={setSubDit}
-              data={data_subdit}
-            />
+              <Dropdown
+                control={form.control}
+                name="subDit"
+                placeholder="Pilih SubDit"
+                label="SubDit"
+                data={data_subdit}
+              />
 
-            <Dropdown
-              placeholder="Pilih BKO"
-              title="BKO"
-              value={BKO}
-              onValueChange={setBKO}
-              data={data_bko}
-            />
+              <Dropdown
+                control={form.control}
+                name="BKO"
+                placeholder="Pilih BKO"
+                label="BKO"
+                data={data_bko}
+              />
 
-            <Dropdown
-              placeholder="Pilih Status"
-              title="Status"
-              value={status}
-              onValueChange={setStatus}
-              data={data_status}
-            />
-          </div>
-
-          <DialogFooter>
-            <Button onClick={onButtonSave}>Simpan</Button>
-          </DialogFooter>
+              <Dropdown
+                control={form.control}
+                name="status"
+                placeholder="Pilih Status"
+                label="Status"
+                data={data_status}
+              />
+              <DialogFooter>
+                <Button type="submit">Simpan</Button>
+              </DialogFooter>
+            </form>
+          </Form>
         </div>
       )}
     </DialogContent>
