@@ -3,6 +3,7 @@ interface PersonnelAttribute {
   nama: string;
 }
 interface PersonnelDataInterface {
+  id?: string;
   nama?: string;
   jenis_kelamin?: string;
   nrp?: number;

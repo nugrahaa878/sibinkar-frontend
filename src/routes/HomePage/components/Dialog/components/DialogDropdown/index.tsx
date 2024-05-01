@@ -11,12 +11,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import personnelFormSchema from "@/routes/HomePage/entities/formSchema";
 import { Control } from "react-hook-form";
-import addPersonnelFormSchema from "../../AddDialog/formSchema";
 import { z } from "zod";
 
 interface Props {
-  control?: Control<z.infer<typeof addPersonnelFormSchema>> | undefined;
+  control?: Control<z.infer<typeof personnelFormSchema>> | undefined;
   name:
     | "name"
     | "gender"

@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-const addPersonnelFormSchema = z.object({
+const personnelFormSchema = z.object({
   name: z
     .string({
       required_error: "Nama wajib diisi",
@@ -36,4 +36,4 @@ const addPersonnelFormSchema = z.object({
   }),
 });
 
-export default addPersonnelFormSchema;
+export default personnelFormSchema;

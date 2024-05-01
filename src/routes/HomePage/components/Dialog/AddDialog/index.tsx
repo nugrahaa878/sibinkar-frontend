@@ -17,14 +17,14 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Form } from "@/components/ui/form";
 import DialogInput from "../components/DialogInput";
-import addPersonnelFormSchema from "./formSchema";
-import DialogStateEnum from "./enum";
+import DialogStateEnum from "../../../entities/enum";
 import useGetAllPersonnelAttributes from "@/routes/HomePage/hooks/useGetAllPersonnelAttributes";
 import usePostPersonnel from "@/routes/HomePage/hooks/usePostPersonnel";
+import personnelFormSchema from "@/routes/HomePage/entities/formSchema";
 
 const AddDialog = () => {
-  const form = useForm<z.infer<typeof addPersonnelFormSchema>>({
-    resolver: zodResolver(addPersonnelFormSchema),
+  const form = useForm<z.infer<typeof personnelFormSchema>>({
+    resolver: zodResolver(personnelFormSchema),
     defaultValues: {},
   });
   const { position, rank, subSatKer, subDit, fetchData } =
@@ -184,21 +184,24 @@ const AddDialog = () => {
                 onSelectItem={setSubDitId}
               />
 
-              <Dropdown
-                control={form.control}
+              <Combobox
+                form={form}
                 name="BKO"
-                placeholder="Pilih BKO"
                 label="BKO"
+                placeholder="Pilih BKO"
+                searchPlaceholder="Cari BKO..."
                 data={data_bko}
               />
 
-              <Dropdown
-                control={form.control}
+              <Combobox
+                form={form}
                 name="status"
-                placeholder="Pilih Status"
                 label="Status"
+                placeholder="Pilih Status"
+                searchPlaceholder="Cari Status..."
                 data={data_status}
               />
+
               <DialogFooter>
                 <Button type="submit">Simpan</Button>
               </DialogFooter>

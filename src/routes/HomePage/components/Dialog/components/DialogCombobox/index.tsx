@@ -24,12 +24,12 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import addPersonnelFormSchema from "../../AddDialog/formSchema";
 import { z } from "zod";
 import { PersonnelAttribute } from "@/routes/HomePage/hooks/types";
+import personnelFormSchema from "@/routes/HomePage/entities/formSchema";
 
 interface Props {
-  form: UseFormReturn<z.infer<typeof addPersonnelFormSchema>, any, undefined>;
+  form: UseFormReturn<z.infer<typeof personnelFormSchema>, any, undefined>;
   name:
     | "name"
     | "gender"
@@ -44,7 +44,7 @@ interface Props {
   data: PersonnelAttribute[];
   placeholder: string;
   searchPlaceholder: string;
-  onSelectItem: (value: number) => void;
+  onSelectItem?: (value: number) => void;
 }
 
 const Combobox = ({
@@ -95,7 +95,9 @@ const Combobox = ({
                             value={item.nama}
                             onSelect={(currentValue) => {
                               form.setValue(name, currentValue);
-                              onSelectItem(item.id);
+                              if (onSelectItem) {
+                                onSelectItem(item.id);
+                              }
                               setOpen(false);
                             }}
                           >
