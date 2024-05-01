@@ -47,28 +47,31 @@ export const columns: ColumnDef<Personnel>[] = [
 
       switch (personil.bko) {
         case "Gasus Keluar":
+        case "Gasus keluar":
           return (
             <h1 className="bg-stone-400 border text-white text-xs rounded-md px-2 py-0.5">
               Gasus Keluar
             </h1>
           );
         case "Gasum Keluar":
+        case "Gasum keluar":
           return (
             <h1 className="bg-stone-500 border text-white text-xs rounded-md px-2 py-0.5">
               Gasum Keluar
             </h1>
           );
         case "Gasus Ke Dalam":
+        case "Gasus masuk":
           return (
             <h1 className="bg-lime-700 border  text-white text-xs rounded-md px-2 py-0.5">
-              Gasus Ke Dalam
+              Gasus Masuk
             </h1>
           );
         case "Gasum Ke Dalam":
         case "Gasum masuk":
           return (
             <h1 className="bg-green-800 border text-white text-xs rounded-md px-2 py-0.5">
-              Gasum Ke Dalam
+              Gasum Masuk
             </h1>
           );
       }

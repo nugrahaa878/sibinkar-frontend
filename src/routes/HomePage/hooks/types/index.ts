@@ -1,15 +1,8 @@
-export interface GeneralPersonnelItem {
+interface PersonnelAttribute {
   id: number;
   nama: string;
 }
-
-export interface ListGeneralPersonnelItemResponse {
-  success: boolean;
-  message: string;
-  data?: GeneralPersonnelItem[];
-}
-
-export interface PersonnelDataInterface {
+interface PersonnelDataInterface {
   nama?: string;
   jenis_kelamin?: string;
   nrp?: number;
@@ -20,3 +13,5 @@ export interface PersonnelDataInterface {
   subdit?: number;
   bko?: string;
 }
+
+export type { PersonnelAttribute, PersonnelDataInterface };

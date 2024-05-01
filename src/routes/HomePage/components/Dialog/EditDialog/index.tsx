@@ -10,11 +10,8 @@ import ErrorDialog from "@/components/Dialog/ErrorDialog";
 import SuccessDialog from "@/components/Dialog/SuccessDialog";
 import { Input } from "@/components/ui/input";
 import data_bko from "@/routes/HomePage/data/data-bko";
-import data_pangkat from "@/routes/HomePage/data/data-pangkat";
 import data_status from "@/routes/HomePage/data/data-status";
-import data_subdit from "@/routes/HomePage/data/data-subdit";
-import data_subsatker from "@/routes/HomePage/data/data-subsatker";
-import Dropdown from "../DialogDropdown";
+import Dropdown from "../components/DialogDropdown";
 import { Label } from "@/components/ui/label";
 import {
   Select,
@@ -23,8 +20,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import data_jabatan from "@/routes/HomePage/data/data-jabatan";
-import Combobox from "../DialogCombobox";
+import Combobox from "../components/DialogCombobox";
 import { Personnel } from "@/routes/HomePage/hooks/useGetPersonnel/types";
 
 interface Props {
@@ -168,7 +164,7 @@ const EditDialog = ({ personnel }: Props) => {
               />
             </div>
 
-            <Dropdown
+            {/* <Dropdown
               placeholder="Pilih Pangkat"
               title="Pangkat"
               value={rank}
@@ -213,7 +209,7 @@ const EditDialog = ({ personnel }: Props) => {
               value={status}
               onValueChange={setStatus}
               data={data_status}
-            />
+            /> */}
           </div>
 
           <DialogFooter>

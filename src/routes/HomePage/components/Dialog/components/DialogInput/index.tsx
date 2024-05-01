@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Control } from "react-hook-form";
-import addPersonnelFormSchema from "../AddDialog/formSchema";
+import addPersonnelFormSchema from "../../AddDialog/formSchema";
 import { z } from "zod";
 
 interface Props {

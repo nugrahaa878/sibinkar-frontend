@@ -1,9 +1,7 @@
-import useSWR from "swr";
 import { PersonnelDataInterface } from "../types";
 import axiosClient from "@/networks/apiClient";
-import { PersonnelResponseInterface } from "./types";
 
-const usePostPersonnel = ({
+const usePostPersonnel = async ({
   nama,
   jenis_kelamin,
   nrp,
@@ -14,27 +12,21 @@ const usePostPersonnel = ({
   subdit,
   bko,
 }: PersonnelDataInterface) => {
-  const {
-    data: personnel,
-    isLoading: loading,
-    mutate,
-  } = useSWR(`/personil/`, async (): Promise<PersonnelResponseInterface> => {
-    const personnelData = {
-      nama,
-      jenis_kelamin,
-      nrp,
-      status,
-      jabatan,
-      pangkat,
-      subsatker,
-      subdit,
-      bko,
-    };
-    const response = await axiosClient.post("/personil/", personnelData);
-    return response.data;
-  });
-
-  return { loading, personnel, mutate };
+  const personnelData = {
+    nama,
+    jenis_kelamin: jenis_kelamin
+      ?.replace("Laki-laki", "L")
+      .replace("Perempuan", "P"),
+    nrp,
+    status,
+    jabatan,
+    pangkat,
+    subsatker,
+    subdit,
+    bko,
+  };
+  const response = await axiosClient.post("/personil/", personnelData);
+  return response.data.success;
 };
 
 export default usePostPersonnel;

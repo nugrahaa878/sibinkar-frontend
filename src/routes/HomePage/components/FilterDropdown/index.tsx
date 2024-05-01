@@ -9,13 +9,7 @@ import {
 import { useState } from "react";
 import { Loader2 } from "lucide-react";
 import useGetFilter from "../../hooks/useGetSubFilter";
-
-enum FilterPersonilEnum {
-  pangkat = "Pangkat",
-  jabatan = "Jabatan",
-  subSatKer = "SubSatKer",
-  subDit = "SubDit",
-}
+import FilterPersonilEnum from "./enums";
 
 interface Props {
   onApplyFilter: (type: string, value: string) => void;

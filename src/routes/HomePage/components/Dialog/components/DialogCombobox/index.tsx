@@ -24,8 +24,9 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import addPersonnelFormSchema from "../AddDialog/formSchema";
+import addPersonnelFormSchema from "../../AddDialog/formSchema";
 import { z } from "zod";
+import { PersonnelAttribute } from "@/routes/HomePage/hooks/types";
 
 interface Props {
   form: UseFormReturn<z.infer<typeof addPersonnelFormSchema>, any, undefined>;
@@ -40,10 +41,21 @@ interface Props {
     | "BKO"
     | "status";
   label: string;
-  data: string[];
+  data: PersonnelAttribute[];
+  placeholder: string;
+  searchPlaceholder: string;
+  onSelectItem: (value: number) => void;
 }
 
-const Combobox = ({ form, name, label, data }: Props) => {
+const Combobox = ({
+  form,
+  name,
+  label,
+  data,
+  placeholder,
+  searchPlaceholder,
+  onSelectItem,
+}: Props) => {
   const [open, setOpen] = useState(false);
 
   return (
@@ -64,7 +76,7 @@ const Combobox = ({ form, name, label, data }: Props) => {
                     aria-expanded={open}
                     className="justify-between rounded-xl border-gray-400 font-normal text-nowrap text-clip"
                   >
-                    {field.value ? field.value : "Pilih jabatan"}
+                    {field.value ? field.value : placeholder}
                     <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                   </Button>
                 </FormControl>
@@ -72,29 +84,30 @@ const Combobox = ({ form, name, label, data }: Props) => {
 
               <PopoverContent className="md:w-[464px] sm:w-96 p-0">
                 <Command>
-                  <CommandInput placeholder="Cari jabatan..." />
-                  <CommandEmpty>Jabatan Tidak Ditemukan</CommandEmpty>
+                  <CommandInput placeholder={searchPlaceholder} />
+                  <CommandEmpty>Data Tidak Ditemukan</CommandEmpty>
                   <CommandGroup>
                     <CommandList>
                       {data.map((item) => {
                         return (
                           <CommandItem
-                            key={item}
-                            value={item}
+                            key={item.id}
+                            value={item.nama}
                             onSelect={(currentValue) => {
-                              form.setValue("position", currentValue);
+                              form.setValue(name, currentValue);
+                              onSelectItem(item.id);
                               setOpen(false);
                             }}
                           >
                             <Check
                               className={cn(
                                 "mr-2 h-4 w-4",
-                                item === field.value
+                                item.nama === field.value
                                   ? "opacity-100"
                                   : "opacity-0"
                               )}
                             />
-                            {item}
+                            {item.nama}
                           </CommandItem>
                         );
                       })}

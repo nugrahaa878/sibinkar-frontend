@@ -4,40 +4,44 @@ import {
   DialogFooter,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { useState } from "react";
-import Dropdown from "../DialogDropdown";
+import { useEffect, useState } from "react";
+import Dropdown from "../components/DialogDropdown";
 import data_bko from "@/routes/HomePage/data/data-bko";
-import data_pangkat from "@/routes/HomePage/data/data-pangkat";
 import data_status from "@/routes/HomePage/data/data-status";
-import data_subdit from "@/routes/HomePage/data/data-subdit";
-import data_subsatker from "@/routes/HomePage/data/data-subsatker";
 import ConfirmationDialog from "@/components/Dialog/ConfirmationDialog";
 import SuccessDialog from "@/components/Dialog/SuccessDialog";
 import ErrorDialog from "@/components/Dialog/ErrorDialog";
-import data_jabatan from "@/routes/HomePage/data/data-jabatan";
-import Combobox from "../DialogCombobox";
+import Combobox from "../components/DialogCombobox";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Form } from "@/components/ui/form";
-import DialogInput from "../DialogInput";
+import DialogInput from "../components/DialogInput";
 import addPersonnelFormSchema from "./formSchema";
-import DialogStateEnum from "./stateEnum";
+import DialogStateEnum from "./enum";
+import useGetAllPersonnelAttributes from "@/routes/HomePage/hooks/useGetAllPersonnelAttributes";
+import usePostPersonnel from "@/routes/HomePage/hooks/usePostPersonnel";
 
 const AddDialog = () => {
   const form = useForm<z.infer<typeof addPersonnelFormSchema>>({
     resolver: zodResolver(addPersonnelFormSchema),
     defaultValues: {},
   });
-
-  const onSubmit = (values: z.infer<typeof addPersonnelFormSchema>) => {
-    console.log(values);
-  };
+  const { position, rank, subSatKer, subDit, fetchData } =
+    useGetAllPersonnelAttributes();
 
   const [isLoadingState, setIsLoadingState] = useState(false);
+  const [positionId, setPositionId] = useState<number>();
+  const [rankId, setRankId] = useState<number>();
+  const [subSatKerId, setSubSatKerId] = useState<number>();
+  const [subDitId, setSubDitId] = useState<number>();
   const [dialogState, setDialogState] = useState<DialogStateEnum>(
     DialogStateEnum.form
   );
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   const onButtonSave = async () => {
     if (dialogState === DialogStateEnum.form) {
@@ -45,13 +49,33 @@ const AddDialog = () => {
       return;
     }
     setIsLoadingState(true);
-    setIsLoadingState(false);
-    setDialogState(DialogStateEnum.success);
+    const formValues = form.getValues();
+    usePostPersonnel({
+      nama: formValues.name,
+      jenis_kelamin: formValues.gender,
+      nrp: formValues.NRP,
+      status: formValues.status,
+      jabatan: positionId,
+      pangkat: rankId,
+      subsatker: subSatKerId,
+      subdit: subDitId,
+      bko: formValues.BKO,
+    })
+      .then((_) => {
+        setDialogState(DialogStateEnum.success);
+      })
+      .catch(() => {
+        setDialogState(DialogStateEnum.failed);
+      })
+      .finally(() => {
+        setIsLoadingState(false);
+      });
     return;
   };
 
   const handleClose = () => {
     setDialogState(DialogStateEnum.form);
+    setIsLoadingState(false);
     form.reset();
   };
 
@@ -94,7 +118,7 @@ const AddDialog = () => {
 
           <Form {...form}>
             <form
-              onSubmit={form.handleSubmit(onSubmit)}
+              onSubmit={form.handleSubmit(onButtonSave)}
               className="grid gap-4 py-4"
             >
               <DialogInput
@@ -120,35 +144,44 @@ const AddDialog = () => {
                 type="number"
               />
 
-              <Dropdown
-                control={form.control}
+              <Combobox
+                form={form}
                 name="rank"
-                placeholder="Pilih Pangkat"
                 label="Pangkat"
-                data={data_pangkat}
+                placeholder="Pilih Pangkat"
+                searchPlaceholder="Cari Pangkat..."
+                data={rank}
+                onSelectItem={setRankId}
               />
 
               <Combobox
                 form={form}
                 name="position"
                 label="Jabatan"
-                data={data_jabatan}
+                placeholder="Pilih Jabatan"
+                searchPlaceholder="Cari Jabatan..."
+                data={position}
+                onSelectItem={setPositionId}
               />
 
-              <Dropdown
-                control={form.control}
+              <Combobox
+                form={form}
                 name="subSatKer"
-                placeholder="Pilih SubSatKer"
                 label="SubSatKer"
-                data={data_subsatker}
+                placeholder="Pilih SubSatKer"
+                searchPlaceholder="Cari SubSatKer..."
+                data={subSatKer}
+                onSelectItem={setSubSatKerId}
               />
 
-              <Dropdown
-                control={form.control}
+              <Combobox
+                form={form}
                 name="subDit"
-                placeholder="Pilih SubDit"
                 label="SubDit"
-                data={data_subdit}
+                placeholder="Pilih SubDit"
+                searchPlaceholder="Cari SubDit..."
+                data={subDit}
+                onSelectItem={setSubDitId}
               />
 
               <Dropdown
