@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { DialogContent, DialogTrigger, Dialog } from "@/components/ui/dialog";
+import { DialogTrigger, Dialog } from "@/components/ui/dialog";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,9 +11,6 @@ import DeleteDialog from "../Dialog/DeleteDialog";
 import EditDialog from "../Dialog/EditDialog";
 import { useState } from "react";
 import { Personnel } from "../../hooks/useGetPersonnel/types";
-import ErrorDialog from "@/components/Dialog/ErrorDialog";
-import SuccessDialog from "@/components/Dialog/SuccessDialog";
-import useDeletePersonnel from "../../hooks/useDeletePersonnel";
 
 interface Props {
   personnel: Personnel;
@@ -21,25 +18,6 @@ interface Props {
 
 const Action = ({ personnel }: Props) => {
   const [actionType, setActionType] = useState("edit");
-  const [isLoading, setIsLoading] = useState(false);
-  const [message, setMessage] = useState("");
-
-  const handleOnConfirmDelete = () => {
-    if (isLoading) return;
-    setIsLoading(true);
-    useDeletePersonnel({ id: personnel.id })
-      .then((_) => {
-        setActionType("success");
-        setMessage("Data berhasil dihapus");
-      })
-      .catch((_) => {
-        setActionType("error");
-        setMessage("Data gagal dihapus. Periksa jaringan Anda");
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
-  };
 
   return (
     <Dialog>
@@ -65,25 +43,8 @@ const Action = ({ personnel }: Props) => {
           </DialogTrigger>
         </DropdownMenuContent>
       </DropdownMenu>
-      {actionType === "delete" && (
-        <DialogContent className="sm:max-w-[425px]">
-          <DeleteDialog
-            onConfirmDelete={handleOnConfirmDelete}
-            isLoading={isLoading}
-          />
-        </DialogContent>
-      )}
+      {actionType === "delete" && <DeleteDialog id={personnel.id} />}
       {actionType === "edit" && <EditDialog personnel={personnel} />}
-      {actionType === "error" && (
-        <DialogContent>
-          <ErrorDialog message={message} />
-        </DialogContent>
-      )}
-      {actionType === "success" && (
-        <DialogContent>
-          <SuccessDialog message={message} />
-        </DialogContent>
-      )}
     </Dialog>
   );
 };
