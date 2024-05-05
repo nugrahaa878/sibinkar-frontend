@@ -1,45 +1,56 @@
 interface Props {
-  item: number;
-  index: number;
+  isSum: boolean;
   dsp: number;
+  rill: number;
+  index: number;
+  onClick?: () => void;
 }
 
-const TableItem = ({ item, index, dsp }: Props) => {
-  const isRiil = index % 2 !== 0;
-  const isOver = item > dsp && isRiil;
-  const isUnder = item < dsp && isRiil;
-  const isJumlah = index === 16 || index === 17 || index >= 24;
-  const isHighlighted = (): boolean => {
-    if (index % 2 === 0 && index % 4 !== 0) {
-      return false;
-    }
-    if ((index - 1) % 2 === 0 && (index - 1) % 4 !== 0) {
-      return false;
-    }
-    return true;
-  };
+const TableItem = ({ isSum = false, dsp, rill, index, onClick }: Props) => {
+  const isOver = rill > dsp;
+  const isUnder = rill < dsp;
+  const isHighlighted = index % 2 !== 0;
   const bgColor = (): string => {
-    if (index === 16 || index === 17 || index >= 24) {
+    if (isSum) {
       return "bg-indigo-50";
     }
-    if (isOver) {
-      return "bg-red-200";
+    if (isOver || isUnder) {
+      return "bg-red-100";
     }
-    if (isUnder) {
-      return "bg-blue-200";
-    }
-    if (isHighlighted()) {
-      return "bg-neutral-200";
+    if (isHighlighted) {
+      return "bg-neutral-100";
     }
     return "bg-neutral-50";
   };
   return (
-    <td
-      data-tooltip-id={isOver ? "over-tooltip" : isUnder ? "under-tooltip" : ""}
-      className={`${bgColor()} ${isJumlah && "font-bold"} text-center py-2`}
-    >
-      {item}
-    </td>
+    <>
+      <td
+        data-tooltip-id={
+          isOver ? "over-tooltip" : isUnder ? "under-tooltip" : ""
+        }
+        className={`flex-row ${bgColor()} py-2`}
+        onClick={() => {
+          if (dsp !== rill) {
+            onClick?.();
+          }
+        }}
+      >
+        <h1
+          className={`${(isOver || isUnder) && "text-red-500 font-bold"} ${
+            isSum && "font-bold"
+          } text-center`}
+        >
+          {dsp}
+        </h1>
+      </td>
+      <td
+        className={`flex-row ${
+          index % 2 === 0 ? "bg-neutral-50" : "bg-neutral-100"
+        } ${isSum && "bg-indigo-50"} py-2`}
+      >
+        <h1 className={`${isSum && "font-bold"} text-center`}>{rill}</h1>
+      </td>
+    </>
   );
 };
 

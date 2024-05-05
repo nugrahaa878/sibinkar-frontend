@@ -12,13 +12,9 @@ export interface Personnel {
 }
 
 export interface ListPersonnelResponseInterface {
-  success: boolean;
-  message: string;
-  data?: {
-    result: Personnel[];
-    meta: {
-      current_page: string;
-      total_pages: string;
-    };
+  result: Personnel[];
+  meta: {
+    current_page: string;
+    total_pages: string;
   };
 }
