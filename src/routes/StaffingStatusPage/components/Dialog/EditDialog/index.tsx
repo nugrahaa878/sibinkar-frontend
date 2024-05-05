@@ -10,104 +10,63 @@ import {
 } from "@/components/ui/dialog";
 import { useState } from "react";
 import DialogInput from "../DialogInput";
+import { useForm } from "react-hook-form";
+import { Form } from "@/components/ui/form";
+import { z } from "zod";
+import staffingStatusSchema from "@/routes/StaffingStatusPage/entities/formSchema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Satker } from "@/routes/StaffingStatusPage/hooks/useGetStaffingStatus/types";
+import {
+  PnsPolriSatkerEnum,
+  PolriSatkerEnum,
+} from "@/routes/StaffingStatusPage/entities/satker-enum";
 
 interface Props {
   title: string;
-  count: number[];
+  data: Satker;
 }
 
-const EditDialog = ({ title, count }: Props) => {
-  const [IRJEN, setIRJEN] = useState<number>(count[0]);
-  const [BRIGJEN, setBRIGJEN] = useState<number>(count[2]);
-  const [KOMBES, setKOMBES] = useState<number>(count[4]);
-  const [AKBP, setAKBP] = useState<number>(count[6]);
-  const [KOMPOL, setKOMPOL] = useState<number>(count[8]);
-  const [AKP, setAKP] = useState<number>(count[10]);
-  const [IP, setIP] = useState<number>(count[12]);
-  const [BRIGTA, setBRIGTA] = useState<number>(count[14]);
-  const [jumlah] = useState<number>(16);
-  const [IV, setIV] = useState<number>(count[18]);
-  const [III, setIII] = useState<number>(count[20]);
-  const [II, setII] = useState<number>(count[22]);
-  const [jumlahPns] = useState<number>(count[24]);
-  const ketDSP = count[26];
-  const ketRIIL = count[27];
-  const IRJENRIIL = count[1];
-  const BRIGJENRIIL = count[3];
-  const KOMBESRIIL = count[5];
-  const AKBPRIIL = count[7];
-  const KOMPOLRIIL = count[9];
-  const AKPRIIL = count[11];
-  const IPRIIL = count[13];
-  const BRIGTARIIL = count[15];
-  const jumlahRIIL = count[17];
-  const IVRIIL = count[19];
-  const IIIRIIL = count[21];
-  const IIRIIL = count[23];
-  const jumlahPnsRIIL = count[25];
+const EditDialog = ({ title, data }: Props) => {
+  const polri = data.POLRI;
+  const pnsPolri = data["PNS POLRI"];
+
+  const form = useForm<z.infer<typeof staffingStatusSchema>>({
+    resolver: zodResolver(staffingStatusSchema),
+    defaultValues: {
+      irjen: polri[PolriSatkerEnum.irjenPol]?.dsp || 0,
+      brigjen: polri[PolriSatkerEnum.brigjenPol]?.dsp || 0,
+      kombes: polri[PolriSatkerEnum.kombesPol]?.dsp || 0,
+      akbp: polri[PolriSatkerEnum.akbp]?.dsp || 0,
+      kompol: polri[PolriSatkerEnum.komPol]?.dsp || 0,
+      akp: polri[PolriSatkerEnum.akp]?.dsp || 0,
+      ip: polri[PolriSatkerEnum.ip]?.dsp || 0,
+      brigta: polri[PolriSatkerEnum.brikTa]?.dsp || 0,
+      iv: pnsPolri[PnsPolriSatkerEnum.iv]?.dsp || 0,
+      iii: pnsPolri[PnsPolriSatkerEnum.iii]?.dsp || 0,
+      ii: pnsPolri[PnsPolriSatkerEnum.ii]?.dsp || 0,
+    },
+  });
+
+  const IRJENRIIL = polri[PolriSatkerEnum.irjenPol]?.rill || 0;
+  const BRIGJENRIIL = polri[PolriSatkerEnum.brigjenPol]?.rill || 0;
+  const KOMBESRIIL = polri[PolriSatkerEnum.kombesPol]?.rill || 0;
+  const AKBPRIIL = polri[PolriSatkerEnum.akbp]?.rill || 0;
+  const KOMPOLRIIL = polri[PolriSatkerEnum.komPol]?.rill || 0;
+  const AKPRIIL = polri[PolriSatkerEnum.akp]?.rill || 0;
+  const IPRIIL = polri[PolriSatkerEnum.ip]?.rill || 0;
+  const BRIGTARIIL = polri[PolriSatkerEnum.brikTa]?.rill || 0;
+  const IVRIIL = pnsPolri[PnsPolriSatkerEnum.iv]?.rill || 0;
+  const IIIRIIL = pnsPolri[PnsPolriSatkerEnum.iii]?.rill || 0;
+  const IIRIIL = pnsPolri[PnsPolriSatkerEnum.ii]?.rill || 0;
 
   const [isLoadingState, setIsLoadingState] = useState(false);
   const [dialogState, setDialogState] = useState<
     "form" | "confirm" | "failed" | "success"
   >("form");
 
-  const handleIRJENChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const number = parseInt(event.target.value);
-    setIRJEN(number);
-  };
-
-  const handleBRIGJENChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const number = parseInt(event.target.value);
-    setBRIGJEN(number);
-  };
-
-  const handleKOMBESChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const number = parseInt(event.target.value);
-    setKOMBES(number);
-  };
-
-  const handleAKBPChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const number = parseInt(event.target.value);
-    setAKBP(number);
-  };
-
-  const handleKOMPOLChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const number = parseInt(event.target.value);
-    setKOMPOL(number);
-  };
-
-  const handleAKPChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const number = parseInt(event.target.value);
-    setAKP(number);
-  };
-
-  const handleIPChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const number = parseInt(event.target.value);
-    setIP(number);
-  };
-
-  const handleBRIGTAChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const number = parseInt(event.target.value);
-    setBRIGTA(number);
-  };
-
-  const handleIVChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const number = parseInt(event.target.value);
-    setIV(number);
-  };
-
-  const handleIIIChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const number = parseInt(event.target.value);
-    setIII(number);
-  };
-
-  const handleIIChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const number = parseInt(event.target.value);
-    setII(number);
-  };
-
   const onSave = async (): Promise<boolean> => {
     await new Promise((resolve) => setTimeout(resolve, 500));
+    // console.log(form.getValues());
     return true;
   };
 
@@ -163,96 +122,89 @@ const EditDialog = ({ title, count }: Props) => {
           <DialogHeader>
             <DialogTitle>Edit {title}</DialogTitle>
           </DialogHeader>
-          <div className="flex pt-4">
-            <div className="w-full">
-              <h1 className="font-bold text-md pb-3">POLRI</h1>
-              <DialogInput
-                title="IRJEN"
-                riil={IRJENRIIL}
-                dsp={IRJEN}
-                onChange={handleIRJENChange}
-              />
-              <DialogInput
-                title="BRIGJEN"
-                riil={BRIGJENRIIL}
-                dsp={BRIGJEN}
-                onChange={handleBRIGJENChange}
-              />
-              <DialogInput
-                title="KOMBES"
-                riil={KOMBESRIIL}
-                dsp={KOMBES}
-                onChange={handleKOMBESChange}
-              />
-              <DialogInput
-                title="AKBP"
-                riil={AKBPRIIL}
-                dsp={AKBP}
-                onChange={handleAKBPChange}
-              />
-              <DialogInput
-                title="KOMPOL"
-                riil={KOMPOLRIIL}
-                dsp={KOMPOL}
-                onChange={handleKOMPOLChange}
-              />
-              <DialogInput
-                title="AKP"
-                riil={AKPRIIL}
-                dsp={AKP}
-                onChange={handleAKPChange}
-              />
-              <DialogInput
-                title="IP"
-                riil={IPRIIL}
-                dsp={IP}
-                onChange={handleIPChange}
-              />
-              <DialogInput
-                title="BRIG/TA"
-                riil={BRIGTARIIL}
-                dsp={BRIGTA}
-                onChange={handleBRIGTAChange}
-              />
-              <DialogInput
-                title="Jumlah"
-                riil={jumlahRIIL}
-                dsp={jumlah}
-                disabled
-              />
-            </div>
-            <div className="pl-4 w-full">
-              <h1 className="font-bold text-md pb-3">PNS POLRI</h1>
-              <DialogInput
-                title="IV"
-                riil={IVRIIL}
-                dsp={IV}
-                onChange={handleIVChange}
-              />
-              <DialogInput
-                title="III"
-                riil={IIIRIIL}
-                dsp={III}
-                onChange={handleIIIChange}
-              />
-              <DialogInput
-                title="II/I"
-                riil={IIRIIL}
-                dsp={II}
-                onChange={handleIIChange}
-              />
-              <DialogInput
-                title="Jumlah"
-                riil={jumlahPnsRIIL}
-                dsp={jumlahPns}
-                disabled
-              />
-              <DialogInput title="Ket" riil={ketRIIL} dsp={ketDSP} disabled />
-            </div>
-          </div>
-          <DialogFooter>
-            <Button onClick={onButtonSave}>Simpan</Button>
-          </DialogFooter>
+          <Form {...form}>
+            <form
+              onSubmit={form.handleSubmit(onButtonSave)}
+              className="flex pt-4"
+            >
+              <div className="w-full">
+                <h1 className="font-bold text-md pb-3">POLRI</h1>
+                <DialogInput
+                  title="IRJEN"
+                  riil={IRJENRIIL}
+                  control={form.control}
+                  name="irjen"
+                />
+                <DialogInput
+                  title="BRIGJEN"
+                  riil={BRIGJENRIIL}
+                  control={form.control}
+                  name="brigjen"
+                />
+                <DialogInput
+                  title="KOMBES"
+                  riil={KOMBESRIIL}
+                  control={form.control}
+                  name="kombes"
+                />
+                <DialogInput
+                  title="AKBP"
+                  riil={AKBPRIIL}
+                  control={form.control}
+                  name="akbp"
+                />
+                <DialogInput
+                  title="KOMPOL"
+                  riil={KOMPOLRIIL}
+                  control={form.control}
+                  name="kompol"
+                />
+                <DialogInput
+                  title="AKP"
+                  riil={AKPRIIL}
+                  control={form.control}
+                  name="akp"
+                />
+                <DialogInput
+                  title="IP"
+                  riil={IPRIIL}
+                  control={form.control}
+                  name="ip"
+                />
+                <DialogInput
+                  title="BRIG/TA"
+                  riil={BRIGTARIIL}
+                  control={form.control}
+                  name="brigta"
+                />
+              </div>
+              <div className="pl-4 w-full">
+                <h1 className="font-bold text-md pb-3">PNS POLRI</h1>
+                <DialogInput
+                  title="IV"
+                  riil={IVRIIL}
+                  control={form.control}
+                  name="iv"
+                />
+                <DialogInput
+                  title="III"
+                  riil={IIIRIIL}
+                  control={form.control}
+                  name="iii"
+                />
+                <DialogInput
+                  title="II/I"
+                  riil={IIRIIL}
+                  control={form.control}
+                  name="ii"
+                />
+              </div>
+            </form>
+
+            <DialogFooter>
+              <Button type="submit">Simpan</Button>
+            </DialogFooter>
+          </Form>
         </>
       )}
     </DialogContent>

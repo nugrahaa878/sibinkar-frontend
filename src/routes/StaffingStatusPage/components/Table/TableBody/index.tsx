@@ -100,7 +100,9 @@ const TableBody = ({ data }: Props) => {
                 />
               )}
 
-              {/* <EditDialog title={item.title} count={item.count} /> */}
+              {dialogType === "edit" && (
+                <EditDialog title={item.satker} data={item} />
+              )}
             </tr>
           </Dialog>
         );
