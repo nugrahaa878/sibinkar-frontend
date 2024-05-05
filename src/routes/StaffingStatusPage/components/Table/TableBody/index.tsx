@@ -53,78 +53,39 @@ const TableBody = ({ data }: Props) => {
 
               {Object.values(PolriSatkerEnum).map((value, index) => {
                 const satkerData = item.POLRI[value];
-                let dsp = 0;
-                let rill = 0;
-                if (satkerData) {
-                  dsp = satkerData.dsp;
-                  rill = satkerData.rill;
-                }
 
                 return (
                   <TableItem
-                    dsp={dsp}
-                    rill={rill}
+                    data={satkerData}
                     index={index}
                     isSum={false}
-                    onClick={() => {
-                      handleInfoDialogOpen(
-                        dsp > rill
-                          ? "Kelebihan Personil"
-                          : "Kekurangan Personil",
-                        satkerData?.message || ""
-                      );
-                    }}
+                    onClick={handleInfoDialogOpen}
                   />
                 );
               })}
 
-              <TableItem
-                dsp={item.POLRI.jumlah.dsp}
-                rill={item.POLRI.jumlah.rill}
-                index={8}
-                isSum={true}
-              />
+              <TableItem data={item.POLRI.jumlah} index={8} isSum={true} />
 
               {Object.values(PnsPolriSatkerEnum).map((value, index) => {
                 const satkerData = item["PNS POLRI"][value];
-                let dsp = 0;
-                let rill = 0;
-                if (satkerData) {
-                  dsp = satkerData.dsp;
-                  rill = satkerData.rill;
-                }
 
                 return (
                   <TableItem
-                    dsp={dsp}
-                    rill={rill}
+                    data={satkerData}
                     index={index}
                     isSum={false}
-                    onClick={() => {
-                      handleInfoDialogOpen(
-                        dsp > rill
-                          ? "Kelebihan Personil"
-                          : "Kekurangan Personil",
-                        satkerData?.message || ""
-                      );
-                    }}
+                    onClick={handleInfoDialogOpen}
                   />
                 );
               })}
 
               <TableItem
-                dsp={item["PNS POLRI"].jumlah.dsp}
-                rill={item["PNS POLRI"].jumlah.rill}
+                data={item["PNS POLRI"].jumlah}
                 index={12}
                 isSum={true}
               />
 
-              <TableItem
-                dsp={item.keterangan.dsp}
-                rill={item.keterangan.rill}
-                index={13}
-                isSum={false}
-              />
+              <TableItem data={item.keterangan} index={13} isSum={false} />
 
               <td className="px-2 bg-neutral-50">
                 <DialogTrigger onClick={handleEditDialogOpen} asChild>

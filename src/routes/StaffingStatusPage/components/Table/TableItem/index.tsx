@@ -1,12 +1,16 @@
+import { SatkerData } from "@/routes/StaffingStatusPage/hooks/useGetStaffingStatus/types";
+
 interface Props {
   isSum: boolean;
-  dsp: number;
-  rill: number;
   index: number;
-  onClick?: () => void;
+  data: SatkerData | undefined;
+  onClick?: (title: string, message: string) => void;
 }
 
-const TableItem = ({ isSum = false, dsp, rill, index, onClick }: Props) => {
+const TableItem = ({ isSum = false, index, data, onClick }: Props) => {
+  const rill: number = data?.rill || 0;
+  const dsp: number = data?.dsp || 0;
+  const message: string = data?.message || "";
   const isOver = rill > dsp;
   const isUnder = rill < dsp;
   const isHighlighted = index % 2 !== 0;
@@ -31,7 +35,10 @@ const TableItem = ({ isSum = false, dsp, rill, index, onClick }: Props) => {
         className={`flex-row ${bgColor()} py-2`}
         onClick={() => {
           if (dsp !== rill) {
-            onClick?.();
+            onClick?.(
+              rill > dsp ? "Kelebihan Personil" : "Kekurangan Personil",
+              message
+            );
           }
         }}
       >
