@@ -66,7 +66,7 @@ const EditDialog = ({ title, data }: Props) => {
 
   const onSave = async (): Promise<boolean> => {
     await new Promise((resolve) => setTimeout(resolve, 500));
-    // console.log(form.getValues());
+    console.log(form.getValues());
     return true;
   };
 
@@ -118,94 +118,98 @@ const EditDialog = ({ title, data }: Props) => {
       )}
 
       {dialogState === "form" && (
-        <>
+        <div>
           <DialogHeader>
             <DialogTitle>Edit {title}</DialogTitle>
           </DialogHeader>
+
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(onButtonSave)}
-              className="flex pt-4"
+              className="flex-col pt-4"
             >
-              <div className="w-full">
-                <h1 className="font-bold text-md pb-3">POLRI</h1>
-                <DialogInput
-                  title="IRJEN"
-                  riil={IRJENRIIL}
-                  control={form.control}
-                  name="irjen"
-                />
-                <DialogInput
-                  title="BRIGJEN"
-                  riil={BRIGJENRIIL}
-                  control={form.control}
-                  name="brigjen"
-                />
-                <DialogInput
-                  title="KOMBES"
-                  riil={KOMBESRIIL}
-                  control={form.control}
-                  name="kombes"
-                />
-                <DialogInput
-                  title="AKBP"
-                  riil={AKBPRIIL}
-                  control={form.control}
-                  name="akbp"
-                />
-                <DialogInput
-                  title="KOMPOL"
-                  riil={KOMPOLRIIL}
-                  control={form.control}
-                  name="kompol"
-                />
-                <DialogInput
-                  title="AKP"
-                  riil={AKPRIIL}
-                  control={form.control}
-                  name="akp"
-                />
-                <DialogInput
-                  title="IP"
-                  riil={IPRIIL}
-                  control={form.control}
-                  name="ip"
-                />
-                <DialogInput
-                  title="BRIG/TA"
-                  riil={BRIGTARIIL}
-                  control={form.control}
-                  name="brigta"
-                />
-              </div>
-              <div className="pl-4 w-full">
-                <h1 className="font-bold text-md pb-3">PNS POLRI</h1>
-                <DialogInput
-                  title="IV"
-                  riil={IVRIIL}
-                  control={form.control}
-                  name="iv"
-                />
-                <DialogInput
-                  title="III"
-                  riil={IIIRIIL}
-                  control={form.control}
-                  name="iii"
-                />
-                <DialogInput
-                  title="II/I"
-                  riil={IIRIIL}
-                  control={form.control}
-                  name="ii"
-                />
-              </div>
-            </form>
+              <div className="flex">
+                <div className="w-full">
+                  <h1 className="font-bold text-md pb-3">POLRI</h1>
+                  <DialogInput
+                    title="IRJEN"
+                    riil={IRJENRIIL}
+                    control={form.control}
+                    name="irjen"
+                  />
+                  <DialogInput
+                    title="BRIGJEN"
+                    riil={BRIGJENRIIL}
+                    control={form.control}
+                    name="brigjen"
+                  />
+                  <DialogInput
+                    title="KOMBES"
+                    riil={KOMBESRIIL}
+                    control={form.control}
+                    name="kombes"
+                  />
+                  <DialogInput
+                    title="AKBP"
+                    riil={AKBPRIIL}
+                    control={form.control}
+                    name="akbp"
+                  />
+                  <DialogInput
+                    title="KOMPOL"
+                    riil={KOMPOLRIIL}
+                    control={form.control}
+                    name="kompol"
+                  />
+                  <DialogInput
+                    title="AKP"
+                    riil={AKPRIIL}
+                    control={form.control}
+                    name="akp"
+                  />
+                  <DialogInput
+                    title="IP"
+                    riil={IPRIIL}
+                    control={form.control}
+                    name="ip"
+                  />
+                  <DialogInput
+                    title="BRIG/TA"
+                    riil={BRIGTARIIL}
+                    control={form.control}
+                    name="brigta"
+                  />
+                </div>
 
-            <DialogFooter>
-              <Button type="submit">Simpan</Button>
-            </DialogFooter>
+                <div className="pl-4 w-full">
+                  <h1 className="font-bold text-md pb-3">PNS POLRI</h1>
+                  <DialogInput
+                    title="IV"
+                    riil={IVRIIL}
+                    control={form.control}
+                    name="iv"
+                  />
+                  <DialogInput
+                    title="III"
+                    riil={IIIRIIL}
+                    control={form.control}
+                    name="iii"
+                  />
+                  <DialogInput
+                    title="II/I"
+                    riil={IIRIIL}
+                    control={form.control}
+                    name="ii"
+                  />
+                </div>
+              </div>
+
+              <DialogFooter>
+                <Button type="submit">Simpan</Button>
+              </DialogFooter>
+            </form>
           </Form>
-        </>
+        </div>
       )}
     </DialogContent>
   );

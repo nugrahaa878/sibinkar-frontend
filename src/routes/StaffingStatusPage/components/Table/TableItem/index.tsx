@@ -1,13 +1,14 @@
+import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import { SatkerData } from "@/routes/StaffingStatusPage/hooks/useGetStaffingStatus/types";
+import InfoDialog from "../../Dialog/InfoDialog";
 
 interface Props {
   isSum: boolean;
   index: number;
   data: SatkerData | undefined;
-  onClick?: (title: string, message: string) => void;
 }
 
-const TableItem = ({ isSum = false, index, data, onClick }: Props) => {
+const TableItem = ({ isSum = false, index, data }: Props) => {
   const rill: number = data?.rill || 0;
   const dsp: number = data?.dsp || 0;
   const message: string = data?.message || "";
@@ -27,29 +28,25 @@ const TableItem = ({ isSum = false, index, data, onClick }: Props) => {
     return "bg-neutral-50";
   };
   return (
-    <>
+    <Dialog>
       <td
         data-tooltip-id={
           isOver ? "over-tooltip" : isUnder ? "under-tooltip" : ""
         }
         className={`flex-row ${bgColor()} py-2`}
-        onClick={() => {
-          if (dsp !== rill) {
-            onClick?.(
-              rill > dsp ? "Kelebihan Personil" : "Kekurangan Personil",
-              message
-            );
-          }
-        }}
       >
-        <h1
-          className={`${(isOver || isUnder) && "text-red-500 font-bold"} ${
-            isSum && "font-bold"
-          } text-center`}
-        >
-          {dsp}
-        </h1>
+        <DialogTrigger asChild>
+          <h1
+            className={`${
+              (isOver || isUnder) &&
+              "text-red-500 font-bold hover:cursor-pointer"
+            } ${isSum && "font-bold"} text-center`}
+          >
+            {dsp}
+          </h1>
+        </DialogTrigger>
       </td>
+
       <td
         className={`flex-row ${
           index % 2 === 0 ? "bg-neutral-50" : "bg-neutral-100"
@@ -57,7 +54,13 @@ const TableItem = ({ isSum = false, index, data, onClick }: Props) => {
       >
         <h1 className={`${isSum && "font-bold"} text-center`}>{rill}</h1>
       </td>
-    </>
+      {message && (
+        <InfoDialog
+          title={dsp > rill ? "Kekurangan Personil" : "Kelebihan Personil"}
+          message={message}
+        />
+      )}
+    </Dialog>
   );
 };
 

@@ -1,57 +1,57 @@
 import { z } from "zod";
 
 const staffingStatusSchema = z.object({
-  irjen: z
+  irjen: z.coerce
     .number({
       required_error: "",
     })
     .nonnegative(),
-  brigjen: z
+  brigjen: z.coerce
     .number({
       required_error: "",
     })
     .nonnegative(),
-  kombes: z
+  kombes: z.coerce
     .number({
       required_error: "",
     })
     .nonnegative(),
-  akbp: z
+  akbp: z.coerce
     .number({
       required_error: "",
     })
     .nonnegative(),
-  kompol: z
+  kompol: z.coerce
     .number({
       required_error: "",
     })
     .nonnegative(),
-  akp: z
+  akp: z.coerce
     .number({
       required_error: "",
     })
     .nonnegative(),
-  ip: z
+  ip: z.coerce
     .number({
       required_error: "",
     })
     .nonnegative(),
-  brigta: z
+  brigta: z.coerce
     .number({
       required_error: "",
     })
     .nonnegative(),
-  iv: z
+  iv: z.coerce
     .number({
       required_error: "",
     })
     .nonnegative(),
-  iii: z
+  iii: z.coerce
     .number({
       required_error: "",
     })
     .nonnegative(),
-  ii: z
+  ii: z.coerce
     .number({
       required_error: "",
     })

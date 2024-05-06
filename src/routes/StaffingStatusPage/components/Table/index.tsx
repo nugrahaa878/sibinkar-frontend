@@ -1,4 +1,5 @@
 import { Satker } from "../../hooks/useGetStaffingStatus/types";
+import { Tooltip as ReactTooltip } from "react-tooltip";
 import TableBody from "./TableBody";
 import TableFooter from "./TableFooter";
 import TableHead from "./TableHead";
@@ -15,6 +16,18 @@ const Table = ({ data }: Props) => {
         <TableBody data={data} />
         <TableFooter />
       </table>
+      <ReactTooltip
+        id="over-tooltip"
+        place="bottom-start"
+        variant="error"
+        content="Kelebihan Personil"
+      />
+      <ReactTooltip
+        id="under-tooltip"
+        place="bottom"
+        variant="error"
+        content="Kekurangan Personil"
+      />
     </div>
   );
 };

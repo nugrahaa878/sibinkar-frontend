@@ -1,4 +1,9 @@
-import { FormControl, FormField, FormItem } from "@/components/ui/form";
+import {
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import staffingStatusSchema from "@/routes/StaffingStatusPage/entities/formSchema";
 import { Control } from "react-hook-form";
@@ -25,7 +30,7 @@ interface Props {
 
 const DialogInput = ({ riil, title, control, name }: Props) => {
   return (
-    <div className="flex py-2">
+    <div className="flex py-2 items-center">
       <h1 className="font-bold text-sm text-darkBlue w-full">{title}</h1>
       <h1 className="font-bold text-sm text-darkBlue">DSP</h1>
       <FormField
@@ -35,16 +40,18 @@ const DialogInput = ({ riil, title, control, name }: Props) => {
           <FormItem>
             <FormControl>
               <Input
-                className="border-2 rounded-md w-8 mx-2 text-center"
+                className="border-2 rounded-md mx-2 w-12 p-0 text-center [&::-webkit-inner-spin-button]:appearance-none"
+                type="number"
                 {...field}
               />
             </FormControl>
+            <FormMessage />
           </FormItem>
         )}
       />
       <h1 className="font-bold text-sm text-darkBlue">RIIL</h1>
-      <input
-        className="border-2 rounded-md w-8 mx-2 text-center"
+      <Input
+        className="border-2 rounded-md w-10 mx-2 text-center bg-neutral-200"
         disabled={true}
         value={riil}
       />
