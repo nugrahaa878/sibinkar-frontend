@@ -20,6 +20,7 @@ import {
   PnsPolriSatkerEnum,
   PolriSatkerEnum,
 } from "@/routes/StaffingStatusPage/entities/satker-enum";
+import usePostStaffingStatus from "@/routes/StaffingStatusPage/hooks/usePostStaffingStatus";
 
 interface Props {
   title: string;
@@ -30,45 +31,39 @@ const EditDialog = ({ title, data }: Props) => {
   const polri = data.POLRI;
   const pnsPolri = data["PNS POLRI"];
 
+  const irjen = polri[PolriSatkerEnum.irjenPol];
+  const brigjen = polri[PolriSatkerEnum.brigjenPol];
+  const kombes = polri[PolriSatkerEnum.kombesPol];
+  const akbp = polri[PolriSatkerEnum.akbp];
+  const kompol = polri[PolriSatkerEnum.komPol];
+  const akp = polri[PolriSatkerEnum.akp];
+  const ip = polri[PolriSatkerEnum.ip];
+  const brigta = polri[PolriSatkerEnum.brikTa];
+  const iv = pnsPolri[PnsPolriSatkerEnum.iv];
+  const iii = pnsPolri[PnsPolriSatkerEnum.iii];
+  const ii = pnsPolri[PnsPolriSatkerEnum.ii];
+
   const form = useForm<z.infer<typeof staffingStatusSchema>>({
     resolver: zodResolver(staffingStatusSchema),
     defaultValues: {
-      irjen: polri[PolriSatkerEnum.irjenPol]?.dsp || 0,
-      brigjen: polri[PolriSatkerEnum.brigjenPol]?.dsp || 0,
-      kombes: polri[PolriSatkerEnum.kombesPol]?.dsp || 0,
-      akbp: polri[PolriSatkerEnum.akbp]?.dsp || 0,
-      kompol: polri[PolriSatkerEnum.komPol]?.dsp || 0,
-      akp: polri[PolriSatkerEnum.akp]?.dsp || 0,
-      ip: polri[PolriSatkerEnum.ip]?.dsp || 0,
-      brigta: polri[PolriSatkerEnum.brikTa]?.dsp || 0,
-      iv: pnsPolri[PnsPolriSatkerEnum.iv]?.dsp || 0,
-      iii: pnsPolri[PnsPolriSatkerEnum.iii]?.dsp || 0,
-      ii: pnsPolri[PnsPolriSatkerEnum.ii]?.dsp || 0,
+      irjen: irjen?.dsp || 0,
+      brigjen: brigjen?.dsp || 0,
+      kombes: kombes?.dsp || 0,
+      akbp: akbp?.dsp || 0,
+      kompol: kompol?.dsp || 0,
+      akp: akp?.dsp || 0,
+      ip: ip?.dsp || 0,
+      brigta: brigta?.dsp || 0,
+      iv: iv?.dsp || 0,
+      iii: iii?.dsp || 0,
+      ii: ii?.dsp || 0,
     },
   });
-
-  const IRJENRIIL = polri[PolriSatkerEnum.irjenPol]?.rill || 0;
-  const BRIGJENRIIL = polri[PolriSatkerEnum.brigjenPol]?.rill || 0;
-  const KOMBESRIIL = polri[PolriSatkerEnum.kombesPol]?.rill || 0;
-  const AKBPRIIL = polri[PolriSatkerEnum.akbp]?.rill || 0;
-  const KOMPOLRIIL = polri[PolriSatkerEnum.komPol]?.rill || 0;
-  const AKPRIIL = polri[PolriSatkerEnum.akp]?.rill || 0;
-  const IPRIIL = polri[PolriSatkerEnum.ip]?.rill || 0;
-  const BRIGTARIIL = polri[PolriSatkerEnum.brikTa]?.rill || 0;
-  const IVRIIL = pnsPolri[PnsPolriSatkerEnum.iv]?.rill || 0;
-  const IIIRIIL = pnsPolri[PnsPolriSatkerEnum.iii]?.rill || 0;
-  const IIRIIL = pnsPolri[PnsPolriSatkerEnum.ii]?.rill || 0;
 
   const [isLoadingState, setIsLoadingState] = useState(false);
   const [dialogState, setDialogState] = useState<
     "form" | "confirm" | "failed" | "success"
   >("form");
-
-  const onSave = async (): Promise<boolean> => {
-    await new Promise((resolve) => setTimeout(resolve, 500));
-    console.log(form.getValues());
-    return true;
-  };
 
   const onButtonSave = async () => {
     setIsLoadingState(false);
@@ -77,9 +72,30 @@ const EditDialog = ({ title, data }: Props) => {
       return;
     }
     setIsLoadingState(true);
-    const result = await onSave();
-    setIsLoadingState(false);
-    setDialogState(result ? "success" : "failed");
+    const formValues = form.getValues();
+    usePostStaffingStatus({
+      satker: data.satker,
+      irjenPol: formValues.irjen || 0,
+      brigjenPol: formValues.brigjen || 0,
+      kombesPol: formValues.kombes || 0,
+      akbp: formValues.akbp || 0,
+      komPol: formValues.kompol || 0,
+      akp: formValues.akp || 0,
+      ip: formValues.ip || 0,
+      brikTa: formValues.brigta || 0,
+      iv: formValues.iv || 0,
+      iii: formValues.iii || 0,
+      ii: formValues.ii || 0,
+    })
+      .then((_) => {
+        setDialogState("success");
+      })
+      .catch(() => {
+        setDialogState("failed");
+      })
+      .finally(() => {
+        setIsLoadingState(false);
+      });
     return;
   };
 
@@ -92,6 +108,7 @@ const EditDialog = ({ title, data }: Props) => {
 
   const handleClose = () => {
     setDialogState("form");
+    form.reset();
   };
 
   return (
@@ -133,49 +150,49 @@ const EditDialog = ({ title, data }: Props) => {
                   <h1 className="font-bold text-md pb-3">POLRI</h1>
                   <DialogInput
                     title="IRJEN"
-                    riil={IRJENRIIL}
+                    riil={irjen?.rill || 0}
                     control={form.control}
                     name="irjen"
                   />
                   <DialogInput
                     title="BRIGJEN"
-                    riil={BRIGJENRIIL}
+                    riil={brigjen?.rill || 0}
                     control={form.control}
                     name="brigjen"
                   />
                   <DialogInput
                     title="KOMBES"
-                    riil={KOMBESRIIL}
+                    riil={kombes?.rill || 0}
                     control={form.control}
                     name="kombes"
                   />
                   <DialogInput
                     title="AKBP"
-                    riil={AKBPRIIL}
+                    riil={akbp?.rill || 0}
                     control={form.control}
                     name="akbp"
                   />
                   <DialogInput
                     title="KOMPOL"
-                    riil={KOMPOLRIIL}
+                    riil={kompol?.rill || 0}
                     control={form.control}
                     name="kompol"
                   />
                   <DialogInput
                     title="AKP"
-                    riil={AKPRIIL}
+                    riil={akp?.rill || 0}
                     control={form.control}
                     name="akp"
                   />
                   <DialogInput
                     title="IP"
-                    riil={IPRIIL}
+                    riil={ip?.rill || 0}
                     control={form.control}
                     name="ip"
                   />
                   <DialogInput
                     title="BRIG/TA"
-                    riil={BRIGTARIIL}
+                    riil={brigta?.rill || 0}
                     control={form.control}
                     name="brigta"
                   />
@@ -185,19 +202,19 @@ const EditDialog = ({ title, data }: Props) => {
                   <h1 className="font-bold text-md pb-3">PNS POLRI</h1>
                   <DialogInput
                     title="IV"
-                    riil={IVRIIL}
+                    riil={iv?.rill || 0}
                     control={form.control}
                     name="iv"
                   />
                   <DialogInput
                     title="III"
-                    riil={IIIRIIL}
+                    riil={iii?.rill || 0}
                     control={form.control}
                     name="iii"
                   />
                   <DialogInput
                     title="II/I"
-                    riil={IIRIIL}
+                    riil={ii?.rill || 0}
                     control={form.control}
                     name="ii"
                   />

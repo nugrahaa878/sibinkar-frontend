@@ -15,7 +15,7 @@ const personnelFormSchema = z.object({
     .number({
       required_error: "NRP wajib diisi",
     })
-    .gte(10000000000, "NRP Minimal 11 digit"),
+    .gte(10_000_000_000, "NRP Minimal 11 digit"),
   rank: z.string({
     required_error: "Pangkat wajib diisi",
   }),
