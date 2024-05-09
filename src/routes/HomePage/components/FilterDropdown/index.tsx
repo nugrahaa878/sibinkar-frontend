@@ -7,78 +7,56 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useState } from "react";
+import { Loader2 } from "lucide-react";
+import useGetFilter from "../../hooks/useGetSubFilter";
+import FilterPersonilEnum from "./enums";
 
-enum FilterPersonilEnum {
-  pangkat = "Pangkat",
-  jabatan = "Jabatan",
-  subSatKer = "SubSatKer",
-  subDit = "SubDit",
+interface Props {
+  onApplyFilter: (type: string, value: string) => void;
 }
 
-enum PangkatEnum {
-  irjenPol = "IRJEN POL",
-  brigjenPol = "BRIGJEN POL",
-}
-
-enum JabatanEnum {
-  dirkamselKorlantasPolri = "DIRKAMSEL KORLANTAS POLRI",
-}
-
-enum SubSatKerEnum {
-  kamsel = "KAMSEL",
-}
-
-enum SubDitEnum {
-  urtuKamsel = "URTU KAMSEL",
-}
-
-const FilterDropdown = () => {
+const FilterDropdown = ({ onApplyFilter }: Props) => {
   const filters = Object.values(FilterPersonilEnum);
-
-  const [filter, setFilter] = useState<
-    FilterPersonilEnum | string | undefined
-  >();
-  const [subFilters, setSubFilters] = useState<string[] | undefined>();
-  const [subFilter, setSubFilter] = useState<string | undefined>();
+  const { subFilterData, fetchData, loading } = useGetFilter();
   const [subFilterPlaceholder, setSubFilterPlaceholder] = useState<string>();
+  const [filter, setFilter] = useState<string>();
 
-  const onFilterChange = (value: string) => {
-    setSubFilter("");
-    const selectedFilter =
-      FilterPersonilEnum[value as keyof typeof FilterPersonilEnum];
-    setFilter(selectedFilter);
+  const onFilterChange = async (value: string) => {
+    setFilter(value);
+    onApplyFilter("", "");
     switch (value) {
       case FilterPersonilEnum.jabatan: {
         setSubFilterPlaceholder("Pilih Jabatan");
-        setSubFilters(Object.values(JabatanEnum));
+        fetchData("jabatan");
         break;
       }
       case FilterPersonilEnum.pangkat: {
         setSubFilterPlaceholder("Pilih Pangkat");
-        setSubFilters(Object.values(PangkatEnum));
+        fetchData("pangkat");
         break;
       }
       case FilterPersonilEnum.subDit: {
         setSubFilterPlaceholder("Pilih SubDit");
-        setSubFilters(Object.values(SubDitEnum));
+        fetchData("subdit");
         break;
       }
       case FilterPersonilEnum.subSatKer: {
         setSubFilterPlaceholder("Pilih SubSatKer");
-        setSubFilters(Object.values(SubSatKerEnum));
+        fetchData("subsatker");
         break;
       }
     }
   };
 
-  const onSubFilterChange = (value: string) => {
-    setSubFilter(value);
-  };
-
   const onDeleteFilter = () => {
     setFilter("");
-    setSubFilters(undefined);
-    setSubFilter("");
+    setSubFilterPlaceholder("");
+    fetchData("delete");
+    onApplyFilter("", "");
+  };
+
+  const onFilter = (value: string) => {
+    onApplyFilter(filter || "", value);
   };
 
   return (
@@ -88,7 +66,7 @@ const FilterDropdown = () => {
       </h1>
 
       <div className="flex">
-        <Select value={filter} onValueChange={onFilterChange}>
+        <Select onValueChange={onFilterChange} value={filter}>
           <SelectTrigger className="w-[250px] mr-4">
             <SelectValue placeholder="Filter Berdasarkan" />
           </SelectTrigger>
@@ -104,29 +82,31 @@ const FilterDropdown = () => {
           </SelectContent>
         </Select>
 
-        {subFilters && (
-          <Select value={subFilter} onValueChange={onSubFilterChange}>
-            <SelectTrigger className="w-[250px]">
-              <SelectValue placeholder={subFilterPlaceholder} />
-            </SelectTrigger>
+        {subFilterData.length > 0 && !loading && (
+          <>
+            <Select onValueChange={onFilter}>
+              <SelectTrigger className="w-[250px]">
+                <SelectValue placeholder={subFilterPlaceholder} />
+              </SelectTrigger>
 
-            <SelectContent>
-              {subFilters.map((item) => {
-                return (
-                  <SelectItem key={item} value={item}>
-                    {item}
-                  </SelectItem>
-                );
-              })}
-            </SelectContent>
-          </Select>
+              <SelectContent>
+                {subFilterData.map((item) => {
+                  return (
+                    <SelectItem key={item.id} value={item.nama}>
+                      {item.nama}
+                    </SelectItem>
+                  );
+                })}
+              </SelectContent>
+            </Select>
+
+            <Button className="ml-2" variant="outline" onClick={onDeleteFilter}>
+              Hapus Filter
+            </Button>
+          </>
         )}
 
-        {subFilter && (
-          <Button className="ml-2" variant="outline" onClick={onDeleteFilter}>
-            Hapus Filter
-          </Button>
-        )}
+        {loading && <Loader2 className="animate-spin mt-2" />}
       </div>
     </div>
   );

@@ -10,3 +10,15 @@ export interface Personnel {
   bko: string;
   status: string;
 }
+
+export interface ListPersonnelResponseInterface {
+  success: boolean;
+  message: string;
+  data?: {
+    result: Personnel[];
+    meta: {
+      current_page: string;
+      total_pages: string;
+    };
+  };
+}

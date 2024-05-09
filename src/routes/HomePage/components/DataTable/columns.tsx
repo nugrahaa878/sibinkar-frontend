@@ -1,70 +1,77 @@
 import { ColumnDef } from "@tanstack/react-table";
 import Action from "./action";
-import { Personnel } from "../../entities/personnel";
+import { Personnel } from "../../hooks/useGetPersonnel/types";
 
 export const columns: ColumnDef<Personnel>[] = [
   {
-    accessorKey: "number",
-    header: "No",
+    id: "number",
+    header: "No.",
+    cell: ({ row }) => {
+      return <h1>{row.index + 1}</h1>;
+    },
   },
   {
-    accessorKey: "name",
+    accessorKey: "nama",
     header: "Nama",
   },
   {
-    accessorKey: "gender",
+    accessorKey: "jenis_kelamin",
     header: "Jenis Kelamin",
   },
   {
-    accessorKey: "NRP",
+    accessorKey: "nrp",
     header: "NRP",
   },
   {
-    accessorKey: "rank",
+    accessorKey: "pangkat",
     header: "Pangkat",
   },
   {
-    accessorKey: "position",
+    accessorKey: "jabatan",
     header: "Jabatan",
   },
   {
-    accessorKey: "subSatKer",
+    accessorKey: "subsatker",
     header: "SubSatKer",
   },
   {
-    accessorKey: "subDit",
+    accessorKey: "subdit",
     header: "SubDit",
   },
   {
-    accessorKey: "BKO",
+    accessorKey: "bko",
     header: "BKO",
     id: "BKO",
     cell: ({ row }) => {
       const personil = row.original;
 
-      switch (personil.BKO) {
+      switch (personil.bko) {
         case "Gasus Keluar":
+        case "Gasus keluar":
           return (
             <h1 className="bg-stone-400 border text-white text-xs rounded-md px-2 py-0.5">
               Gasus Keluar
             </h1>
           );
         case "Gasum Keluar":
+        case "Gasum keluar":
           return (
             <h1 className="bg-stone-500 border text-white text-xs rounded-md px-2 py-0.5">
               Gasum Keluar
             </h1>
           );
         case "Gasus Ke Dalam":
+        case "Gasus masuk":
           return (
             <h1 className="bg-lime-700 border  text-white text-xs rounded-md px-2 py-0.5">
-              Gasus Ke Dalam
+              Gasus Masuk
             </h1>
           );
         case "Gasum Ke Dalam":
+        case "Gasum masuk":
           return (
             <h1 className="bg-green-800 border text-white text-xs rounded-md px-2 py-0.5">
-              Gasum Ke Dalam
+              Gasum Masuk
             </h1>
           );
       }

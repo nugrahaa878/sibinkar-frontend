@@ -1,17 +1,16 @@
 import { Button } from "@/components/ui/button";
-import { Dialog } from "@/components/ui/dialog";
+import { DialogTrigger, Dialog } from "@/components/ui/dialog";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { DialogTrigger } from "@radix-ui/react-dialog";
 import { MoreHorizontal } from "lucide-react";
 import DeleteDialog from "../Dialog/DeleteDialog";
 import EditDialog from "../Dialog/EditDialog";
 import { useState } from "react";
-import { Personnel } from "../../entities/personnel";
+import { Personnel } from "../../hooks/useGetPersonnel/types";
 
 interface Props {
   personnel: Personnel;
@@ -44,7 +43,7 @@ const Action = ({ personnel }: Props) => {
           </DialogTrigger>
         </DropdownMenuContent>
       </DropdownMenu>
-      {actionType === "delete" && <DeleteDialog />}
+      {actionType === "delete" && <DeleteDialog id={personnel.id} />}
       {actionType === "edit" && <EditDialog personnel={personnel} />}
     </Dialog>
   );

@@ -5,32 +5,29 @@ import Header from "./components/Header";
 import { DataTable } from "./components/DataTable";
 import { columns } from "./components/DataTable/columns";
 import Navigation from "./components/Navigation";
-import { Personnel } from "./entities/personnel";
-import dummy_personnels from "./data/dummy-personnels";
 import { useEffect, useState } from "react";
 import { Loader2 } from "lucide-react";
-import useGetPersonnel from "./hooks/useGetPersonnel";
 import { useToast } from "@/components/ui/use-toast";
 import { useLocation } from "react-router-dom";
 import { Toaster } from "@/components/ui/toaster";
+import useGetPersonnel from "./hooks/useGetPersonnel";
 
 const HomePage = () => {
-  const { listPersonnel: listPersonnelApi, loading } = useGetPersonnel();
-  const [listPersonnel, setListPersonnel] = useState<Personnel[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [page, setPage] = useState<number>(1);
+  const [filterType, setFilterType] = useState<string>();
+  const [filterValue, setFilterValue] = useState<string>();
+
+  const { listPersonnel, loading, totalPages, mutate } = useGetPersonnel({
+    page,
+    limit: 10,
+    filterType,
+    filterValue,
+  });
+
   const { toast } = useToast();
-
   const location = useLocation();
+
   const afterLogin = location.state?.afterLogin;
-
-  const delay = async (ms: number) => {
-    return new Promise((resolve) => setTimeout(resolve, ms));
-  };
-
-  const onGetPersonnel = async () => {
-    await delay(3000);
-    setListPersonnel(dummy_personnels);
-  };
 
   useEffect(() => {
     if (afterLogin) {
@@ -39,14 +36,18 @@ const HomePage = () => {
         description: "Success login to your account",
       });
     }
-
-    console.log({ listPersonnelApi, loading });
-
-    setIsLoading(true);
-    onGetPersonnel().then(() => {
-      setIsLoading(false);
-    });
   }, []);
+
+  const onChangePage = (newPage: number) => {
+    setPage(newPage);
+    mutate();
+  };
+
+  const onApplyFilter = (type: string, value: string) => {
+    setFilterType(type.toLowerCase());
+    setFilterValue(value);
+    mutate();
+  };
 
   return (
     <div className="flex flex-col items-center h-screen">
@@ -54,10 +55,19 @@ const HomePage = () => {
 
       <DefaultContainer>
         <Header />
-        {isLoading && <Loader2 className="h-12 w-12 m-4 animate-spin" />}
-        {!isLoading && <Toolbar />}
-        {!isLoading && <DataTable data={listPersonnel} columns={columns} />}
-        {!isLoading && <Navigation />}
+        <Toolbar onApplyFilter={onApplyFilter} />
+        {loading ? (
+          <Loader2 className="h-12 w-12 m-4 animate-spin" />
+        ) : (
+          <>
+            <DataTable data={listPersonnel || []} columns={columns} />
+            <Navigation
+              currentPage={page}
+              totalPages={Number(totalPages)}
+              onChangePage={onChangePage}
+            />
+          </>
+        )}
       </DefaultContainer>
 
       <Toaster />
