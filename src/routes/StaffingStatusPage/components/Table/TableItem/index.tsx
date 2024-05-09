@@ -1,45 +1,66 @@
+import { Dialog, DialogTrigger } from "@/components/ui/dialog";
+import { SatkerData } from "@/routes/StaffingStatusPage/hooks/useGetStaffingStatus/types";
+import InfoDialog from "../../Dialog/InfoDialog";
+
 interface Props {
-  item: number;
+  isSum: boolean;
   index: number;
-  dsp: number;
+  data: SatkerData | undefined;
 }
 
-const TableItem = ({ item, index, dsp }: Props) => {
-  const isRiil = index % 2 !== 0;
-  const isOver = item > dsp && isRiil;
-  const isUnder = item < dsp && isRiil;
-  const isJumlah = index === 16 || index === 17 || index >= 24;
-  const isHighlighted = (): boolean => {
-    if (index % 2 === 0 && index % 4 !== 0) {
-      return false;
-    }
-    if ((index - 1) % 2 === 0 && (index - 1) % 4 !== 0) {
-      return false;
-    }
-    return true;
-  };
+const TableItem = ({ isSum = false, index, data }: Props) => {
+  const rill: number = data?.rill || 0;
+  const dsp: number = data?.dsp || 0;
+  const message: string = data?.message || "";
+  const isOver = rill > dsp;
+  const isUnder = rill < dsp;
+  const isHighlighted = index % 2 !== 0;
   const bgColor = (): string => {
-    if (index === 16 || index === 17 || index >= 24) {
+    if (isSum) {
       return "bg-indigo-50";
     }
-    if (isOver) {
-      return "bg-red-200";
+    if (isOver || isUnder) {
+      return "bg-red-100";
     }
-    if (isUnder) {
-      return "bg-blue-200";
-    }
-    if (isHighlighted()) {
-      return "bg-neutral-200";
+    if (isHighlighted) {
+      return "bg-neutral-100";
     }
     return "bg-neutral-50";
   };
   return (
-    <td
-      data-tooltip-id={isOver ? "over-tooltip" : isUnder ? "under-tooltip" : ""}
-      className={`${bgColor()} ${isJumlah && "font-bold"} text-center py-2`}
-    >
-      {item}
-    </td>
+    <Dialog>
+      <td
+        data-tooltip-id={
+          isOver ? "over-tooltip" : isUnder ? "under-tooltip" : ""
+        }
+        className={`flex-row ${bgColor()} py-2`}
+      >
+        <DialogTrigger asChild>
+          <h1
+            className={`${
+              (isOver || isUnder) &&
+              "text-red-500 font-bold hover:cursor-pointer"
+            } ${isSum && "font-bold"} text-center`}
+          >
+            {dsp}
+          </h1>
+        </DialogTrigger>
+      </td>
+
+      <td
+        className={`flex-row ${
+          index % 2 === 0 ? "bg-neutral-50" : "bg-neutral-100"
+        } ${isSum && "bg-indigo-50"} py-2`}
+      >
+        <h1 className={`${isSum && "font-bold"} text-center`}>{rill}</h1>
+      </td>
+      {message && (
+        <InfoDialog
+          title={dsp > rill ? "Kekurangan Personil" : "Kelebihan Personil"}
+          message={message}
+        />
+      )}
+    </Dialog>
   );
 };
 

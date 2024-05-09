@@ -11,10 +11,7 @@ const TableHead = () => {
         <th colSpan={18} className="py-2">
           POLRI
         </th>
-        <th colSpan={6}>PNS POLRI</th>
-        <th rowSpan={2} colSpan={2}>
-          Jumlah
-        </th>
+        <th colSpan={8}>PNS POLRI</th>
         <th rowSpan={2} colSpan={2}>
           Ket
         </th>
@@ -50,6 +47,7 @@ const TableHead = () => {
         <th colSpan={2}>IV</th>
         <th colSpan={2}>III</th>
         <th colSpan={2}>II/I</th>
+        <th colSpan={2}>Jumlah</th>
       </tr>
 
       <tr className="bg-[#9AABD5] text-white">

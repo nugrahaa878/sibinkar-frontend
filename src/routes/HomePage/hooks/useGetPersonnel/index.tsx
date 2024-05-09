@@ -16,7 +16,7 @@ const useGetPersonnel = ({ page, limit, filterType, filterValue }: Props) => {
     mutate,
   } = useSWR(
     `/personil?page=${page}&limit=10&${filterType}=${filterValue}`,
-    async (): Promise<ListPersonnelResponseInterface> => {
+    async (): Promise<ApiResponse<ListPersonnelResponseInterface>> => {
       const params = {
         page,
         limit,
