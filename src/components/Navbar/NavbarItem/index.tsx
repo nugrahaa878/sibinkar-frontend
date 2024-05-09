@@ -21,6 +21,7 @@ const NavbarItem = ({ type, page }: Props) => {
         break;
       }
       case NavbarPageEnum.organizationalStructure: {
+        navigate("/organization-structure");
         break;
       }
     }
