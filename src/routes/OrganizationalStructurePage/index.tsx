@@ -2,7 +2,7 @@ import DefaultContainer from "@/components/DefaultContainer";
 import { Navbar, NavbarPageEnum } from "@/components/Navbar";
 import Header from "./components/Header";
 import Toolbar from "./components/Toolbar";
-import OrganizationChart from "./components/OrganizationChart";
+import RecursiveOrganizationChart from "./components/RecursiveOrganizationChart";
 
 const OrganizationStructurePage = () => {
   return (
@@ -12,7 +12,8 @@ const OrganizationStructurePage = () => {
         <Header />
         <Toolbar />
         <div className="mx-10">
-          <OrganizationChart />
+          {/* <OrganizationChart /> */}
+          <RecursiveOrganizationChart />
         </div>
       </DefaultContainer>
     </div>
