@@ -37,46 +37,61 @@ export const dummyData: OrgNode = {
           id: 5,
           children: [],
         },
-      ],
-    },
-    {
-      name: "heru",
-      title: "Manager 2",
-      id: 3,
-      children: [
         {
-          name: "hengki",
-          title: "Lead 1",
-          id: 4,
+          name: "heru",
+          title: "Manager 2",
+          id: 3,
           children: [
             {
-              name: "Indri",
-              title: "Engineer 1",
-              id: 6,
+              name: "hengki",
+              title: "Lead 1",
+              id: 4,
+              offset: 1,
               children: [
                 {
-                  name: "jujo",
-                  title: "Intern 1",
-                  id: 7,
+                  name: "Indri",
+                  title: "Engineer 1",
+                  id: 6,
+                  children: [
+                    {
+                      name: "jujo",
+                      title: "Intern 1",
+                      id: 7,
+                      children: [],
+                    },
+                    {
+                      name: "jujJejio",
+                      title: "Intern 2",
+                      id: 7,
+                      children: [],
+                    },
+                  ],
+                },
+              ],
+              childOffset: [
+                {
+                  name: "irawan",
+                  title: "Co-lead 1",
+                  id: 8,
                   children: [],
                 },
                 {
-                  name: "jujJejio",
-                  title: "Intern 2",
-                  id: 7,
+                  name: "setiaji",
+                  title: "Co-lead 2",
+                  id: 8,
                   children: [],
                 },
               ],
             },
           ],
         },
+        {
+          name: "Engki",
+          title: "Manager 3",
+          id: 8,
+          children: [],
+        },
       ],
-    },
-    {
-      name: "Engki",
-      title: "Manager 3",
-      id: 8,
-      children: [],
     },
   ],
 };

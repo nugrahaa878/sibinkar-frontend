@@ -10,12 +10,9 @@ interface RecursiveTreeNodeInterface {
 
 const RecursiveTreeNode = ({ item, rootName }: RecursiveTreeNodeInterface) => {
   if (item.name === rootName) {
-    return (
-      item.children &&
-      item.children.map((child) => (
-        <RecursiveTreeNode key={child.id} item={child} />
-      ))
-    );
+    return item.children?.map((child) => (
+      <RecursiveTreeNode key={child.id} item={child} />
+    ));
   }
 
   return (
@@ -26,13 +23,13 @@ const RecursiveTreeNode = ({ item, rootName }: RecursiveTreeNodeInterface) => {
           name={item.name}
           position={item.title}
           offset={item.offset}
+          childOffset={item.childOffset}
         />
       }
     >
-      {item.children &&
-        item.children.map((child) => (
-          <RecursiveTreeNode key={child.id} item={child} />
-        ))}
+      {item.children?.map((child) => (
+        <RecursiveTreeNode key={child.id} item={child} />
+      ))}
     </TreeNode>
   );
 };

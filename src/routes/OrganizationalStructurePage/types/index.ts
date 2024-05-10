@@ -4,4 +4,5 @@ export interface OrgNode {
   id: number;
   offset?: number;
   children?: OrgNode[];
+  childOffset?: OrgNode[];
 }
