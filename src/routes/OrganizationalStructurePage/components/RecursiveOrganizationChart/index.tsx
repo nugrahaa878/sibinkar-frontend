@@ -25,7 +25,7 @@ const RecursiveTreeNode = ({ item, rootName }: RecursiveTreeNodeInterface) => {
           id={item.id}
           name={item.name}
           position={item.title}
-          offset={item?.offset || false}
+          offset={item.offset}
         />
       }
     >
