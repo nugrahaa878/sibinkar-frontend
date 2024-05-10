@@ -20,7 +20,14 @@ const RecursiveTreeNode = ({ item, rootName }: RecursiveTreeNodeInterface) => {
 
   return (
     <TreeNode
-      label={<Item id={item.id} name={item.name} position={item.title} />}
+      label={
+        <Item
+          id={item.id}
+          name={item.name}
+          position={item.title}
+          offset={item?.offset || false}
+        />
+      }
     >
       {item.children &&
         item.children.map((child) => (

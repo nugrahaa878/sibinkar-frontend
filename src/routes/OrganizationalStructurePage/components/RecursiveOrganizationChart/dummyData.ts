@@ -9,6 +9,7 @@ export const dummyData: OrgNode = {
       name: "budi",
       title: "Manager 1",
       id: 2,
+      offset: 1,
       children: [
         {
           name: "hengki",
