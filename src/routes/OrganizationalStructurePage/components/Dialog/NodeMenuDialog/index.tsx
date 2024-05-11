@@ -9,9 +9,16 @@ import { useForm } from "react-hook-form";
 import formSchema from "./schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { Form } from "@/components/ui/form";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+} from "@/components/ui/form";
 import DialogInput from "./input";
 import { OrgNode } from "@/routes/OrganizationalStructurePage/types";
+import { Checkbox } from "@/components/ui/checkbox";
 
 interface Props {
   id: number;
@@ -137,8 +144,7 @@ const NodeMenuDialog = ({
         </div>
       )}
 
-      {(dialogState === DialogState.addChild ||
-        dialogState === DialogState.edit) && (
+      {dialogState === DialogState.edit && (
         <div>
           <Form {...form}>
             <form
@@ -157,6 +163,74 @@ const NodeMenuDialog = ({
                 placeholder="Masukkan jabatan..."
                 label="Jabatan"
               />
+
+              <FormField
+                control={form.control}
+                name="isOffset"
+                render={({ field }) => (
+                  <FormItem className="flex items-center">
+                    <FormControl className="mr-4">
+                      <Checkbox
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                      />
+                    </FormControl>
+
+                    <FormLabel className="h-full">
+                      Bawahan tidak langsung
+                    </FormLabel>
+                  </FormItem>
+                )}
+              />
+
+              <DialogFooter>
+                <Button type="submit">Simpan</Button>
+              </DialogFooter>
+            </form>
+          </Form>
+        </div>
+      )}
+
+      {dialogState === DialogState.addChild && (
+        <div>
+          <Form {...form}>
+            <form
+              onSubmit={form.handleSubmit(onButtonSave)}
+              className="grid gap-4 py-4"
+            >
+              <DialogInput
+                control={form.control}
+                name="name"
+                placeholder="Masukkan nama..."
+                label="Nama"
+              />
+              <DialogInput
+                control={form.control}
+                name="position"
+                placeholder="Masukkan jabatan..."
+                label="Jabatan"
+              />
+
+              {!offset && (
+                <FormField
+                  control={form.control}
+                  name="isOffset"
+                  render={({ field }) => (
+                    <FormItem className="flex items-center">
+                      <FormControl className="mr-4">
+                        <Checkbox
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                        />
+                      </FormControl>
+
+                      <FormLabel className="h-full">
+                        Bawahan tidak langsung
+                      </FormLabel>
+                    </FormItem>
+                  )}
+                />
+              )}
 
               <DialogFooter>
                 <Button type="submit">Simpan</Button>
