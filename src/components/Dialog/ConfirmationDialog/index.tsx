@@ -28,7 +28,7 @@ const ConfirmationDialog = ({
         <DialogTitle>{title}</DialogTitle>
       </DialogHeader>
 
-      <DialogDescription>{description}</DialogDescription>
+      <DialogDescription className="my-4">{description}</DialogDescription>
 
       <DialogFooter>
         <Button className="bg-slate-500" onClick={onDecline}>

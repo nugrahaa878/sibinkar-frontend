@@ -1,4 +1,6 @@
+import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import { OrgNode } from "@/routes/OrganizationalStructurePage/types";
+import NodeMenuDialog from "../../Dialog/NodeMenuDialog";
 
 interface Props {
   id: number;
@@ -47,12 +49,25 @@ const Item = ({ id, position, name, offset, childOffset }: Props) => {
     );
   }
   return (
-    <div className="w-[200px] h-[70px] bg-slate-500 rounded-lg flex-col justify-center items-center inline-flex">
-      <div className="text-center text-white text-sm font-semibold">
-        {position}
-      </div>
-      <div className="text-center text-white text-xs font-normal">{name}</div>
-    </div>
+    <Dialog>
+      <DialogTrigger>
+        <div className="w-[200px] h-[70px] bg-slate-500 rounded-lg flex-col justify-center items-center inline-flex">
+          <div className="text-center text-white text-sm font-semibold">
+            {position}
+          </div>
+          <div className="text-center text-white text-xs font-normal">
+            {name}
+          </div>
+        </div>
+      </DialogTrigger>
+      <NodeMenuDialog
+        id={id}
+        position={position}
+        name={name}
+        offset={offset}
+        childOffset={childOffset}
+      />
+    </Dialog>
   );
 };
 

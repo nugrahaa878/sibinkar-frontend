@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import {
   Select,
   SelectContent,
@@ -8,6 +9,7 @@ import {
 } from "@/components/ui/select";
 import { DownloadIcon, Plus } from "lucide-react";
 import { useState } from "react";
+import CreateOrganizationDialog from "../Dialog/CreateOrganizationDialog";
 
 const Toolbar = () => {
   const filters = ["SIKEU", "TAUD"];
@@ -38,14 +40,20 @@ const Toolbar = () => {
         </Select>
       </div>
 
-      <div>
-        <Button variant="outline" className="mr-6">
-          <Plus className="mr-2" /> Tambah Organisasi
-        </Button>
-        <Button className="px-8">
-          <DownloadIcon className="mr-2" /> Unduh
-        </Button>
-      </div>
+      <Dialog>
+        <div>
+          <DialogTrigger asChild>
+            <Button variant="outline" className="mr-6">
+              <Plus className="mr-2" /> Tambah Organisasi
+            </Button>
+          </DialogTrigger>
+
+          <Button className="px-8">
+            <DownloadIcon className="mr-2" /> Unduh
+          </Button>
+        </div>
+        <CreateOrganizationDialog />
+      </Dialog>
     </div>
   );
 };

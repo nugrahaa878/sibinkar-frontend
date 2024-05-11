@@ -135,7 +135,7 @@ const DialogBody = ({ personnel, form, onAction }: Props) => {
 
       {dialogState === DialogStateEnum.form && (
         <div>
-          <DialogTitle>Ubah Data Personil</DialogTitle>
+          <DialogTitle>Data Personil</DialogTitle>
 
           <Form {...form}>
             <form
