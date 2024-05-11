@@ -164,24 +164,26 @@ const NodeMenuDialog = ({
                 label="Jabatan"
               />
 
-              <FormField
-                control={form.control}
-                name="isOffset"
-                render={({ field }) => (
-                  <FormItem className="flex items-center">
-                    <FormControl className="mr-4">
-                      <Checkbox
-                        checked={field.value}
-                        onCheckedChange={field.onChange}
-                      />
-                    </FormControl>
+              {!parentOffsetId && (
+                <FormField
+                  control={form.control}
+                  name="isOffset"
+                  render={({ field }) => (
+                    <FormItem className="flex items-center">
+                      <FormControl className="mr-4">
+                        <Checkbox
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                        />
+                      </FormControl>
 
-                    <FormLabel className="h-full">
-                      Bawahan tidak langsung
-                    </FormLabel>
-                  </FormItem>
-                )}
-              />
+                      <FormLabel className="h-full">
+                        Bawahan tidak langsung
+                      </FormLabel>
+                    </FormItem>
+                  )}
+                />
+              )}
 
               <DialogFooter>
                 <Button type="submit">Simpan</Button>
@@ -211,7 +213,7 @@ const NodeMenuDialog = ({
                 label="Jabatan"
               />
 
-              {!offset && (
+              {!offset && !parentOffsetId && (
                 <FormField
                   control={form.control}
                   name="isOffset"

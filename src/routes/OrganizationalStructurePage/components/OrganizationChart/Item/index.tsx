@@ -15,11 +15,11 @@ const Item = ({ id, position, name, offset, childOffset }: Props) => {
     return (
       <div>
         <Dialog>
-          <DialogTrigger>
-            <div className="flex items-center justify-center">
-              <div className="h-[70px] w-[1px] bg-black" />
-              <div className="h-[1px] w-[100px] bg-black" />
-              <div className="w-[200px] h-[70px] p-3 bg-red-500 rounded-lg items-center mr-[-300px]">
+          <div className="flex items-center justify-center">
+            <div className="h-[70px] w-[1px] bg-black" />
+            <div className="h-[1px] w-[100px] bg-black" />
+            <DialogTrigger className="mr-[-300px]">
+              <div className="w-[200px] h-[70px] p-3 bg-red-500 rounded-lg items-center ">
                 <div className="text-center text-white text-sm font-semibold">
                   {position}
                 </div>
@@ -27,8 +27,8 @@ const Item = ({ id, position, name, offset, childOffset }: Props) => {
                   {name}
                 </div>
               </div>
-            </div>
-          </DialogTrigger>
+            </DialogTrigger>
+          </div>
           <NodeMenuDialog
             id={id}
             position={position}
@@ -40,20 +40,31 @@ const Item = ({ id, position, name, offset, childOffset }: Props) => {
 
         {childOffset?.map((item) => {
           return (
-            <div className="flex items-center justify-center">
-              <div className="h-[90px] w-[1px] bg-black" />
-              <div className="flex flex-col  items-center mr-[-300px] ml-[100px]">
-                <div className="h-[20px] w-[1px] bg-red-500" />
-                <div className="w-[200px] h-[70px] p-3 bg-green-500 rounded-lg">
-                  <div className="text-center text-white text-sm font-semibold">
-                    {item.title}
+            <Dialog>
+              <div className="flex items-center justify-center">
+                <div className="h-[90px] w-[1px] bg-black" />
+                <DialogTrigger>
+                  <div className="flex flex-col  items-center mr-[-300px] ml-[100px]">
+                    <div className="h-[20px] w-[1px] bg-red-500" />
+
+                    <div className="w-[200px] h-[70px] p-3 bg-green-500 rounded-lg">
+                      <div className="text-center text-white text-sm font-semibold">
+                        {item.title}
+                      </div>
+                      <div className="text-center text-white text-xs font-normal">
+                        {item.name}
+                      </div>
+                    </div>
                   </div>
-                  <div className="text-center text-white text-xs font-normal">
-                    {item.name}
-                  </div>
-                </div>
+                </DialogTrigger>
               </div>
-            </div>
+              <NodeMenuDialog
+                id={item.id}
+                position={item.title}
+                name={item.name}
+                parentOffsetId={id}
+              />
+            </Dialog>
           );
         })}
       </div>
