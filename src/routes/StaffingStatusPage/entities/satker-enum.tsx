@@ -1,7 +1,7 @@
 enum PolriSatkerEnum {
-  irjenPol = "IRJEN POL",
-  brigjenPol = "BRIGJEN POL",
-  kombesPol = "KOMBES POL",
+  irjenPol = "IRJEN",
+  brigjenPol = "BRIGJEN",
+  kombesPol = "KOMBES",
   akbp = "AKBP",
   komPol = "KOMPOL",
   akp = "AKP",
