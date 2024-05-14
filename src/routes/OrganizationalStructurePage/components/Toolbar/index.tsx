@@ -8,14 +8,15 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { DownloadIcon, Plus } from "lucide-react";
-import { useState } from "react";
 import CreateOrganizationDialog from "../Dialog/CreateOrganizationDialog";
 
-const Toolbar = () => {
-  const filters = ["SIKEU", "TAUD"];
-  const [filter, setFilter] = useState<string>();
+interface Props {
+  data: string[];
+  filter?: string;
+  onFilterChange: (value: string) => void;
+}
 
-  const handleFilterChange = async (value: string) => {};
+const Toolbar = ({data, filter, onFilterChange} : Props) => {
 
   return (
     <div className="flex w-full justify-between">
@@ -23,13 +24,13 @@ const Toolbar = () => {
         <h1 className="text-xl text-indigo-900 font-bold pb-2">
           Pilih Organisasi
         </h1>
-        <Select onValueChange={handleFilterChange} value={filter}>
+        <Select onValueChange={onFilterChange} value={filter}>
           <SelectTrigger>
             <SelectValue placeholder="Pilih Organisasi" />
           </SelectTrigger>
 
           <SelectContent>
-            {filters.map((item) => {
+            {data.map((item) => {
               return (
                 <SelectItem key={item} value={item}>
                   {item}

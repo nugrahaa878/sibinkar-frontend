@@ -3,17 +3,45 @@ import { Navbar, NavbarPageEnum } from "@/components/Navbar";
 import Header from "./components/Header";
 import Toolbar from "./components/Toolbar";
 import RecursiveOrganizationChart from "./components/RecursiveOrganizationChart";
+import { Loader2 } from "lucide-react";
+import { useEffect } from "react";
+import useGetData from "./hooks/useGetData";
 
 const OrganizationStructurePage = () => {
+  const {
+    listOrganization,
+    organization,
+    loading,
+    initData,
+    fetchOrganization
+  } = useGetData();
+
+  useEffect(() => {
+    initData();
+  }, []);
+
+  const handleFilterChange = (value: string) => {
+    fetchOrganization(value);
+  };
+
   return (
     <div className="flex flex-col items-center h-screen">
       <Navbar page={NavbarPageEnum.organizationalStructure} />
       <DefaultContainer>
         <Header />
-        <Toolbar />
+        <Toolbar
+          data={listOrganization}
+          onFilterChange={handleFilterChange}
+        />
         <div className="mx-10">
-          {/* <OrganizationChart /> */}
-          <RecursiveOrganizationChart />
+          {loading ? (
+            <Loader2 className="animate-spin" />
+          ) : (
+            <>
+              {!organization && <h1>Tidak ada data</h1>}
+              {organization && <RecursiveOrganizationChart item={organization} />}
+            </>
+          )}
         </div>
       </DefaultContainer>
     </div>
