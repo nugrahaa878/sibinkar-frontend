@@ -24,9 +24,15 @@ interface Props {
   id: number;
   position: string;
   name: string;
-  offset?: boolean;
+  offset: boolean;
   childOffset?: OrgNode[];
   parentOffsetId?: number;
+  onCreateNode: (
+    parentId: number,
+    name: string,
+    position: string,
+    offset: boolean
+  ) => Promise<void>;
 }
 
 const NodeMenuDialog = ({
@@ -36,38 +42,42 @@ const NodeMenuDialog = ({
   offset,
   childOffset,
   parentOffsetId,
+  onCreateNode,
 }: Props) => {
   const [isLoadingState, setIsLoadingState] = useState<boolean>(false);
   const [dialogState, setDialogState] = useState<DialogState>(DialogState.menu);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
+    defaultValues: {
+      isOffset: false
+    }
   });
 
-  const onButtonSave = async () => {
-    // setIsLoadingState(true);
-    // const formValues = form.getValues();
-    // onAction({
-    //   id: personnel?.id,
-    //   nama: formValues.name,
-    //   jenis_kelamin: formValues.gender,
-    //   nrp: formValues.NRP,
-    //   status: formValues.status,
-    //   jabatan: positionId,
-    //   pangkat: rankId,
-    //   subsatker: subSatKerId,
-    //   subdit: subDitId,
-    //   bko: formValues.BKO,
-    // })
-    //   .then((_) => {
-    //     setDialogState(DialogStateEnum.success);
-    //   })
-    //   .catch(() => {
-    //     setDialogState(DialogStateEnum.failed);
-    //   })
-    //   .finally(() => {
-    //     setIsLoadingState(false);
-    //   });
+  const handleCreateNode = async () => {
+    setIsLoadingState(true);
+    const formValues = form.getValues();
+    onCreateNode(
+      id,
+      formValues.name,
+      formValues.position,
+      formValues.isOffset
+    )
+      .then((_) => {
+        setDialogState(DialogState.success);
+      })
+      .catch(() => {
+        setDialogState(DialogState.error);
+      })
+      .finally(() => {
+        setIsLoadingState(false);
+      });
+    return;
+  }
+
+  const handleUpdateNode = async () => {
+    setIsLoadingState(true);
+    const formValues = form.getValues();
     return;
   };
 
@@ -137,6 +147,7 @@ const NodeMenuDialog = ({
             variant="outline"
             className="border-red-500 text-red-500"
             onClick={handleDeleteMenu}
+            disabled={isLoadingState}
           >
             {" "}
             Hapus Data
@@ -148,7 +159,7 @@ const NodeMenuDialog = ({
         <div>
           <Form {...form}>
             <form
-              onSubmit={form.handleSubmit(onButtonSave)}
+              onSubmit={form.handleSubmit(handleUpdateNode)}
               className="grid gap-4 py-4"
             >
               <DialogInput
@@ -197,7 +208,7 @@ const NodeMenuDialog = ({
         <div>
           <Form {...form}>
             <form
-              onSubmit={form.handleSubmit(onButtonSave)}
+              onSubmit={form.handleSubmit(handleCreateNode)}
               className="grid gap-4 py-4"
             >
               <DialogInput
@@ -235,7 +246,7 @@ const NodeMenuDialog = ({
               )}
 
               <DialogFooter>
-                <Button type="submit">Simpan</Button>
+                <Button type="submit" disabled={isLoadingState}>Simpan</Button>
               </DialogFooter>
             </form>
           </Form>

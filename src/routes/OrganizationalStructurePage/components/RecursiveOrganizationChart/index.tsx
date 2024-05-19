@@ -5,12 +5,18 @@ import { OrgNode } from "../../types";
 interface RecursiveTreeNodeInterface {
   item: OrgNode;
   rootName?: string;
+  onCreateNode: (
+    parentId: number,
+    name: string,
+    position: string,
+    offset: boolean
+  ) => Promise<void>;
 }
 
-const RecursiveTreeNode = ({ item, rootName }: RecursiveTreeNodeInterface) => {
+const RecursiveTreeNode = ({ item, rootName, onCreateNode }: RecursiveTreeNodeInterface) => {
   if (item.nama === rootName) {
     return item.child.map((child) => (
-      <RecursiveTreeNode key={child.id} item={child} />
+      <RecursiveTreeNode key={child.id} item={child} onCreateNode={onCreateNode} />
     ));
   }
 
@@ -23,17 +29,18 @@ const RecursiveTreeNode = ({ item, rootName }: RecursiveTreeNodeInterface) => {
           position={item.jabatan}
           offset={item.offset}
           childOffset={item.child_offsets}
+          onCreateNode={onCreateNode}
         />
       }
     >
       {item.child?.map((child) => (
-        <RecursiveTreeNode key={child.id} item={child} />
+        <RecursiveTreeNode key={child.id} item={child} onCreateNode={onCreateNode} />
       ))}
     </TreeNode>
   );
 };
 
-const RecursiveOrganizationChart = ({item} : RecursiveTreeNodeInterface) => {
+const RecursiveOrganizationChart = ({item, onCreateNode} : RecursiveTreeNodeInterface) => {
   return (
     <Tree
       label={
@@ -43,10 +50,11 @@ const RecursiveOrganizationChart = ({item} : RecursiveTreeNodeInterface) => {
           position={item.jabatan}
           offset={item.offset}
           childOffset={item.child_offsets}
+          onCreateNode={onCreateNode}
         />
       }
     >
-      <RecursiveTreeNode item={item} rootName={item.nama} />
+      <RecursiveTreeNode item={item} rootName={item.nama} onCreateNode={onCreateNode} />
     </Tree>
   );
 };

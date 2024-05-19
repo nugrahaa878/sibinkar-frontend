@@ -5,8 +5,8 @@ interface Props {
 }
 
 const useDeleteOrganization = async ({ id }: Props) => {
-  const response = await axiosClient.delete(`/organization/${id}/`);
-  return response.data.success || true;
+  const response = await axiosClient.delete(`/organizational-structure/chart/${id}/`);
+  return response.data.success;
 };
 
 export default useDeleteOrganization;

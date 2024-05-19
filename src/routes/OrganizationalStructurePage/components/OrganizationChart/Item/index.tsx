@@ -8,9 +8,15 @@ interface Props {
   name: string;
   offset: boolean;
   childOffset: OrgNode[];
+  onCreateNode: (
+    parentId: number,
+    name: string,
+    position: string,
+    offset: boolean
+  ) => Promise<void>;
 }
 
-const Item = ({ id, position, name, offset, childOffset }: Props) => {
+const Item = ({ id, position, name, offset, childOffset, onCreateNode }: Props) => {
   if (offset) {
     return (
       <div>
@@ -35,6 +41,7 @@ const Item = ({ id, position, name, offset, childOffset }: Props) => {
             name={name}
             offset={offset}
             childOffset={childOffset}
+            onCreateNode={onCreateNode}
           />
         </Dialog>
 
@@ -62,7 +69,9 @@ const Item = ({ id, position, name, offset, childOffset }: Props) => {
                 id={item.id}
                 position={item.jabatan}
                 name={item.nama}
+                offset={item.offset}
                 parentOffsetId={id}
+                onCreateNode={onCreateNode}
               />
             </Dialog>
           );
@@ -88,6 +97,7 @@ const Item = ({ id, position, name, offset, childOffset }: Props) => {
         name={name}
         offset={offset}
         childOffset={childOffset}
+        onCreateNode={onCreateNode}
       />
     </Dialog>
   );

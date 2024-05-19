@@ -6,6 +6,7 @@ import RecursiveOrganizationChart from "./components/RecursiveOrganizationChart"
 import { Loader2 } from "lucide-react";
 import { useEffect } from "react";
 import useGetData from "./hooks/useGetData";
+import usePostCreateNode from "./hooks/usePostCreateNode";
 
 const OrganizationStructurePage = () => {
   const {
@@ -13,7 +14,7 @@ const OrganizationStructurePage = () => {
     organization,
     loading,
     initData,
-    fetchOrganization
+    fetchOrganization,
   } = useGetData();
 
   useEffect(() => {
@@ -21,8 +22,24 @@ const OrganizationStructurePage = () => {
   }, []);
 
   const handleFilterChange = (value: string) => {
-    const orgId = Number(value)
+    const orgId = Number(value);
     fetchOrganization(orgId);
+  };
+
+  const onCreateNode = async (
+    parentId: number,
+    name: string,
+    position: string,
+    offset: boolean
+  ) => {
+    await usePostCreateNode({
+      organizationId: organization?.id.toString() ?? "",
+      parentId,
+      name,
+      position,
+      offset,
+    });
+    fetchOrganization(organization?.id!);
   };
 
   return (
@@ -41,7 +58,9 @@ const OrganizationStructurePage = () => {
           ) : (
             <>
               {!organization && <h1>Tidak ada data</h1>}
-              {organization && <RecursiveOrganizationChart item={organization.nodes!} />}
+              {organization && (
+                <RecursiveOrganizationChart item={organization.nodes!} onCreateNode={onCreateNode} />
+              )}
             </>
           )}
         </div>

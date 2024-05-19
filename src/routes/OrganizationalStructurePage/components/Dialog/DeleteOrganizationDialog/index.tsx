@@ -5,7 +5,7 @@ import SuccessDialog from "@/components/Dialog/SuccessDialog";
 import {
   DialogContent,
 } from "@/components/ui/dialog";
-import useDeleteNode from "@/routes/OrganizationalStructurePage/hooks/useDeleteNode";
+import useDeleteOrganization from "@/routes/OrganizationalStructurePage/hooks/useDeleteOrganization";
 import { useState } from "react";
 
 interface Props {
@@ -24,7 +24,7 @@ const DeleteOrganizationDialog = ({ id }: Props) => {
       return;
     }
     setIsLoadingState(true);
-    useDeleteNode({
+    useDeleteOrganization({
       id
     })
       .then((_) => {
