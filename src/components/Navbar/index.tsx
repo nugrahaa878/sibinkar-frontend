@@ -5,9 +5,9 @@ import NavbarItem from "./NavbarItem";
 import useAuth from "@/hooks/useAuth";
 
 enum NavbarPageEnum {
-  personnelDatabase = "Personnel Database",
-  staffingStatus = "Staffing Status",
-  organizationalStructure = "Organizational Structure",
+  personnelDatabase = "Data Personil",
+  staffingStatus = "Status Staf",
+  organizationalStructure = "Struktur Organisasi",
 }
 
 interface Props {

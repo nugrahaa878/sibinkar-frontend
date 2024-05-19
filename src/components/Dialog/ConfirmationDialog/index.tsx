@@ -11,6 +11,7 @@ interface Props {
   title: string;
   description: string;
   isLoading: boolean;
+  acceptLabel?: string; 
   onAccept: () => void;
   onDecline: () => void;
 }
@@ -19,6 +20,7 @@ const ConfirmationDialog = ({
   title,
   description,
   isLoading,
+  acceptLabel,
   onAccept,
   onDecline,
 }: Props) => {
@@ -28,7 +30,7 @@ const ConfirmationDialog = ({
         <DialogTitle>{title}</DialogTitle>
       </DialogHeader>
 
-      <DialogDescription>{description}</DialogDescription>
+      <DialogDescription className="my-4">{description}</DialogDescription>
 
       <DialogFooter>
         <Button className="bg-slate-500" onClick={onDecline}>
@@ -37,7 +39,7 @@ const ConfirmationDialog = ({
 
         <Button onClick={onAccept}>
           {isLoading && <Loader2Icon className="mr-2 animate-spin" />}
-          Simpan
+          {acceptLabel ?? "Simpan"}
         </Button>
       </DialogFooter>
     </div>
