@@ -24,7 +24,7 @@ interface Props {
   id: number;
   position: string;
   name: string;
-  offset?: number;
+  offset?: boolean;
   childOffset?: OrgNode[];
   parentOffsetId?: number;
 }

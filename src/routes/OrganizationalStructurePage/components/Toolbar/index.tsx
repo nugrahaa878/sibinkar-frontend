@@ -9,34 +9,32 @@ import {
 } from "@/components/ui/select";
 import { DownloadIcon, Plus } from "lucide-react";
 import CreateOrganizationDialog from "../Dialog/CreateOrganizationDialog";
+import { Organization } from "../../types";
 
 interface Props {
-  data: string[];
-  filter?: string;
+  data: Organization[];
+  selectedValue?: string;
   onFilterChange: (value: string) => void;
 }
 
-const Toolbar = ({data, filter, onFilterChange} : Props) => {
-
+const Toolbar = ({data, selectedValue, onFilterChange} : Props) => {
   return (
     <div className="flex w-full justify-between">
       <div className="flex flex-col">
         <h1 className="text-xl text-indigo-900 font-bold pb-2">
           Pilih Organisasi
         </h1>
-        <Select onValueChange={onFilterChange} value={filter}>
+        <Select onValueChange={onFilterChange}>
           <SelectTrigger>
             <SelectValue placeholder="Pilih Organisasi" />
           </SelectTrigger>
 
           <SelectContent>
-            {data.map((item) => {
-              return (
-                <SelectItem key={item} value={item}>
-                  {item}
-                </SelectItem>
-              );
-            })}
+            {data.map((org) => {
+                return (
+                  <SelectItem value={org.id.toString()}>{org.nama}</SelectItem>
+                )
+              })}
           </SelectContent>
         </Select>
       </div>

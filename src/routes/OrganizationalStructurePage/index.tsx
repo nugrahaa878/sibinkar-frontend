@@ -21,7 +21,8 @@ const OrganizationStructurePage = () => {
   }, []);
 
   const handleFilterChange = (value: string) => {
-    fetchOrganization(value);
+    const orgId = Number(value)
+    fetchOrganization(orgId);
   };
 
   return (

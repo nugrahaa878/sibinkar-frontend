@@ -1,6 +1,5 @@
 import { Tree, TreeNode } from "react-organizational-chart";
 import Item from "../OrganizationChart/Item";
-import { dummyData } from "./dummyData";
 import { OrgNode } from "../../types";
 
 interface RecursiveTreeNodeInterface {
@@ -9,8 +8,8 @@ interface RecursiveTreeNodeInterface {
 }
 
 const RecursiveTreeNode = ({ item, rootName }: RecursiveTreeNodeInterface) => {
-  if (item.name === rootName) {
-    return item.children?.map((child) => (
+  if (item.nama === rootName) {
+    return item.child.map((child) => (
       <RecursiveTreeNode key={child.id} item={child} />
     ));
   }
@@ -20,32 +19,34 @@ const RecursiveTreeNode = ({ item, rootName }: RecursiveTreeNodeInterface) => {
       label={
         <Item
           id={item.id}
-          name={item.name}
-          position={item.title}
+          name={item.nama}
+          position={item.jabatan}
           offset={item.offset}
-          childOffset={item.childOffset}
+          childOffset={item.child_offsets}
         />
       }
     >
-      {item.children?.map((child) => (
+      {item.child?.map((child) => (
         <RecursiveTreeNode key={child.id} item={child} />
       ))}
     </TreeNode>
   );
 };
 
-const RecursiveOrganizationChart = () => {
+const RecursiveOrganizationChart = ({item} : RecursiveTreeNodeInterface) => {
   return (
     <Tree
       label={
         <Item
-          id={dummyData.id}
-          name={dummyData.name}
-          position={dummyData.title}
+          id={item.id}
+          name={item.nama}
+          position={item.jabatan}
+          offset={item.offset}
+          childOffset={item.child_offsets}
         />
       }
     >
-      <RecursiveTreeNode item={dummyData} rootName={dummyData.name} />
+      <RecursiveTreeNode item={item} rootName={item.nama} />
     </Tree>
   );
 };

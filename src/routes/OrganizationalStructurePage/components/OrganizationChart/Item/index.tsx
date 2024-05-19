@@ -6,8 +6,8 @@ interface Props {
   id: number;
   position: string;
   name: string;
-  offset?: number;
-  childOffset?: OrgNode[];
+  offset: boolean;
+  childOffset: OrgNode[];
 }
 
 const Item = ({ id, position, name, offset, childOffset }: Props) => {
@@ -49,10 +49,10 @@ const Item = ({ id, position, name, offset, childOffset }: Props) => {
 
                     <div className="w-[200px] h-[70px] p-3 bg-green-500 rounded-lg">
                       <div className="text-center text-white text-sm font-semibold">
-                        {item.title}
+                        {item.jabatan}
                       </div>
                       <div className="text-center text-white text-xs font-normal">
-                        {item.name}
+                        {item.nama}
                       </div>
                     </div>
                   </div>
@@ -60,8 +60,8 @@ const Item = ({ id, position, name, offset, childOffset }: Props) => {
               </div>
               <NodeMenuDialog
                 id={item.id}
-                position={item.title}
-                name={item.name}
+                position={item.jabatan}
+                name={item.nama}
                 parentOffsetId={id}
               />
             </Dialog>

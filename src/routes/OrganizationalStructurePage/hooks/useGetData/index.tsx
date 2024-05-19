@@ -1,53 +1,42 @@
 import axiosClient from "@/networks/apiClient";
 import { useState } from "react";
-import { OrgNode } from "../../types";
-import { dummyData } from "../../components/RecursiveOrganizationChart/dummyData";
+import { Organization, OrgNode } from "../../types";
 
 const useInit = () => {
   // IDENYA: PINDAH SEMUA USE STATE DI SINI, TERMASUK SETTER DATANYA
   const [loading, setLoading] = useState(false);
-  const [listOrganization, setListOrganization] = useState<string[]>([]);
+  const [listOrganization, setListOrganization] = useState<Organization[]>([]);
   const [organization, setOrganization] = useState<OrgNode>();
-
-  const sleep = async (ms) => {
-    return await new Promise((resolve) => setTimeout(resolve, ms));
-  };
 
   const fetchListOrganization = async () => {
     setLoading(true);
-    await sleep(500);
-    setLoading(false);
-    setListOrganization(["SIKEU", "TAUD"]);
-    // try {
-    //   setLoading(true);
-    //   const response = await axiosClient.get("/organization/");
-    //   const result = (await response.data.data) ?? ["SIKEU", "TAUD"];
-    //   setListOrganization(result);
-    // } catch (e) {
-    //   setLoading(false);
-    //   setListOrganization(["SIKEU", "TAUD"]);
-    // }
+    try {
+      const response = await axiosClient.get("/organizational-structure/chart/");
+      const result = await response.data.data;
+      if(result && result.length > 0) {
+        await fetchOrganization(result[0].id);
+      }
+      setListOrganization(result);
+    } catch (e) {
+      setLoading(false);
+    }
   };
 
-  const fetchOrganization = async (value: string) => {
-    setLoading(true);
-    await sleep(500);
-    setLoading(false);
-    setOrganization(dummyData);
-    // try {
-    //   setLoading(true);
-    //   const response = await axiosClient.get(`/organization/${value}`);
-    //   const result = (await response.data.data) ?? dummyData;
-    //   setOrganization(result);
-    // } catch (e) {
-    //   setLoading(false);
-    //   setOrganization(dummyData);
-    // }
+  const fetchOrganization = async (value: number) => {
+    console.log(value)
+    try {
+      setLoading(true);
+      const response = await axiosClient.get(`/organizational-structure/chart/${value}/`);
+      const result = (await response.data.data.nodes);
+      setOrganization(result);
+      setLoading(false);
+    } catch (e) {
+      setLoading(false);
+    }
   };
 
   const initData = async () => {
     await fetchListOrganization();
-    await fetchOrganization(listOrganization[0]);
   };
 
   return {

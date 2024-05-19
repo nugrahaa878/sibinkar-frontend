@@ -1,8 +1,13 @@
 export interface OrgNode {
-  name: string;
-  title: string;
+  nama: string;
+  jabatan: string;
   id: number;
-  offset?: number;
-  children?: OrgNode[];
-  childOffset?: OrgNode[];
+  offset: boolean;
+  child: OrgNode[];
+  child_offsets: OrgNode[];
+}
+
+export interface Organization {
+  id: number;
+  nama: string;
 }
