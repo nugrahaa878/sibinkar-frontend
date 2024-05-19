@@ -10,4 +10,5 @@ export interface OrgNode {
 export interface Organization {
   id: number;
   nama: string;
+  nodes?: OrgNode;
 }

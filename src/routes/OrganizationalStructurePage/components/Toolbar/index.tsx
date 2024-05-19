@@ -13,18 +13,18 @@ import { Organization } from "../../types";
 
 interface Props {
   data: Organization[];
-  selectedValue?: string;
+  selected?: string;
   onFilterChange: (value: string) => void;
 }
 
-const Toolbar = ({data, selectedValue, onFilterChange} : Props) => {
+const Toolbar = ({data, selected, onFilterChange} : Props) => {
   return (
     <div className="flex w-full justify-between">
       <div className="flex flex-col">
         <h1 className="text-xl text-indigo-900 font-bold pb-2">
           Pilih Organisasi
         </h1>
-        <Select onValueChange={onFilterChange}>
+        <Select onValueChange={onFilterChange} value={selected}>
           <SelectTrigger>
             <SelectValue placeholder="Pilih Organisasi" />
           </SelectTrigger>

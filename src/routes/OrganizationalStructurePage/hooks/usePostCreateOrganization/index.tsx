@@ -12,12 +12,12 @@ const usePostCreateOrganization = async ({
   position,
 }: Props) => {
   const data = {
-    namaOrganisasi: organizationName,
+    nama_chart: organizationName,
     nama: name,
     jabatan: position,
   };
 
-  const response = await axiosClient.post("/organization/", data);
+  const response = await axiosClient.post("/organizational-structure/chart/", data);
   return response.data.success || true;
 };
 

@@ -32,6 +32,7 @@ const OrganizationStructurePage = () => {
         <Header />
         <Toolbar
           data={listOrganization}
+          selected={organization?.id.toString()}
           onFilterChange={handleFilterChange}
         />
         <div className="mx-10">
@@ -40,7 +41,7 @@ const OrganizationStructurePage = () => {
           ) : (
             <>
               {!organization && <h1>Tidak ada data</h1>}
-              {organization && <RecursiveOrganizationChart item={organization} />}
+              {organization && <RecursiveOrganizationChart item={organization.nodes!} />}
             </>
           )}
         </div>

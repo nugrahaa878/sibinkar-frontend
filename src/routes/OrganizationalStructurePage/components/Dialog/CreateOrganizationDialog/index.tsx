@@ -15,6 +15,7 @@ import SuccessDialog from "@/components/Dialog/SuccessDialog";
 import ErrorDialog from "@/components/Dialog/ErrorDialog";
 import DialogInput from "./input";
 import { Button } from "@/components/ui/button";
+import usePostCreateOrganization from "@/routes/OrganizationalStructurePage/hooks/usePostCreateOrganization";
 
 const CreateOrganizationDialog = () => {
   const form = useForm<z.infer<typeof formSchema>>({
@@ -32,29 +33,23 @@ const CreateOrganizationDialog = () => {
       setDialogState(DialogStateEnum.confirm);
       return;
     }
-    // setIsLoadingState(true);
-    // const formValues = form.getValues();
-    // onAction({
-    //   id: personnel?.id,
-    //   nama: formValues.name,
-    //   jenis_kelamin: formValues.gender,
-    //   nrp: formValues.NRP,
-    //   status: formValues.status,
-    //   jabatan: positionId,
-    //   pangkat: rankId,
-    //   subsatker: subSatKerId,
-    //   subdit: subDitId,
-    //   bko: formValues.BKO,
-    // })
-    //   .then((_) => {
-    //     setDialogState(DialogStateEnum.success);
-    //   })
-    //   .catch(() => {
-    //     setDialogState(DialogStateEnum.failed);
-    //   })
-    //   .finally(() => {
-    //     setIsLoadingState(false);
-    //   });
+    setIsLoadingState(true);
+    const formValues = form.getValues();
+    usePostCreateOrganization({
+      organizationName: formValues.chartTitle,
+      name: formValues.name,
+      position: formValues.position
+    })
+      .then((_) => {
+        setDialogState(DialogStateEnum.success);
+        window.location.reload();
+      })
+      .catch(() => {
+        setDialogState(DialogStateEnum.failed);
+      })
+      .finally(() => {
+        setIsLoadingState(false);
+      });
     return;
   };
 

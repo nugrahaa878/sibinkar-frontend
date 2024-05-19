@@ -1,12 +1,11 @@
 import axiosClient from "@/networks/apiClient";
 import { useState } from "react";
-import { Organization, OrgNode } from "../../types";
+import { Organization } from "../../types";
 
 const useInit = () => {
-  // IDENYA: PINDAH SEMUA USE STATE DI SINI, TERMASUK SETTER DATANYA
   const [loading, setLoading] = useState(false);
   const [listOrganization, setListOrganization] = useState<Organization[]>([]);
-  const [organization, setOrganization] = useState<OrgNode>();
+  const [organization, setOrganization] = useState<Organization>();
 
   const fetchListOrganization = async () => {
     setLoading(true);
@@ -14,7 +13,7 @@ const useInit = () => {
       const response = await axiosClient.get("/organizational-structure/chart/");
       const result = await response.data.data;
       if(result && result.length > 0) {
-        await fetchOrganization(result[0].id);
+        await fetchOrganization(result[result.length -1].id);
       }
       setListOrganization(result);
     } catch (e) {
@@ -27,7 +26,7 @@ const useInit = () => {
     try {
       setLoading(true);
       const response = await axiosClient.get(`/organizational-structure/chart/${value}/`);
-      const result = (await response.data.data.nodes);
+      const result = (await response.data.data);
       setOrganization(result);
       setLoading(false);
     } catch (e) {
