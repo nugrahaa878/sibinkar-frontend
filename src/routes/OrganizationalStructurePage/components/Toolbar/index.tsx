@@ -7,9 +7,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { DownloadIcon, Plus } from "lucide-react";
+import { DownloadIcon, Plus, Trash } from "lucide-react";
 import CreateOrganizationDialog from "../Dialog/CreateOrganizationDialog";
 import { Organization } from "../../types";
+import DeleteOrganizationDialog from "../Dialog/DeleteOrganizationDialog";
 
 interface Props {
   data: Organization[];
@@ -17,7 +18,7 @@ interface Props {
   onFilterChange: (value: string) => void;
 }
 
-const Toolbar = ({data, selected, onFilterChange} : Props) => {
+const Toolbar = ({ data, selected, onFilterChange }: Props) => {
   return (
     <div className="flex w-full justify-between">
       <div className="flex flex-col">
@@ -31,28 +32,38 @@ const Toolbar = ({data, selected, onFilterChange} : Props) => {
 
           <SelectContent>
             {data.map((org) => {
-                return (
-                  <SelectItem value={org.id.toString()}>{org.nama}</SelectItem>
-                )
-              })}
+              return (
+                <SelectItem value={org.id.toString()}>{org.nama}</SelectItem>
+              );
+            })}
           </SelectContent>
         </Select>
       </div>
 
-      <Dialog>
-        <div>
+      <div>
+        <Dialog>
           <DialogTrigger asChild>
             <Button variant="outline" className="mr-6">
               <Plus className="mr-2" /> Tambah Organisasi
             </Button>
           </DialogTrigger>
 
-          <Button className="px-8">
-            <DownloadIcon className="mr-2" /> Unduh
-          </Button>
-        </div>
-        <CreateOrganizationDialog />
-      </Dialog>
+          <CreateOrganizationDialog />
+        </Dialog>
+
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button variant="destructive" className="mr-6">
+              <Trash className="mr-2" /> Hapus Organisasi
+            </Button>
+          </DialogTrigger>
+          <DeleteOrganizationDialog id={selected ?? ""} />
+        </Dialog>
+
+        <Button className="px-8">
+          <DownloadIcon className="mr-2" /> Unduh
+        </Button>
+      </div>
     </div>
   );
 };

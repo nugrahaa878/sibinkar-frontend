@@ -38,7 +38,7 @@ const CreateOrganizationDialog = () => {
     usePostCreateOrganization({
       organizationName: formValues.chartTitle,
       name: formValues.name,
-      position: formValues.position
+      position: formValues.position,
     })
       .then((_) => {
         setDialogState(DialogStateEnum.success);
