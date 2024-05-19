@@ -11,7 +11,7 @@ import { DownloadIcon, Plus, Trash } from "lucide-react";
 import CreateOrganizationDialog from "../Dialog/CreateOrganizationDialog";
 import { Organization } from "../../types";
 import DeleteOrganizationDialog from "../Dialog/DeleteOrganizationDialog";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 interface Props {
   data: Organization[];
