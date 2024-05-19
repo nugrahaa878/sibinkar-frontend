@@ -24,22 +24,6 @@ const OrganizationStructurePage = () => {
     setOrganzationId(value);
   };
 
-  const onCreateNode = async (
-    parentId: number,
-    name: string,
-    position: string,
-    offset: boolean
-  ) => {
-    // await usePostCreateNode({
-    //   organizationId: "",
-    //   parentId,
-    //   name,
-    //   position,
-    //   offset,
-    // });
-    // fetchOrganization(organization?.id!);
-  };
-
   return (
     <div className="flex flex-col items-center h-screen">
       <Navbar page={NavbarPageEnum.organizationalStructure} />
@@ -56,8 +40,8 @@ const OrganizationStructurePage = () => {
           ) : (
             <>
               {!organizationId && <h1>Tidak ada data</h1>}
-              {organizationId && (
-                <RecursiveOrganizationChart id={organizationId} onCreateNode={onCreateNode} />
+              {(organizationId !== "" && organizationId !== undefined) && (
+                <RecursiveOrganizationChart id={organizationId} />
               )}
             </>
           )}

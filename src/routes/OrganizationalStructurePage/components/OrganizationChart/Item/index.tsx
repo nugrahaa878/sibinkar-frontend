@@ -3,21 +3,12 @@ import { OrgNode } from "@/routes/OrganizationalStructurePage/types";
 import NodeMenuDialog from "../../Dialog/NodeMenuDialog";
 
 interface Props {
-  id: number;
-  position: string;
-  name: string;
-  offset: boolean;
-  childOffset: OrgNode[];
-  onCreateNode: (
-    parentId: number,
-    name: string,
-    position: string,
-    offset: boolean
-  ) => Promise<void>;
+  chartId: string;
+  item: OrgNode;
 }
 
-const Item = ({ id, position, name, offset, childOffset, onCreateNode }: Props) => {
-  if (offset) {
+const Item = ({ chartId, item }: Props) => {
+  if (item.offset) {
     return (
       <div>
         <Dialog>
@@ -27,25 +18,18 @@ const Item = ({ id, position, name, offset, childOffset, onCreateNode }: Props) 
             <DialogTrigger className="mr-[-300px]">
               <div className="w-[200px] h-[70px] p-3 bg-red-500 rounded-lg items-center ">
                 <div className="text-center text-white text-sm font-semibold">
-                  {position}
+                  {item.jabatan}
                 </div>
                 <div className="text-center text-white text-xs font-normal">
-                  {name}
+                  {item.nama}
                 </div>
               </div>
             </DialogTrigger>
           </div>
-          <NodeMenuDialog
-            id={id}
-            position={position}
-            name={name}
-            offset={offset}
-            childOffset={childOffset}
-            onCreateNode={onCreateNode}
-          />
+          <NodeMenuDialog chartId={chartId} item={item} />
         </Dialog>
 
-        {childOffset?.map((item) => {
+        {item.child_offsets.map((child) => {
           return (
             <Dialog>
               <div className="flex items-center justify-center">
@@ -66,12 +50,9 @@ const Item = ({ id, position, name, offset, childOffset, onCreateNode }: Props) 
                 </DialogTrigger>
               </div>
               <NodeMenuDialog
-                id={item.id}
-                position={item.jabatan}
-                name={item.nama}
-                offset={item.offset}
-                parentOffsetId={id}
-                onCreateNode={onCreateNode}
+                chartId={chartId}
+                item={child}
+                parentOffsetId={item.id}
               />
             </Dialog>
           );
@@ -84,21 +65,14 @@ const Item = ({ id, position, name, offset, childOffset, onCreateNode }: Props) 
       <DialogTrigger>
         <div className="w-[200px] h-[70px] bg-slate-500 rounded-lg flex-col justify-center items-center inline-flex">
           <div className="text-center text-white text-sm font-semibold">
-            {position}
+            {item.jabatan}
           </div>
           <div className="text-center text-white text-xs font-normal">
-            {name}
+            {item.nama}
           </div>
         </div>
       </DialogTrigger>
-      <NodeMenuDialog
-        id={id}
-        position={position}
-        name={name}
-        offset={offset}
-        childOffset={childOffset}
-        onCreateNode={onCreateNode}
-      />
+      <NodeMenuDialog chartId={chartId} item={item} />
     </Dialog>
   );
 };

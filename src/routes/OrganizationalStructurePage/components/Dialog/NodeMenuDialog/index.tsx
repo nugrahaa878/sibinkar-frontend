@@ -19,52 +19,41 @@ import {
 import DialogInput from "./input";
 import { OrgNode } from "@/routes/OrganizationalStructurePage/types";
 import { Checkbox } from "@/components/ui/checkbox";
+import usePostCreateNode from "@/routes/OrganizationalStructurePage/hooks/usePostCreateNode";
+import { useSWRConfig } from "swr";
 
 interface Props {
-  id: number;
-  position: string;
-  name: string;
-  offset: boolean;
-  childOffset?: OrgNode[];
+  chartId: string;
+  item: OrgNode;
   parentOffsetId?: number;
-  onCreateNode: (
-    parentId: number,
-    name: string,
-    position: string,
-    offset: boolean
-  ) => Promise<void>;
 }
 
-const NodeMenuDialog = ({
-  id,
-  position,
-  name,
-  offset,
-  childOffset,
-  parentOffsetId,
-  onCreateNode,
-}: Props) => {
+const NodeMenuDialog = ({ chartId, item, parentOffsetId }: Props) => {
+  const {mutate} = useSWRConfig();
+
   const [isLoadingState, setIsLoadingState] = useState<boolean>(false);
   const [dialogState, setDialogState] = useState<DialogState>(DialogState.menu);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      isOffset: false
-    }
+      isOffset: false,
+    },
   });
 
   const handleCreateNode = async () => {
     setIsLoadingState(true);
     const formValues = form.getValues();
-    onCreateNode(
-      id,
-      formValues.name,
-      formValues.position,
-      formValues.isOffset
-    )
+    usePostCreateNode({
+      organizationId: chartId,
+      parentId: item.id,
+      name: formValues.name,
+      position: formValues.position,
+      offset: formValues.isOffset,
+    })
       .then((_) => {
         setDialogState(DialogState.success);
+        mutate(`/organizational-structure/chart/${chartId}/`)
       })
       .catch(() => {
         setDialogState(DialogState.error);
@@ -73,7 +62,7 @@ const NodeMenuDialog = ({
         setIsLoadingState(false);
       });
     return;
-  }
+  };
 
   const handleUpdateNode = async () => {
     setIsLoadingState(true);
@@ -99,9 +88,9 @@ const NodeMenuDialog = ({
   };
 
   const handleEditMenu = () => {
-    form.setValue("name", name);
-    form.setValue("position", position);
-    form.setValue("isOffset", offset !== undefined);
+    form.setValue("name", item.nama);
+    form.setValue("position", item.jabatan);
+    form.setValue("isOffset", item.offset);
     setDialogState(DialogState.edit);
   };
 
@@ -224,7 +213,7 @@ const NodeMenuDialog = ({
                 label="Jabatan"
               />
 
-              {!offset && !parentOffsetId && (
+              {!item.offset && !parentOffsetId && (
                 <FormField
                   control={form.control}
                   name="isOffset"
@@ -246,7 +235,9 @@ const NodeMenuDialog = ({
               )}
 
               <DialogFooter>
-                <Button type="submit" disabled={isLoadingState}>Simpan</Button>
+                <Button type="submit" disabled={isLoadingState}>
+                  Simpan
+                </Button>
               </DialogFooter>
             </form>
           </Form>
