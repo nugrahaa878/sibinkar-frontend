@@ -4,26 +4,24 @@ import Header from "./components/Header";
 import Toolbar from "./components/Toolbar";
 import RecursiveOrganizationChart from "./components/RecursiveOrganizationChart";
 import { Loader2 } from "lucide-react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import useGetData from "./hooks/useGetData";
-import usePostCreateNode from "./hooks/usePostCreateNode";
 
 const OrganizationStructurePage = () => {
   const {
     listOrganization,
-    organization,
     loading,
     initData,
-    fetchOrganization,
   } = useGetData();
+
+  const [organizationId, setOrganzationId] = useState<string>(); 
 
   useEffect(() => {
     initData();
   }, []);
 
   const handleFilterChange = (value: string) => {
-    const orgId = Number(value);
-    fetchOrganization(orgId);
+    setOrganzationId(value);
   };
 
   const onCreateNode = async (
@@ -32,14 +30,14 @@ const OrganizationStructurePage = () => {
     position: string,
     offset: boolean
   ) => {
-    await usePostCreateNode({
-      organizationId: organization?.id.toString() ?? "",
-      parentId,
-      name,
-      position,
-      offset,
-    });
-    fetchOrganization(organization?.id!);
+    // await usePostCreateNode({
+    //   organizationId: "",
+    //   parentId,
+    //   name,
+    //   position,
+    //   offset,
+    // });
+    // fetchOrganization(organization?.id!);
   };
 
   return (
@@ -49,7 +47,7 @@ const OrganizationStructurePage = () => {
         <Header />
         <Toolbar
           data={listOrganization}
-          selected={organization?.id.toString()}
+          selected={organizationId}
           onFilterChange={handleFilterChange}
         />
         <div className="mx-10">
@@ -57,9 +55,9 @@ const OrganizationStructurePage = () => {
             <Loader2 className="animate-spin" />
           ) : (
             <>
-              {!organization && <h1>Tidak ada data</h1>}
-              {organization && (
-                <RecursiveOrganizationChart item={organization.nodes!} onCreateNode={onCreateNode} />
+              {!organizationId && <h1>Tidak ada data</h1>}
+              {organizationId && (
+                <RecursiveOrganizationChart id={organizationId} onCreateNode={onCreateNode} />
               )}
             </>
           )}

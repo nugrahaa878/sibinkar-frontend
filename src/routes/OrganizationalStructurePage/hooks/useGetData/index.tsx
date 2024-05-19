@@ -40,7 +40,6 @@ const useInit = () => {
 
   return {
     listOrganization,
-    organization,
     loading,
     initData,
     fetchOrganization,

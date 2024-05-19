@@ -11,6 +11,7 @@ import { DownloadIcon, Plus, Trash } from "lucide-react";
 import CreateOrganizationDialog from "../Dialog/CreateOrganizationDialog";
 import { Organization } from "../../types";
 import DeleteOrganizationDialog from "../Dialog/DeleteOrganizationDialog";
+import { useEffect, useState } from "react";
 
 interface Props {
   data: Organization[];
@@ -19,6 +20,13 @@ interface Props {
 }
 
 const Toolbar = ({ data, selected, onFilterChange }: Props) => {
+
+  useEffect(() => {
+    if (data.length === 0) return;
+    const newest = data[data.length - 1].id;
+    onFilterChange(newest.toString());
+  }, [data]);
+
   return (
     <div className="flex w-full justify-between">
       <div className="flex flex-col">
