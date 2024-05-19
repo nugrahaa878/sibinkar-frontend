@@ -1,4 +1,5 @@
 import axiosClient from "@/networks/apiClient";
+import { OrgNode } from "../../types";
 
 interface Props {
   organizationId: string;
@@ -6,6 +7,7 @@ interface Props {
   name: string;
   position: string;
   offset: boolean;
+  item: OrgNode;
 }
 
 const usePostCreateNode = async ({
@@ -14,9 +16,19 @@ const usePostCreateNode = async ({
   name,
   position,
   offset,
+  item,
 }: Props) => {
+  let id = parentId
+  // Check if item has child
+  item.child.forEach((node) => {
+    if(node.offset) {
+      id = node.id;
+      return;
+    }
+  })
+
   const data = {
-    parent_id: parentId,
+    parent_id: id,
     nama: name,
     jabatan: position,
     offset: offset,

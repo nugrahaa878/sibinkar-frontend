@@ -46,6 +46,7 @@ const NodeMenuDialog = ({ chartId, item, parentOffsetId }: Props) => {
     setIsLoadingState(true);
     const formValues = form.getValues();
     usePostCreateNode({
+      item: item,
       organizationId: chartId,
       parentId: item.id,
       name: formValues.name,
