@@ -4,18 +4,16 @@ interface Props {
   id: number;
   name: string;
   position: string;
-  isOffset: boolean;
 }
 
-const usePutEditNode = async ({ id, name, position, isOffset }: Props) => {
+const usePutEditNode = async ({ id, name, position }: Props) => {
   const data = {
     nama: name,
     jabatan: position,
-    isOffset,
   };
 
-  const response = await axiosClient.put(`/organization/node/${id}`, data);
-  return response.data.success || true;
+  const response = await axiosClient.put(`/organizational-structure/nodes/${id}/`, data);
+  return response.data.success;
 };
 
 export default usePutEditNode;

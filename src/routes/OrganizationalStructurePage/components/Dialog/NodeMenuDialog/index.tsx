@@ -21,6 +21,7 @@ import { OrgNode } from "@/routes/OrganizationalStructurePage/types";
 import { Checkbox } from "@/components/ui/checkbox";
 import usePostCreateNode from "@/routes/OrganizationalStructurePage/hooks/usePostCreateNode";
 import { useSWRConfig } from "swr";
+import usePutEditNode from "@/routes/OrganizationalStructurePage/hooks/usePutEditNode";
 
 interface Props {
   chartId: string;
@@ -67,6 +68,21 @@ const NodeMenuDialog = ({ chartId, item, parentOffsetId }: Props) => {
   const handleUpdateNode = async () => {
     setIsLoadingState(true);
     const formValues = form.getValues();
+    usePutEditNode({
+      id: item.id,
+      name: formValues.name,
+      position: formValues.position,
+    })
+      .then((_) => {
+        setDialogState(DialogState.success);
+        mutate(`/organizational-structure/chart/${chartId}/`)
+      })
+      .catch(() => {
+        setDialogState(DialogState.error);
+      })
+      .finally(() => {
+        setIsLoadingState(false);
+      });
     return;
   };
 
@@ -163,27 +179,6 @@ const NodeMenuDialog = ({ chartId, item, parentOffsetId }: Props) => {
                 placeholder="Masukkan jabatan..."
                 label="Jabatan"
               />
-
-              {!parentOffsetId && (
-                <FormField
-                  control={form.control}
-                  name="isOffset"
-                  render={({ field }) => (
-                    <FormItem className="flex items-center">
-                      <FormControl className="mr-4">
-                        <Checkbox
-                          checked={field.value}
-                          onCheckedChange={field.onChange}
-                        />
-                      </FormControl>
-
-                      <FormLabel className="h-full">
-                        Bawahan tidak langsung
-                      </FormLabel>
-                    </FormItem>
-                  )}
-                />
-              )}
 
               <DialogFooter>
                 <Button type="submit">Simpan</Button>
