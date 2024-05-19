@@ -52,6 +52,7 @@ const NodeMenuDialog = ({ chartId, item, parentOffsetId }: Props) => {
       name: formValues.name,
       position: formValues.position,
       offset: formValues.isOffset,
+      parentOffsetId: parentOffsetId,
     })
       .then((_) => {
         setDialogState(DialogState.success);

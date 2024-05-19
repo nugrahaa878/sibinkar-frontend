@@ -16,7 +16,7 @@ const Item = ({ chartId, item }: Props) => {
             <div className="h-[70px] w-[1px] bg-black" />
             <div className="h-[1px] w-[100px] bg-black" />
             <DialogTrigger className="mr-[-300px]">
-              <div className="w-[200px] h-[70px] p-3 bg-red-500 rounded-lg items-center ">
+              <div className="w-[200px] h-[70px] p-3 bg-slate-500 rounded-lg items-center ">
                 <div className="text-center text-white text-sm font-semibold">
                   {item.jabatan}
                 </div>
@@ -26,7 +26,7 @@ const Item = ({ chartId, item }: Props) => {
               </div>
             </DialogTrigger>
           </div>
-          <NodeMenuDialog chartId={chartId} item={item} />
+          <NodeMenuDialog chartId={chartId} item={item} parentOffsetId={item.id} />
         </Dialog>
 
         {item.child_offsets.map((child) => {
@@ -36,14 +36,14 @@ const Item = ({ chartId, item }: Props) => {
                 <div className="h-[90px] w-[1px] bg-black" />
                 <DialogTrigger>
                   <div className="flex flex-col  items-center mr-[-300px] ml-[100px]">
-                    <div className="h-[20px] w-[1px] bg-red-500" />
+                    <div className="h-[20px] w-[1px] bg-slate-500" />
 
-                    <div className="w-[200px] h-[70px] p-3 bg-green-500 rounded-lg">
+                    <div className="w-[200px] h-[70px] p-3 bg-slate-500 rounded-lg">
                       <div className="text-center text-white text-sm font-semibold">
-                        {item.jabatan}
+                        {child.jabatan}
                       </div>
                       <div className="text-center text-white text-xs font-normal">
-                        {item.nama}
+                        {child.nama}
                       </div>
                     </div>
                   </div>

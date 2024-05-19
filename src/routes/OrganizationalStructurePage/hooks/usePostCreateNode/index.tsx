@@ -8,6 +8,7 @@ interface Props {
   position: string;
   offset: boolean;
   item: OrgNode;
+  parentOffsetId?: number;
 }
 
 const usePostCreateNode = async ({
@@ -17,6 +18,7 @@ const usePostCreateNode = async ({
   position,
   offset,
   item,
+  parentOffsetId,
 }: Props) => {
   let id = parentId
   // Check if item has child
@@ -27,6 +29,11 @@ const usePostCreateNode = async ({
     }
   })
 
+  // force to parent if is offset child
+  if (parentOffsetId) {
+    id = parentOffsetId
+  }
+
   const data = {
     parent_id: id,
     nama: name,
@@ -34,7 +41,7 @@ const usePostCreateNode = async ({
     offset: offset,
   };
   const response = await axiosClient.post(
-    `/organizational-structure/child-nodes/${organizationId}/`,
+    `/organizational-structure/${parentOffsetId ? "offset-" : ""}child-nodes/${organizationId}/`,
     data
   );
   return response.data.success;
