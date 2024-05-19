@@ -1,3 +1,5 @@
+import { Fragment } from "react";
+
 const TableHead = () => {
   const dspCount = [...Array(14).keys()];
 
@@ -52,12 +54,12 @@ const TableHead = () => {
 
       <tr className="bg-[#9AABD5] text-white">
         <th colSpan={2} />
-        {dspCount.map((_) => {
+        {dspCount.map((_, idx) => {
           return (
-            <>
+            <Fragment key={`dsp-${idx}`}>
               <th className="py-2">DSP</th>
               <th className="py-2">RIIL</th>
-            </>
+            </Fragment>
           );
         })}
         <th />

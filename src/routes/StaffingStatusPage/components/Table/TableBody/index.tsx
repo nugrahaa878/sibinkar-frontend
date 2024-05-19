@@ -17,7 +17,7 @@ const TableBody = ({ data }: Props) => {
     <>
       {data.map((item, index) => {
         return (
-          <tr key={item.satker}>
+          <tr key={`data-${index}`}>
             <td className="text-center bg-neutral-50">{index + 1}</td>
             <td className="bg-neutral-50">{item.satker}</td>
 
@@ -25,7 +25,12 @@ const TableBody = ({ data }: Props) => {
               const satkerData = item.POLRI[value];
 
               return (
-                <TableItem data={satkerData} index={index} isSum={false} />
+                <TableItem
+                  data={satkerData}
+                  index={index}
+                  isSum={false}
+                  key={`satker-${index}`}
+                />
               );
             })}
 
@@ -35,7 +40,12 @@ const TableBody = ({ data }: Props) => {
               const satkerData = item["PNS POLRI"][value];
 
               return (
-                <TableItem data={satkerData} index={index} isSum={false} />
+                <TableItem
+                  data={satkerData}
+                  index={index}
+                  isSum={false}
+                  key={`satker-2-${index}`}
+                />
               );
             })}
 

@@ -9,9 +9,12 @@ const TableFooter = () => {
       <td className="py-4 px-6 bg-[#7E93C9] text-white font-bold" colSpan={2}>
         Jumlah
       </td>
-      {sum.map((count) => {
+      {sum.map((count, idx) => {
         return (
-          <td className="text-center bg-[#7E93C9] text-white font-bold">
+          <td
+            className="text-center bg-[#7E93C9] text-white font-bold"
+            key={`item-${idx}`}
+          >
             {count}
           </td>
         );
