@@ -21,6 +21,7 @@ import Combobox from "../DialogCombobox";
 import Dropdown from "../DialogDropdown";
 import DialogInput from "../DialogInput";
 import { PersonnelDataInterface } from "@/routes/HomePage/hooks/types";
+import useGetPersonnel from "@/routes/HomePage/hooks/useGetPersonnel";
 
 interface Props {
   personnel?: Personnel;
@@ -42,6 +43,11 @@ interface Props {
 const DialogBody = ({ personnel, form, onAction }: Props) => {
   const { position, rank, subSatKer, subDit, fetchData } =
     useGetAllPersonnelAttributes();
+
+  const { mutate: refetchGetPersonnel } = useGetPersonnel({
+    limit: 10,
+    page: 1,
+  });
 
   const [isLoadingState, setIsLoadingState] = useState(false);
   const [positionId, setPositionId] = useState<number>();
@@ -77,6 +83,7 @@ const DialogBody = ({ personnel, form, onAction }: Props) => {
     })
       .then((_) => {
         setDialogState(DialogStateEnum.success);
+        refetchGetPersonnel();
       })
       .catch(() => {
         setDialogState(DialogStateEnum.failed);
