@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import FilterDropdown from "../FilterDropdown";
-import { DownloadIcon, FileSpreadsheet, FileText, Plus } from "lucide-react";
+import { DownloadIcon, FileSpreadsheet, Plus } from "lucide-react";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import AddDialog from "../Dialog/AddDialog";
 import {
@@ -9,7 +9,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import useGetExportPersonnelData from "../../hooks/useGetExportPersonnelData";
 import axiosClient from "@/networks/apiClient";
 
 interface Props {
