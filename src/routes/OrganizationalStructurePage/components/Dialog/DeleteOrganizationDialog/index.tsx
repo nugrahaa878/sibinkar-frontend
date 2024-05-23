@@ -7,12 +7,14 @@ import {
 } from "@/components/ui/dialog";
 import useDeleteOrganization from "@/routes/OrganizationalStructurePage/hooks/useDeleteOrganization";
 import { useState } from "react";
+import { useSWRConfig } from "swr";
 
 interface Props {
   id: string;
 }
 
 const DeleteOrganizationDialog = ({ id }: Props) => {
+  const { mutate } = useSWRConfig();
   const [isLoadingState, setIsLoadingState] = useState(false);
   const [dialogState, setDialogState] = useState<DialogStateEnum>(
     DialogStateEnum.confirm
@@ -29,7 +31,7 @@ const DeleteOrganizationDialog = ({ id }: Props) => {
     })
       .then((_) => {
         setDialogState(DialogStateEnum.success);
-        window.location.reload();
+        mutate(`/organizational-structure/chart/`);
       })
       .catch(() => {
         setDialogState(DialogStateEnum.failed);

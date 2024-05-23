@@ -16,8 +16,10 @@ import ErrorDialog from "@/components/Dialog/ErrorDialog";
 import DialogInput from "./input";
 import { Button } from "@/components/ui/button";
 import usePostCreateOrganization from "@/routes/OrganizationalStructurePage/hooks/usePostCreateOrganization";
+import { useSWRConfig } from "swr";
 
 const CreateOrganizationDialog = () => {
+  const { mutate } = useSWRConfig();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {},
@@ -42,7 +44,7 @@ const CreateOrganizationDialog = () => {
     })
       .then((_) => {
         setDialogState(DialogStateEnum.success);
-        window.location.reload();
+        mutate(`/organizational-structure/chart/`);
       })
       .catch(() => {
         setDialogState(DialogStateEnum.failed);
