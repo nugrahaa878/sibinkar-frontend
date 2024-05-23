@@ -11,7 +11,6 @@ const OrganizationStructurePage = () => {
   const {
     listOrganization,
     loading,
-    mutate,
   } = useGetListOrganization();
 
   const [organizationId, setOrganzationId] = useState<string>(); 
