@@ -22,6 +22,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import usePostCreateNode from "@/routes/OrganizationalStructurePage/hooks/usePostCreateNode";
 import { useSWRConfig } from "swr";
 import usePutEditNode from "@/routes/OrganizationalStructurePage/hooks/usePutEditNode";
+import useDeleteNode from "@/routes/OrganizationalStructurePage/hooks/useDeleteNode";
 
 interface Props {
   chartId: string;
@@ -88,6 +89,25 @@ const NodeMenuDialog = ({ chartId, item, parentOffsetId }: Props) => {
     return;
   };
 
+  const handleDeleteNode = async () => {
+    setIsLoadingState(true);
+    useDeleteNode({
+      nodeId: item.id,
+      chartId: chartId,
+    })
+      .then((_) => {
+        setDialogState(DialogState.success);
+        mutate(`/organizational-structure/chart/${chartId}/`)
+      })
+      .catch(() => {
+        setDialogState(DialogState.error);
+      })
+      .finally(() => {
+        setIsLoadingState(false);
+      });
+    return;
+  };
+
   const handleClose = () => {
     setDialogState(DialogState.menu);
     setIsLoadingState(false);
@@ -131,7 +151,7 @@ const NodeMenuDialog = ({ chartId, item, parentOffsetId }: Props) => {
           title="Hapus keanggotaan?"
           description="Anggota ini dan seluruh anggota yang dibawahinya akan terhapus"
           isLoading={isLoadingState}
-          onAccept={() => {}}
+          onAccept={handleDeleteNode}
           onDecline={handleCancelDelete}
         />
       )}

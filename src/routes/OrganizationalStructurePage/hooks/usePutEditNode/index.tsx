@@ -8,6 +8,7 @@ interface Props {
 
 const usePutEditNode = async ({ id, name, position }: Props) => {
   const data = {
+    node_id: id,
     nama: name,
     jabatan: position,
   };

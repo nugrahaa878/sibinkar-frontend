@@ -19,7 +19,7 @@ import { Satker } from "@/routes/StaffingStatusPage/hooks/useGetStaffingStatus/t
 import {
   PnsPolriSatkerEnum,
   PolriSatkerEnum,
-} from "@/routes/StaffingStatusPage/entities/satker-enum";
+} from "@/routes/StaffingStatusPage/entities/satkerEnum";
 import usePostStaffingStatus from "@/routes/StaffingStatusPage/hooks/usePostStaffingStatus";
 
 interface Props {

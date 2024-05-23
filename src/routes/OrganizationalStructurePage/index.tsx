@@ -4,21 +4,16 @@ import Header from "./components/Header";
 import Toolbar from "./components/Toolbar";
 import RecursiveOrganizationChart from "./components/RecursiveOrganizationChart";
 import { Loader2 } from "lucide-react";
-import { useEffect, useState } from "react";
-import useGetData from "./hooks/useGetData";
+import { useState } from "react";
+import useGetListOrganization from "./hooks/useGetListOrganization";
 
 const OrganizationStructurePage = () => {
   const {
     listOrganization,
     loading,
-    initData,
-  } = useGetData();
+  } = useGetListOrganization();
 
   const [organizationId, setOrganzationId] = useState<string>(); 
-
-  useEffect(() => {
-    initData();
-  }, []);
 
   const handleFilterChange = (value: string) => {
     setOrganzationId(value);
@@ -30,7 +25,7 @@ const OrganizationStructurePage = () => {
       <DefaultContainer>
         <Header />
         <Toolbar
-          data={listOrganization}
+          data={listOrganization || []}
           selected={organizationId}
           onFilterChange={handleFilterChange}
         />
