@@ -1,5 +1,5 @@
 import useSWR from "swr";
-import { Satker } from "./types";
+import { Satker } from "../../types";
 import axiosClient from "@/networks/apiClient";
 
 const useGetStaffingStatus = () => {

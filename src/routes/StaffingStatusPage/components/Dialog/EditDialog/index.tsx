@@ -13,14 +13,15 @@ import DialogInput from "../DialogInput";
 import { useForm } from "react-hook-form";
 import { Form } from "@/components/ui/form";
 import { z } from "zod";
-import staffingStatusSchema from "@/routes/StaffingStatusPage/entities/formSchema";
+import staffingStatusSchema from "@/routes/StaffingStatusPage/types/formSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Satker } from "@/routes/StaffingStatusPage/hooks/useGetStaffingStatus/types";
+import { Satker } from "@/routes/StaffingStatusPage/types";
 import {
   PnsPolriSatkerEnum,
   PolriSatkerEnum,
-} from "@/routes/StaffingStatusPage/entities/satkerEnum";
+} from "@/routes/StaffingStatusPage/types/satkerEnum";
 import usePostStaffingStatus from "@/routes/StaffingStatusPage/hooks/usePostStaffingStatus";
+import { useSWRConfig } from "swr";
 
 interface Props {
   title: string;
@@ -28,6 +29,8 @@ interface Props {
 }
 
 const EditDialog = ({ title, data }: Props) => {
+  const { mutate } = useSWRConfig();
+
   const polri = data.POLRI;
   const pnsPolri = data["PNS POLRI"];
 
@@ -89,6 +92,8 @@ const EditDialog = ({ title, data }: Props) => {
     })
       .then((_) => {
         setDialogState("success");
+        mutate("/staffing-status/total/");
+        mutate("/staffing-status/");
       })
       .catch(() => {
         setDialogState("failed");

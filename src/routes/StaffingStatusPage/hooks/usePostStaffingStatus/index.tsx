@@ -33,15 +33,15 @@ const usePostStaffingStatus = async ({
     satker: satker,
     data: [
       {
-        pangkat: "IRJEN POL",
+        pangkat: "IRJEN",
         dsp: irjenPol,
       },
       {
-        pangkat: "BRIGJEN POL",
+        pangkat: "BRIGJEN",
         dsp: brigjenPol,
       },
       {
-        pangkat: "KOMBES POL",
+        pangkat: "KOMBES",
         dsp: kombesPol,
       },
       {

@@ -36,7 +36,7 @@ const Toolbar = ({ onApplyFilter }: Props) => {
       tempLink.href = url;
       tempLink.setAttribute(
         "download",
-        `rekap_data.xlsx`
+        `rekap_data_personnel.xlsx`
       ); // Set the desired filename for the downloaded file
 
       // Append the <a> element to the body and click it to trigger the download

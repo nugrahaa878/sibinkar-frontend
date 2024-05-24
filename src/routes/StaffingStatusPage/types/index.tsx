@@ -16,3 +16,7 @@ export interface Satker {
     [key: string]: SatkerData | undefined;
   };
 }
+
+export interface TotalSatker {
+  [key: string]: SatkerData | undefined;
+}
