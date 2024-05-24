@@ -2,11 +2,11 @@ import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import { MoreHorizontal } from "lucide-react";
 import EditDialog from "../../Dialog/EditDialog";
 import TableItem from "../TableItem";
-import { Satker } from "@/routes/StaffingStatusPage/hooks/useGetStaffingStatus/types";
+import { Satker } from "@/routes/StaffingStatusPage/types";
 import {
   PnsPolriSatkerEnum,
   PolriSatkerEnum,
-} from "@/routes/StaffingStatusPage/entities/satkerEnum";
+} from "@/routes/StaffingStatusPage/types/satkerEnum";
 
 interface Props {
   data: Satker[];

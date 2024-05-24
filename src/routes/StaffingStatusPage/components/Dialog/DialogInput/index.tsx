@@ -5,7 +5,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import staffingStatusSchema from "@/routes/StaffingStatusPage/entities/formSchema";
+import staffingStatusSchema from "@/routes/StaffingStatusPage/types/formSchema";
 import { Control } from "react-hook-form";
 import { z } from "zod";
 

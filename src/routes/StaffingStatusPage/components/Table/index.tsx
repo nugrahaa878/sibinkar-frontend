@@ -1,4 +1,4 @@
-import { Satker } from "../../hooks/useGetStaffingStatus/types";
+import { Satker } from "../../types";
 import { Tooltip as ReactTooltip } from "react-tooltip";
 import TableBody from "./TableBody";
 import TableFooter from "./TableFooter";

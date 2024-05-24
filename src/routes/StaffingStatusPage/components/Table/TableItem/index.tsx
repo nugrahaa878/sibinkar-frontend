@@ -1,5 +1,5 @@
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
-import { SatkerData } from "@/routes/StaffingStatusPage/hooks/useGetStaffingStatus/types";
+import { SatkerData } from "@/routes/StaffingStatusPage/types";
 import InfoDialog from "../../Dialog/InfoDialog";
 
 interface Props {
