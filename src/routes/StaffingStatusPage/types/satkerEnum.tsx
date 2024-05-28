@@ -6,7 +6,7 @@ enum PolriSatkerEnum {
   komPol = "KOMPOL",
   akp = "AKP",
   ip = "IP",
-  brikTa = "BRIK/TA",
+  brikTa = "BRIG/TA",
 }
 
 enum PnsPolriSatkerEnum {
