@@ -35,10 +35,10 @@ const TableFooter = () => {
         );
       })}
       <td className="text-center bg-[#7E93C9] text-white font-bold">
-        {result?.data["jumlah_polri"]?.dsp ?? 0}
+        {result?.data["POLRI"]?.dsp ?? 0}
       </td>
       <td className="text-center bg-[#7E93C9] text-white font-bold">
-        {result?.data["jumlah_polri"]?.rill ?? 0}
+        {result?.data["POLRI"]?.rill ?? 0}
       </td>
       {Object.values(PnsPolriSatkerEnum).map((value, index) => {
         const satkerData = result?.data[value];
@@ -63,20 +63,20 @@ const TableFooter = () => {
         );
       })}
       <td className="text-center bg-[#7E93C9] text-white font-bold">
-        {result?.data["jumlah_pns_polri"]?.dsp ?? 0}
+        {result?.data["PNS POLRI"]?.dsp ?? 0}
       </td>
       <td className="text-center bg-[#7E93C9] text-white font-bold">
-        {result?.data["jumlah_pns_polri"]?.rill ?? 0}
+        {result?.data["PNS POLRI"]?.rill ?? 0}
       </td>
       <td
         className="text-center bg-[#7E93C9] text-white font-bold"
       >
-        {result?.data["ket"]?.dsp ?? 0}
+        {result?.data["Keterangan"]?.dsp ?? 0}
       </td>
       <td
         className="text-center bg-[#7E93C9] text-white font-bold"
       >
-        {result?.data["ket"]?.rill ?? 0}
+        {result?.data["Keterangan"]?.rill ?? 0}
       </td>
       <td className="bg-[#7E93C9]" />
     </tr>
