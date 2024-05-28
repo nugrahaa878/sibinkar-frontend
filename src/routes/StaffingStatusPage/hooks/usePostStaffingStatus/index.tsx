@@ -61,7 +61,7 @@ const usePostStaffingStatus = async ({
         dsp: ip,
       },
       {
-        pangkat: "BRIK/TA",
+        pangkat: "BRIG/TA",
         dsp: brikTa,
       },
       {
