@@ -12,37 +12,127 @@ const Item = ({ chartId, item }: Props) => {
     return (
       <div>
         <Dialog>
-          <div className="flex items-center justify-center">
-            <div className="h-[70px] w-[1px] bg-black" />
-            <div className="h-[1px] w-[100px] bg-black" />
-            <DialogTrigger className="mr-[-300px]">
-              <div className="w-[200px] h-[70px] p-3 bg-slate-500 rounded-lg items-center ">
-                <div className="text-center text-white text-sm font-semibold">
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <div
+              style={{ height: "70px", width: "1px", backgroundColor: "black" }}
+            />
+            <div
+              style={{
+                height: "1px",
+                width: "100px",
+                backgroundColor: "black",
+              }}
+            />
+            <DialogTrigger style={{ marginRight: "-300px" }}>
+              <div
+                style={{
+                  width: "200px",
+                  height: "70px",
+                  padding: "0.75rem",
+                  backgroundColor: "#64748b",
+                  borderRadius: "0.5rem",
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                }}
+              >
+                <div
+                  style={{
+                    textAlign: "center",
+                    color: "white",
+                    fontSize: "0.875rem",
+                    fontWeight: "600",
+                  }}
+                >
                   {item.jabatan}
                 </div>
-                <div className="text-center text-white text-xs font-normal">
+                <div
+                  style={{
+                    textAlign: "center",
+                    color: "white",
+                    fontSize: "0.75rem",
+                    fontWeight: "400",
+                  }}
+                >
                   {item.nama}
                 </div>
               </div>
             </DialogTrigger>
           </div>
-          <NodeMenuDialog chartId={chartId} item={item} parentOffsetId={item.id} />
+          <NodeMenuDialog
+            chartId={chartId}
+            item={item}
+            parentOffsetId={item.id}
+          />
         </Dialog>
 
         {item.child_offsets.map((child) => {
           return (
-            <Dialog>
-              <div className="flex items-center justify-center">
-                <div className="h-[90px] w-[1px] bg-black" />
+            <Dialog key={child.id}>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <div
+                  style={{
+                    height: "90px",
+                    width: "1px",
+                    backgroundColor: "black",
+                  }}
+                />
                 <DialogTrigger>
-                  <div className="flex flex-col  items-center mr-[-300px] ml-[100px]">
-                    <div className="h-[20px] w-[1px] bg-slate-500" />
-
-                    <div className="w-[200px] h-[70px] p-3 bg-slate-500 rounded-lg">
-                      <div className="text-center text-white text-sm font-semibold">
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                      marginRight: "-300px",
+                      marginLeft: "100px",
+                    }}
+                  >
+                    <div
+                      style={{
+                        height: "20px",
+                        width: "1px",
+                        backgroundColor: "#64748b",
+                      }}
+                    />
+                    <div
+                      style={{
+                        width: "200px",
+                        height: "70px",
+                        padding: "0.75rem",
+                        backgroundColor: "#64748b",
+                        borderRadius: "0.5rem",
+                      }}
+                    >
+                      <div
+                        style={{
+                          textAlign: "center",
+                          color: "white",
+                          fontSize: "0.875rem",
+                          fontWeight: "600",
+                        }}
+                      >
                         {child.jabatan}
                       </div>
-                      <div className="text-center text-white text-xs font-normal">
+                      <div
+                        style={{
+                          textAlign: "center",
+                          color: "white",
+                          fontSize: "0.75rem",
+                          fontWeight: "400",
+                        }}
+                      >
                         {child.nama}
                       </div>
                     </div>
@@ -63,11 +153,36 @@ const Item = ({ chartId, item }: Props) => {
   return (
     <Dialog>
       <DialogTrigger>
-        <div className="w-[200px] h-[70px] bg-slate-500 rounded-lg flex-col justify-center items-center inline-flex">
-          <div className="text-center text-white text-sm font-semibold">
+        <div
+          style={{
+            width: "200px",
+            height: "70px",
+            backgroundColor: "#64748b",
+            borderRadius: "0.5rem",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <div
+            style={{
+              textAlign: "center",
+              color: "white",
+              fontSize: "0.875rem",
+              fontWeight: "600",
+            }}
+          >
             {item.jabatan}
           </div>
-          <div className="text-center text-white text-xs font-normal">
+          <div
+            style={{
+              textAlign: "center",
+              color: "white",
+              fontSize: "0.75rem",
+              fontWeight: "400",
+            }}
+          >
             {item.nama}
           </div>
         </div>

@@ -11,19 +11,28 @@ import { DownloadIcon, Plus, Trash } from "lucide-react";
 import CreateOrganizationDialog from "../Dialog/CreateOrganizationDialog";
 import { Organization } from "../../types";
 import DeleteOrganizationDialog from "../Dialog/DeleteOrganizationDialog";
-import { useEffect } from "react";
+import { Dispatch, SetStateAction, useEffect } from "react";
 
 interface Props {
   data: Organization[];
   selected?: string;
   onFilterChange: (value: string) => void;
+  handleCapture: () => void;
+  setFileName: Dispatch<SetStateAction<string>>;
 }
 
-const Toolbar = ({ data, selected, onFilterChange }: Props) => {
-
+const Toolbar = ({
+  data,
+  selected,
+  onFilterChange,
+  handleCapture,
+  setFileName,
+}: Props) => {
   useEffect(() => {
     if (data.length === 0) return;
     const newest = data[data.length - 1].id;
+    const newestName = data[data.length - 1].nama;
+    setFileName(newestName);
     onFilterChange(newest.toString());
   }, [data]);
 
@@ -41,7 +50,12 @@ const Toolbar = ({ data, selected, onFilterChange }: Props) => {
           <SelectContent>
             {data.map((org) => {
               return (
-                <SelectItem value={org.id.toString()}>{org.nama}</SelectItem>
+                <SelectItem
+                  onSelect={() => setFileName(org.nama)}
+                  value={org.id.toString()}
+                >
+                  {org.nama}
+                </SelectItem>
               );
             })}
           </SelectContent>
@@ -68,7 +82,7 @@ const Toolbar = ({ data, selected, onFilterChange }: Props) => {
           <DeleteOrganizationDialog id={selected ?? ""} />
         </Dialog>
 
-        <Button className="px-8">
+        <Button className="px-8" onClick={handleCapture}>
           <DownloadIcon className="mr-2" /> Unduh
         </Button>
       </div>
