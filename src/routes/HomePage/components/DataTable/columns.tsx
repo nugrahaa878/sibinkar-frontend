@@ -15,20 +15,20 @@ export const columns: ColumnDef<Personnel>[] = [
     header: "Nama",
   },
   {
-    accessorKey: "jenis_kelamin",
-    header: "Jenis Kelamin",
+    accessorKey: "pangkat",
+    header: "Pangkat",
   },
   {
     accessorKey: "nrp",
     header: "NRP",
   },
   {
-    accessorKey: "pangkat",
-    header: "Pangkat",
-  },
-  {
     accessorKey: "jabatan",
     header: "Jabatan",
+  },
+  {
+    accessorKey: "jenis_kelamin",
+    header: "Jenis Kelamin",
   },
   {
     accessorKey: "subsatker",
@@ -74,6 +74,12 @@ export const columns: ColumnDef<Personnel>[] = [
               Gasum Masuk
             </h1>
           );
+        default:
+          return (
+            <h1 className="bg-slate-800 border text-white text-xs rounded-md px-2 py-0.5">
+              -
+            </h1>
+          )
       }
     },
   },
