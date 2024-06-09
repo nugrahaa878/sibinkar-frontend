@@ -17,6 +17,10 @@ const data_bko: PersonnelAttribute[] = [
     id: 4,
     nama: "Gasum keluar",
   },
+  {
+    id: 5,
+    nama: "-"
+  }
 ];
 
 export default data_bko;
