@@ -19,6 +19,7 @@ import { useSWRConfig } from "swr";
 import useGetPersonnel from "@/routes/HomePage/hooks/useGetPersonnel";
 import Combobox from "./combobox";
 import { Personnel } from "@/routes/HomePage/hooks/useGetPersonnel/types";
+import usePostCreateOrganization from "@/routes/OrganizationalStructurePage/hooks/usePostCreateOrganization";
 
 const CreateOrganizationDialog = () => {
   const { mutate } = useSWRConfig();
@@ -27,7 +28,7 @@ const CreateOrganizationDialog = () => {
     defaultValues: {},
   });
 
-  const { listPersonnel, loading } = useGetPersonnel({
+  const { listPersonnel } = useGetPersonnel({
     page: 1,
     limit: 2000000,
   });
@@ -45,21 +46,20 @@ const CreateOrganizationDialog = () => {
     }
     setIsLoadingState(true);
     const formValues = form.getValues();
-    // usePostCreateOrganization({
-    //   organizationName: formValues.chartTitle,
-    //   name: formValues.name,
-    //   position: formValues.position,
-    // })
-    //   .then((_) => {
-    //     setDialogState(DialogStateEnum.success);
-    //     mutate(`/organizational-structure/chart/`);
-    //   })
-    //   .catch(() => {
-    //     setDialogState(DialogStateEnum.failed);
-    //   })
-    //   .finally(() => {
-    //     setIsLoadingState(false);
-    //   });
+    usePostCreateOrganization({
+      organizationName: formValues.chartTitle,
+      personnelId: personnel?.id ?? "",
+    })
+      .then((_) => {
+        setDialogState(DialogStateEnum.success);
+        mutate(`/organizational-structure/chart/`);
+      })
+      .catch(() => {
+        setDialogState(DialogStateEnum.failed);
+      })
+      .finally(() => {
+        setIsLoadingState(false);
+      });
     return;
   };
 
