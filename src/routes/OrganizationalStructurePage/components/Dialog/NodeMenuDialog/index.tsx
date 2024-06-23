@@ -16,13 +16,17 @@ import {
   FormItem,
   FormLabel,
 } from "@/components/ui/form";
-import DialogInput from "./input";
-import { OrgNode } from "@/routes/OrganizationalStructurePage/types";
+import {
+  NodePersonnel,
+  OrgNode,
+} from "@/routes/OrganizationalStructurePage/types";
 import { Checkbox } from "@/components/ui/checkbox";
 import usePostCreateNode from "@/routes/OrganizationalStructurePage/hooks/usePostCreateNode";
 import { useSWRConfig } from "swr";
 import usePutEditNode from "@/routes/OrganizationalStructurePage/hooks/usePutEditNode";
 import useDeleteNode from "@/routes/OrganizationalStructurePage/hooks/useDeleteNode";
+import useGetPersonnel from "@/routes/HomePage/hooks/useGetPersonnel";
+import Combobox from "./combobox";
 
 interface Props {
   chartId: string;
@@ -31,10 +35,16 @@ interface Props {
 }
 
 const NodeMenuDialog = ({ chartId, item, parentOffsetId }: Props) => {
-  const {mutate} = useSWRConfig();
+  const { mutate } = useSWRConfig();
+  const { listPersonnel } = useGetPersonnel({
+    page: 1,
+    limit: 2000000,
+  });
 
   const [isLoadingState, setIsLoadingState] = useState<boolean>(false);
   const [dialogState, setDialogState] = useState<DialogState>(DialogState.menu);
+
+  const [personnel, setPersonnel] = useState<NodePersonnel | undefined>();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -50,8 +60,7 @@ const NodeMenuDialog = ({ chartId, item, parentOffsetId }: Props) => {
       item: item,
       organizationId: chartId,
       parentId: item.id,
-      name: formValues.name,
-      position: formValues.position,
+      personnelId: personnel?.id ?? "",
       offset: formValues.isOffset,
       parentOffsetId: parentOffsetId,
     })
@@ -71,21 +80,21 @@ const NodeMenuDialog = ({ chartId, item, parentOffsetId }: Props) => {
   const handleUpdateNode = async () => {
     setIsLoadingState(true);
     const formValues = form.getValues();
-    usePutEditNode({
-      id: item.id,
-      name: formValues.name,
-      position: formValues.position,
-    })
-      .then((_) => {
-        setDialogState(DialogState.success);
-        mutate(`/organizational-structure/chart/${chartId}/`)
-      })
-      .catch(() => {
-        setDialogState(DialogState.error);
-      })
-      .finally(() => {
-        setIsLoadingState(false);
-      });
+    // usePutEditNode({
+    //   id: item.id,
+    //   name: formValues.name,
+    //   position: formValues.position,
+    // })
+    //   .then((_) => {
+    //     setDialogState(DialogState.success);
+    //     mutate(`/organizational-structure/chart/${chartId}/`)
+    //   })
+    //   .catch(() => {
+    //     setDialogState(DialogState.error);
+    //   })
+    //   .finally(() => {
+    //     setIsLoadingState(false);
+    //   });
     return;
   };
 
@@ -97,7 +106,7 @@ const NodeMenuDialog = ({ chartId, item, parentOffsetId }: Props) => {
     })
       .then((_) => {
         setDialogState(DialogState.success);
-        mutate(`/organizational-structure/chart/${chartId}/`)
+        mutate(`/organizational-structure/chart/${chartId}/`);
       })
       .catch(() => {
         setDialogState(DialogState.error);
@@ -111,6 +120,7 @@ const NodeMenuDialog = ({ chartId, item, parentOffsetId }: Props) => {
   const handleClose = () => {
     setDialogState(DialogState.menu);
     setIsLoadingState(false);
+    setPersonnel(undefined);
     form.reset();
   };
 
@@ -126,8 +136,8 @@ const NodeMenuDialog = ({ chartId, item, parentOffsetId }: Props) => {
   };
 
   const handleEditMenu = () => {
-    form.setValue("name", item.nama);
-    form.setValue("position", item.jabatan);
+    form.setValue("name", item.personnel.nama);
+    setPersonnel(item.personnel);
     form.setValue("isOffset", item.offset);
     setDialogState(DialogState.edit);
   };
@@ -189,18 +199,20 @@ const NodeMenuDialog = ({ chartId, item, parentOffsetId }: Props) => {
               onSubmit={form.handleSubmit(handleUpdateNode)}
               className="grid gap-4 py-4"
             >
-              <DialogInput
-                control={form.control}
+              <Combobox
+                form={form}
                 name="name"
-                placeholder="Masukkan nama..."
                 label="Nama"
+                placeholder="Pilih Anggota"
+                searchPlaceholder="Cari Anggota..."
+                data={listPersonnel || []}
+                onSelectItem={setPersonnel}
               />
-              <DialogInput
-                control={form.control}
-                name="position"
-                placeholder="Masukkan jabatan..."
-                label="Jabatan"
-              />
+
+              <div className="grid grid-cols-4 items-center gap-4">
+                <h1>Jabatan: </h1>
+                <h1 className="col-span-3">{personnel?.jabatan ?? "-"}</h1>
+              </div>
 
               <DialogFooter>
                 <Button type="submit">Simpan</Button>
@@ -217,18 +229,20 @@ const NodeMenuDialog = ({ chartId, item, parentOffsetId }: Props) => {
               onSubmit={form.handleSubmit(handleCreateNode)}
               className="grid gap-4 py-4"
             >
-              <DialogInput
-                control={form.control}
+             <Combobox
+                form={form}
                 name="name"
-                placeholder="Masukkan nama..."
                 label="Nama"
+                placeholder="Pilih Anggota"
+                searchPlaceholder="Cari Anggota..."
+                data={listPersonnel || []}
+                onSelectItem={setPersonnel}
               />
-              <DialogInput
-                control={form.control}
-                name="position"
-                placeholder="Masukkan jabatan..."
-                label="Jabatan"
-              />
+
+              <div className="grid grid-cols-4 items-center gap-4">
+                <h1>Jabatan: </h1>
+                <h1 className="col-span-3">{personnel?.jabatan ?? "-"}</h1>
+              </div>
 
               {!item.offset && !parentOffsetId && (
                 <FormField
