@@ -49,8 +49,9 @@ const Item = ({ chartId, item }: Props) => {
                     fontSize: "0.875rem",
                     fontWeight: "600",
                   }}
+                  className="line-clamp-2"
                 >
-                  {item.jabatan}
+                  {item.personnel.jabatan}
                 </div>
                 <div
                   style={{
@@ -60,7 +61,7 @@ const Item = ({ chartId, item }: Props) => {
                     fontWeight: "400",
                   }}
                 >
-                  {item.nama}
+                  {item.personnel.nama}
                 </div>
               </div>
             </DialogTrigger>
@@ -122,8 +123,9 @@ const Item = ({ chartId, item }: Props) => {
                           fontSize: "0.875rem",
                           fontWeight: "600",
                         }}
+                        className="line-clamp-2"
                       >
-                        {child.jabatan}
+                        {child.personnel.jabatan}
                       </div>
                       <div
                         style={{
@@ -133,7 +135,7 @@ const Item = ({ chartId, item }: Props) => {
                           fontWeight: "400",
                         }}
                       >
-                        {child.nama}
+                        {child.personnel.nama}
                       </div>
                     </div>
                   </div>
@@ -155,7 +157,7 @@ const Item = ({ chartId, item }: Props) => {
       <DialogTrigger>
         <div
           style={{
-            width: "200px",
+            width: "300px",
             height: "70px",
             backgroundColor: "#64748b",
             borderRadius: "0.5rem",
@@ -172,8 +174,9 @@ const Item = ({ chartId, item }: Props) => {
               fontSize: "0.875rem",
               fontWeight: "600",
             }}
+            className="line-clamp-2"
           >
-            {item.jabatan}
+            {item.personnel.jabatan}
           </div>
           <div
             style={{
@@ -183,7 +186,7 @@ const Item = ({ chartId, item }: Props) => {
               fontWeight: "400",
             }}
           >
-            {item.nama}
+            {item.personnel.nama}
           </div>
         </div>
       </DialogTrigger>

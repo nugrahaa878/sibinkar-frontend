@@ -4,8 +4,7 @@ import { OrgNode } from "../../types";
 interface Props {
   organizationId: string;
   parentId: number;
-  name: string;
-  position: string;
+  personnelId: string;
   offset: boolean;
   item: OrgNode;
   parentOffsetId?: number;
@@ -14,8 +13,7 @@ interface Props {
 const usePostCreateNode = async ({
   organizationId,
   parentId,
-  name,
-  position,
+  personnelId,
   offset,
   item,
   parentOffsetId,
@@ -36,8 +34,7 @@ const usePostCreateNode = async ({
 
   const data = {
     parent_id: id,
-    nama: name,
-    jabatan: position,
+    personnel_id: personnelId,
     offset: offset,
   };
   const response = await axiosClient.post(

@@ -2,19 +2,16 @@ import axiosClient from "@/networks/apiClient";
 
 interface Props {
   organizationName: string;
-  name: string;
-  position: string;
+  personnelId: string;
 }
 
 const usePostCreateOrganization = async ({
   organizationName,
-  name,
-  position,
+  personnelId,
 }: Props) => {
   const data = {
     nama_chart: organizationName,
-    nama: name,
-    jabatan: position,
+    personnel_id: personnelId,
   };
 
   const response = await axiosClient.post("/organizational-structure/chart/", data);
