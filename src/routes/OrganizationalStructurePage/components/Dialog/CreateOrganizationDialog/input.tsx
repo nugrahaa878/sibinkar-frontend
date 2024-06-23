@@ -12,7 +12,7 @@ import { Input } from "@/components/ui/input";
 
 interface Props {
   control?: Control<z.infer<typeof formSchema>> | undefined;
-  name: "chartTitle" | "name" | "position";
+  name: "chartTitle" | "name";
   placeholder: string;
   label: string;
   type?: string;

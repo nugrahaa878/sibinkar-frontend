@@ -7,9 +7,6 @@ const formSchema = z.object({
   name: z.string({
     required_error: "Nama kepala wajib diisi",
   }),
-  position: z.string({
-    required_error: "Posisi wajib diisi",
-  }),
 });
 
 export default formSchema;

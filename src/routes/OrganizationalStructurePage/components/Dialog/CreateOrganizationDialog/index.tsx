@@ -15,8 +15,10 @@ import SuccessDialog from "@/components/Dialog/SuccessDialog";
 import ErrorDialog from "@/components/Dialog/ErrorDialog";
 import DialogInput from "./input";
 import { Button } from "@/components/ui/button";
-import usePostCreateOrganization from "@/routes/OrganizationalStructurePage/hooks/usePostCreateOrganization";
 import { useSWRConfig } from "swr";
+import useGetPersonnel from "@/routes/HomePage/hooks/useGetPersonnel";
+import Combobox from "./combobox";
+import { Personnel } from "@/routes/HomePage/hooks/useGetPersonnel/types";
 
 const CreateOrganizationDialog = () => {
   const { mutate } = useSWRConfig();
@@ -25,10 +27,16 @@ const CreateOrganizationDialog = () => {
     defaultValues: {},
   });
 
+  const { listPersonnel, loading } = useGetPersonnel({
+    page: 1,
+    limit: 2000000,
+  });
+
   const [isLoadingState, setIsLoadingState] = useState(false);
   const [dialogState, setDialogState] = useState<DialogStateEnum>(
     DialogStateEnum.form
   );
+  const [personnel, setPersonnel] = useState<Personnel | undefined>();
 
   const onButtonSave = async () => {
     if (dialogState === DialogStateEnum.form) {
@@ -37,27 +45,28 @@ const CreateOrganizationDialog = () => {
     }
     setIsLoadingState(true);
     const formValues = form.getValues();
-    usePostCreateOrganization({
-      organizationName: formValues.chartTitle,
-      name: formValues.name,
-      position: formValues.position,
-    })
-      .then((_) => {
-        setDialogState(DialogStateEnum.success);
-        mutate(`/organizational-structure/chart/`);
-      })
-      .catch(() => {
-        setDialogState(DialogStateEnum.failed);
-      })
-      .finally(() => {
-        setIsLoadingState(false);
-      });
+    // usePostCreateOrganization({
+    //   organizationName: formValues.chartTitle,
+    //   name: formValues.name,
+    //   position: formValues.position,
+    // })
+    //   .then((_) => {
+    //     setDialogState(DialogStateEnum.success);
+    //     mutate(`/organizational-structure/chart/`);
+    //   })
+    //   .catch(() => {
+    //     setDialogState(DialogStateEnum.failed);
+    //   })
+    //   .finally(() => {
+    //     setIsLoadingState(false);
+    //   });
     return;
   };
 
   const handleClose = () => {
     setDialogState(DialogStateEnum.form);
     setIsLoadingState(false);
+    setPersonnel(undefined);
     form.reset();
   };
 
@@ -109,18 +118,21 @@ const CreateOrganizationDialog = () => {
                 placeholder="Masukkan nama organisasi"
                 label="Nama Organisasi"
               />
-              <DialogInput
-                control={form.control}
+
+              <Combobox
+                form={form}
                 name="name"
-                placeholder="Masukkan nama kepala"
-                label="Nama Kepala"
+                label="Nama"
+                placeholder="Pilih Anggota"
+                searchPlaceholder="Cari Anggota..."
+                data={listPersonnel || []}
+                onSelectItem={setPersonnel}
               />
-              <DialogInput
-                control={form.control}
-                name="position"
-                placeholder="Masukkan jabatan kepala"
-                label="Jabatan Kepala"
-              />
+
+              <div className="grid grid-cols-4 items-center gap-4">
+                <h1>Jabatan: </h1>
+                <h1 className="col-span-3">{personnel?.jabatan ?? "-"}</h1>
+              </div>
 
               <DialogFooter>
                 <Button type="submit">Simpan</Button>
