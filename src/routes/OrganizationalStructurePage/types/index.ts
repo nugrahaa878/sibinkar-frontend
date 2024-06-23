@@ -1,6 +1,5 @@
 export interface OrgNode {
-  nama: string;
-  jabatan: string;
+  personnel: NodePersonnel;
   id: number;
   offset: boolean;
   child: OrgNode[];
@@ -11,4 +10,10 @@ export interface Organization {
   id: number;
   nama: string;
   nodes?: OrgNode;
+}
+
+export interface NodePersonnel {
+  id: string;
+  nama: string;
+  jabatan: string;
 }

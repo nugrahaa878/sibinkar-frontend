@@ -19,7 +19,7 @@ const RecursiveTreeNode = ({
     return <h1>Tidak ada data</h1>;
   }
 
-  if (item?.nama === rootName) {
+  if (item?.personnel.nama === rootName) {
     return item?.child.map((child) => (
       <RecursiveTreeNode
         id={id}
@@ -61,7 +61,7 @@ const RecursiveOrganizationChart = ({
               <RecursiveTreeNode
                 id={id}
                 item={organization.nodes}
-                rootName={organization.nodes.nama}
+                rootName={organization.nodes.personnel.nama}
               />
             </Tree>
           )}
