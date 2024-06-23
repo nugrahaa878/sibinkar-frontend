@@ -2,15 +2,13 @@ import axiosClient from "@/networks/apiClient";
 
 interface Props {
   id: number;
-  name: string;
-  position: string;
+  personnelId: string;
 }
 
-const usePutEditNode = async ({ id, name, position }: Props) => {
+const usePutEditNode = async ({ id, personnelId }: Props) => {
   const data = {
     node_id: id,
-    nama: name,
-    jabatan: position,
+    personnel_id: personnelId,
   };
 
   const response = await axiosClient.put(`/organizational-structure/nodes/${id}/`, data);

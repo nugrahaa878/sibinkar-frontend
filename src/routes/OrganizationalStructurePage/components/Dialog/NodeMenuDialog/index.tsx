@@ -66,7 +66,7 @@ const NodeMenuDialog = ({ chartId, item, parentOffsetId }: Props) => {
     })
       .then((_) => {
         setDialogState(DialogState.success);
-        mutate(`/organizational-structure/chart/${chartId}/`)
+        mutate(`/organizational-structure/chart/${chartId}/`);
       })
       .catch(() => {
         setDialogState(DialogState.error);
@@ -79,22 +79,20 @@ const NodeMenuDialog = ({ chartId, item, parentOffsetId }: Props) => {
 
   const handleUpdateNode = async () => {
     setIsLoadingState(true);
-    const formValues = form.getValues();
-    // usePutEditNode({
-    //   id: item.id,
-    //   name: formValues.name,
-    //   position: formValues.position,
-    // })
-    //   .then((_) => {
-    //     setDialogState(DialogState.success);
-    //     mutate(`/organizational-structure/chart/${chartId}/`)
-    //   })
-    //   .catch(() => {
-    //     setDialogState(DialogState.error);
-    //   })
-    //   .finally(() => {
-    //     setIsLoadingState(false);
-    //   });
+    usePutEditNode({
+      id: item.id,
+      personnelId: personnel?.id ?? "",
+    })
+      .then((_) => {
+        setDialogState(DialogState.success);
+        mutate(`/organizational-structure/chart/${chartId}/`);
+      })
+      .catch(() => {
+        setDialogState(DialogState.error);
+      })
+      .finally(() => {
+        setIsLoadingState(false);
+      });
     return;
   };
 
@@ -229,7 +227,7 @@ const NodeMenuDialog = ({ chartId, item, parentOffsetId }: Props) => {
               onSubmit={form.handleSubmit(handleCreateNode)}
               className="grid gap-4 py-4"
             >
-             <Combobox
+              <Combobox
                 form={form}
                 name="name"
                 label="Nama"
